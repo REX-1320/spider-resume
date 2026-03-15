@@ -167,7 +167,7 @@ export default function SpiderResumeAI() {
   const [page, setPage] = useState("builder");
   const [loading, setLoading] = useState(false);
   const [template, setTemplate] = useState("Classic");
-  const [form, setForm] = useState({ name: "", email: "", phone: "", location: "", linkedin: "", summary: "", education: [{ degree: "", school: "", year: "" }], experience: [{ role: "", company: "", duration: "", desc: "" }], skills: "" });
+  const [form, setForm] = useState({ name: "", email: "", phone: "", location: "", linkedin: "", summary: "", education: [{ degree: "", school: "", year: "" }], experience: [{ role: "", company: "", duration: "", desc: "" }], skills: "", photo: "" });
   const [aiGenerated, setAiGenerated] = useState(false);
   const [scoreLoading, setScoreLoading] = useState(false);
   const [scoreData, setScoreData] = useState(null);
@@ -911,6 +911,41 @@ Rules:
             <GInput isDark={D} label="LinkedIn URL" textMuted={textMuted} inputStyle={glassInput} placeholder="linkedin.com/in/yourname" value={form.linkedin} onChange={e => update("linkedin", e.target.value)} />
           </GSection>
 
+          {/* PHOTO UPLOAD */}
+          <GSection glassCard={glassCard} textMuted={textMuted} title="📷 Profile Photo (Optional)"
+            action={form.photo ? <button onClick={() => update("photo", "")} style={{ fontSize: "11px", color: D ? "#f08080" : "#b03030", background: "none", border: "none", cursor: "pointer", fontWeight: "700" }}>✕ Remove</button> : null}>
+            <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+              {/* Preview */}
+              <div style={{ width: "72px", height: "72px", borderRadius: "50%", flexShrink: 0, overflow: "hidden", border: `2px solid ${form.photo ? theme.accent1 : (D ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.1)")}`, background: D ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.04)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                {form.photo
+                  ? <img src={form.photo} alt="Profile" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                  : <span style={{ fontSize: "28px", opacity: 0.4 }}>👤</span>}
+              </div>
+              {/* Upload area */}
+              <div style={{ flex: 1 }}>
+                <label style={{ cursor: "pointer" }}>
+                  <div style={{ ...(D ? liquidGlassDark : liquidGlass), borderRadius: "14px", padding: "12px 16px", border: `2px dashed ${D ? "rgba(255,255,255,0.18)" : "rgba(180,140,80,0.35)"}`, textAlign: "center", transition: "all 0.2s" }}>
+                    {form.photo
+                      ? <><p style={{ fontSize: "13px", fontWeight: "700", color: D ? "#7dcfa0" : "#2e7d52", margin: "0 0 2px" }}>✅ Photo uploaded</p><p style={{ fontSize: "11px", color: textMuted, margin: 0 }}>Click to change</p></>
+                      : <><p style={{ fontSize: "13px", fontWeight: "600", color: textPrimary, margin: "0 0 2px" }}>Upload photo</p><p style={{ fontSize: "11px", color: textMuted, margin: 0 }}>JPG, PNG — shown in templates that support photos</p></>}
+                  </div>
+                  <input type="file" accept="image/*" style={{ display: "none" }} onChange={e => {
+                    const file = e.target.files?.[0];
+                    if (!file) return;
+                    if (file.size > 2 * 1024 * 1024) { alert("Image too large — please use an image under 2MB."); return; }
+                    const reader = new FileReader();
+                    reader.onload = ev => update("photo", ev.target.result);
+                    reader.readAsDataURL(file);
+                    e.target.value = "";
+                  }} />
+                </label>
+              </div>
+            </div>
+            <p style={{ fontSize: "11px", color: textMuted, margin: "10px 0 0", lineHeight: 1.5 }}>
+              💡 <strong>Tip:</strong> Photo resumes are common in India, Europe & Middle East. Not recommended for US/UK roles. Use a professional headshot.
+            </p>
+          </GSection>
+
           <GSection glassCard={glassCard} textMuted={textMuted} title="Education" action={<button onClick={() => setForm(p => ({ ...p, education: [...p.education, { degree: "", school: "", year: "" }] }))} style={{ fontSize: "11px", color: theme.accent1, background: "none", border: "none", cursor: "pointer", fontWeight: "700" }}>+ Add</button>}>
             {form.education.map((e, i) => (
               <div key={i} style={{ marginBottom: "8px" }}>
@@ -1024,13 +1059,18 @@ Rules:
       {page === "preview" && (
         <div style={{ maxWidth: "620px", margin: "0 auto", padding: "28px 16px", position: "relative", zIndex: 1 }}>
           <div id="resume-printable" style={{ ...glassCard, padding: "40px 36px" }}>
-            <div style={{ marginBottom: "28px", borderBottom: `1px solid ${theme.accent1}33`, paddingBottom: "20px" }}>
-              <h1 style={{ fontSize: "28px", fontWeight: "700", color: textPrimary, letterSpacing: "-0.5px", marginBottom: "6px" }}>{form.name || "Your Name"}</h1>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: "14px", fontSize: "12px", color: textSecondary }}>
-                {form.email && <span>✉ {form.email}</span>}
-                {form.phone && <span>📞 {form.phone}</span>}
-                {form.location && <span>📍 {form.location}</span>}
-                {form.linkedin && <span>🔗 {form.linkedin}</span>}
+            <div style={{ marginBottom: "28px", borderBottom: `1px solid ${theme.accent1}33`, paddingBottom: "20px", display: "flex", alignItems: "flex-start", gap: "20px" }}>
+              {form.photo && (
+                <img src={form.photo} alt="Profile" style={{ width: "80px", height: "80px", borderRadius: "50%", objectFit: "cover", flexShrink: 0, border: `2px solid ${theme.accent1}44` }} />
+              )}
+              <div style={{ flex: 1 }}>
+                <h1 style={{ fontSize: "28px", fontWeight: "700", color: textPrimary, letterSpacing: "-0.5px", marginBottom: "6px" }}>{form.name || "Your Name"}</h1>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "14px", fontSize: "12px", color: textSecondary }}>
+                  {form.email && <span>✉ {form.email}</span>}
+                  {form.phone && <span>📞 {form.phone}</span>}
+                  {form.location && <span>📍 {form.location}</span>}
+                  {form.linkedin && <span>🔗 {form.linkedin}</span>}
+                </div>
               </div>
             </div>
             {form.summary && <div style={{ marginBottom: "22px" }}><h2 style={{ fontSize: "9px", fontWeight: "700", letterSpacing: "0.14em", textTransform: "uppercase", color: theme.accent1, marginBottom: "8px" }}>Summary</h2><p style={{ fontSize: "13px", color: textPrimary, lineHeight: "1.7" }}>{form.summary}</p></div>}
