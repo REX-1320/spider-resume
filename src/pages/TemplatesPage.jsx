@@ -324,7 +324,27 @@ Return ONLY the complete modified HTML starting with <div. Keep all {{PLACEHOLDE
                 <p style={{ fontSize:10, color:textMuted, margin:0 }}>{selected.style} · {TYPE_LABEL[selected.type]||selected.type}</p>
               </div>
               <div style={{ display:"flex", gap:8 }}>
-                {isPro && <button onClick={()=>window.print()} style={{ ...glassBtn, padding:"7px 14px", fontSize:12, fontWeight:700, background:accent, color:D?"#1a1410":"#2d2520", borderRadius:10, border:"none", cursor:"pointer" }}>⬇ Download PDF</button>}
+                {isPro && (
+                  <button onClick={async () => {
+                    // Load html2pdf and download the preview
+                    await new Promise((res,rej)=>{
+                      if(window.html2pdf){res();return;}
+                      const s=document.createElement("script");
+                      s.src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js";
+                      s.onload=res;s.onerror=rej;document.head.appendChild(s);
+                    });
+                    const el = document.getElementById("tpl-preview-content");
+                    if(!el) return;
+                    await window.html2pdf().set({
+                      margin:[10,10,10,10],
+                      filename:`${form.name||"resume"}_resume.pdf`,
+                      image:{type:"jpeg",quality:0.98},
+                      html2canvas:{scale:2,useCORS:true},
+                      jsPDF:{unit:"mm",format:"a4",orientation:"portrait"}
+                    }).from(el).save();
+                    notify("✅ PDF downloaded!");
+                  }} style={{ ...glassBtn, padding:"7px 14px", fontSize:12, fontWeight:700, background:accent, color:D?"#1a1410":"#2d2520", borderRadius:10, border:"none", cursor:"pointer" }}>⬇ PDF</button>
+                )}
                 <button onClick={()=>setShowPreview(false)} style={{ ...glassBtn, padding:"7px 12px", fontSize:13, color:textSecondary, borderRadius:10, cursor:"pointer" }}>✕</button>
               </div>
             </div>
@@ -339,7 +359,69 @@ Return ONLY the complete modified HTML starting with <div. Keep all {{PLACEHOLDE
             )}
             {/* Preview */}
             <div style={{ flex:1, overflowY:"auto", padding:18 }}>
-              <div style={{ background:"#fff", borderRadius:12, overflow:"hidden", boxShadow:"0 4px 24px rgba(0,0,0,0.14)" }}>
+              {/* Use in Resume + format buttons */}
+              <div style={{ display:"flex", gap:8, marginBottom:14, flexWrap:"wrap" }}>
+                <button onClick={() => {
+                  // Apply this template's rendered HTML as user's active resume
+                  setShowPreview(false);
+                  notify("✅ Template applied to your resume! Go to Preview tab to download.");
+                  // Store selected template id for preview page to use
+                  if (typeof window !== "undefined") window._activeResumeTemplate = selected;
+                }} style={{ flex:1, padding:"10px 14px", borderRadius:12, border:`1.5px solid ${theme.accent1}`, background:`${theme.accent1}18`, color:theme.accent1, fontSize:13, fontWeight:700, cursor:"pointer" }}>
+                  ✓ Use in Resume
+                </button>
+                {[
+                  { label:"⬇ PDF", fmt:"pdf" },
+                  { label:"📝 Word", fmt:"docx" },
+                  { label:"🖼 PNG", fmt:"png" },
+                  { label:"📃 TXT", fmt:"txt" },
+                ].map(({label, fmt}) => (
+                  <button key={fmt} onClick={async () => {
+                    if (!isPro) { setPage("upgrade"); return; }
+                    notify("⏳ Preparing download...");
+                    try {
+                      const el = document.getElementById("tpl-preview-content");
+                      if (fmt === "pdf") {
+                        await new Promise((res,rej)=>{ if(window.html2pdf){res();return;} const s=document.createElement("script"); s.src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"; s.onload=res; s.onerror=rej; document.head.appendChild(s); });
+                        await window.html2pdf().set({ margin:[10,10,10,10], filename:`${form.name||"resume"}_resume.pdf`, image:{type:"jpeg",quality:0.98}, html2canvas:{scale:2,useCORS:true}, jsPDF:{unit:"mm",format:"a4",orientation:"portrait"} }).from(el).save();
+                        notify("✅ PDF downloaded!");
+                      } else if (fmt === "png") {
+                        await new Promise((res,rej)=>{ if(window.html2canvas){res();return;} const s=document.createElement("script"); s.src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"; s.onload=res; s.onerror=rej; document.head.appendChild(s); });
+                        const canvas = await window.html2canvas(el, {scale:2, useCORS:true, backgroundColor:"#fff"});
+                        const a = document.createElement("a"); a.href=canvas.toDataURL("image/png"); a.download=`${form.name||"resume"}_resume.png`; document.body.appendChild(a); a.click(); document.body.removeChild(a);
+                        notify("✅ PNG downloaded!");
+                      } else if (fmt === "txt") {
+                        const lines = [form.name||"", [form.email,form.phone,form.location].filter(Boolean).join(" | "), "", form.summary||"", "", ...(form.experience?.filter(e=>e.role).flatMap(e=>[`${e.role} at ${e.company||""} (${e.duration||""})`, e.desc||"", ""])||[]), ...(form.education?.filter(e=>e.degree).map(e=>`${e.degree} — ${e.school||""} ${e.year||""}`)||[]), "", `Skills: ${form.skills||""}`];
+                        const blob = new Blob([lines.join("\n")], {type:"text/plain"});
+                        const a = document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=`${form.name||"resume"}_resume.txt`; document.body.appendChild(a); a.click(); document.body.removeChild(a);
+                        notify("✅ TXT downloaded!");
+                      } else if (fmt === "docx") {
+                        // Load JSZip and generate
+                        await new Promise((res,rej)=>{ if(window.JSZip){res();return;} const s=document.createElement("script"); s.src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"; s.onload=res; s.onerror=rej; document.head.appendChild(s); });
+                        const esc=(s="")=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+                        const p=(t,b)=>`<w:p><w:r><w:rPr>${b?"<w:b/>":""}<w:sz w:val="22"/></w:rPr><w:t xml:space="preserve">${esc(t)}</w:t></w:r></w:p>`;
+                        let body=p(form.name||"",true)+p([form.email,form.phone,form.location].filter(Boolean).join(" | "),false)+p("",false);
+                        if(form.summary) body+=p("SUMMARY",true)+p(form.summary,false)+p("",false);
+                        if(form.experience?.some(e=>e.role)){body+=p("EXPERIENCE",true);form.experience.filter(e=>e.role).forEach(e=>{body+=p(`${e.role} · ${e.company||""} · ${e.duration||""}`,true);if(e.desc)body+=p(e.desc,false);body+=p("",false);});}
+                        if(form.education?.some(e=>e.degree)){body+=p("EDUCATION",true);form.education.filter(e=>e.degree).forEach(e=>{body+=p(`${e.degree} — ${e.school||""} ${e.year?`(${e.year})`:""}`);});}
+                        if(form.skills) body+=p("",false)+p("SKILLS",true)+p(form.skills,false);
+                        const docXml=`<?xml version="1.0" encoding="UTF-8"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>${body}</w:body></w:document>`;
+                        const zip=new window.JSZip();
+                        zip.file("[Content_Types].xml",`<?xml version="1.0"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/></Types>`);
+                        zip.file("_rels/.rels",`<?xml version="1.0"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>`);
+                        zip.file("word/document.xml",docXml);
+                        zip.file("word/_rels/document.xml.rels",`<?xml version="1.0"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"></Relationships>`);
+                        const blob=await zip.generateAsync({type:"blob",mimeType:"application/vnd.openxmlformats-officedocument.wordprocessingml.document"});
+                        const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=`${form.name||"resume"}_resume.docx`; document.body.appendChild(a); a.click(); document.body.removeChild(a);
+                        notify("✅ Word doc downloaded!");
+                      }
+                    } catch(e) { notify("❌ Download failed — try again."); }
+                  }} style={{ padding:"8px 12px", borderRadius:10, border:`1px solid ${D?"rgba(255,255,255,0.12)":"rgba(0,0,0,0.08)"}`, background:D?"rgba(255,255,255,0.06)":"rgba(255,255,255,0.45)", color:textSecondary, fontSize:12, fontWeight:600, cursor:"pointer", backdropFilter:"blur(10px)" }}>
+                    {label}
+                  </button>
+                ))}
+              </div>
+              <div id="tpl-preview-content" style={{ background:"#fff", borderRadius:12, overflow:"hidden", boxShadow:"0 4px 24px rgba(0,0,0,0.14)" }}>
                 <div dangerouslySetInnerHTML={{ __html: previewHtml }} />
               </div>
             </div>
