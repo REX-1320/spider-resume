@@ -216,94 +216,41 @@ export default function SpiderResumeAI() {
 
   // ── KEYS — edit these directly ──
   const geminiKey = import.meta.env.VITE_GEMINI_KEY || "";
-  const groqKey = import.meta.env.VITE_GROQ_KEY || "";
+  const groqKey  = import.meta.env.VITE_GROQ_KEY   || "";
+  const groqKey2 = import.meta.env.VITE_GROQ_KEY_2 || "";
   const RAZORPAY_KEY = import.meta.env.VITE_RAZORPAY_KEY || "";
 
-
-  // Fix global layout
-  useEffect(() => {
-    const ds = document.createElement("style"); ds.innerHTML = DESKTOP_STYLE; document.head.appendChild(ds);
-    // Force full viewport background
-    document.documentElement.style.background = "inherit";
-    document.body.style.margin = "0";
-    document.body.style.padding = "0";
-    document.body.style.minHeight = "100vh";
-    document.body.style.width = "100vw";
-    document.body.style.overflowX = "hidden";
-    const style = document.createElement("style");
-    style.innerHTML = PRINT_STYLE;
-    style.id = "spider-print-style";
-    document.head.appendChild(style);
-    return () => document.getElementById("spider-print-style")?.remove();
-  }, []);
-
-  // Auth listener
-  useEffect(() => {
-    if (!auth) {
-      console.error("Firebase auth not initialized");
-      setAuthLoading(false);
-      return;
-    }
-    const unsub = onAuthStateChanged(auth, async (u) => {
-      setUser(u);
-      setAuthLoading(false);
-      if (u) {
-        await loadUserData(u.uid, u.email, u.displayName);
-        setScreen("app");
-      } else {
-        setScreen("landing");
-      }
-    });
-    return unsub;
-  }, []);
-
-  // Load or create user doc in Firestore
-  const loadUserData = async (uid, email, name) => {
-    if (!db) { console.error("Firestore not initialized"); return; }
-    const ref = doc(db, "users", uid);
-    const snap = await getDoc(ref);
-    const today = new Date().toDateString();
-    if (!snap.exists()) {
-      const newUser = { email, name: name || email, isPro: false, usageDate: today, usageCount: 0, createdAt: new Date().toISOString() };
-      await setDoc(ref, newUser);
-      setUserData(newUser);
-      setIsPro(false);
-    } else {
-      const data = snap.data();
-      // Reset daily usage if new day
-      if (data.usageDate !== today) {
-        await updateDoc(ref, { usageDate: today, usageCount: 0 });
-        data.usageDate = today;
-        data.usageCount = 0;
-      }
-      setUserData(data);
-      setIsPro(data.isPro || false);
-    }
+  // Alternates between groqKey and groqKey2 on every call
+  const groqCallCount = useRef(0);
+  const getGroqKey = () => {
+    if (!groqKey2) return groqKey;
+    const key = groqCallCount.current % 2 === 0 ? groqKey : groqKey2;
+    groqCallCount.current += 1;
+    return key;
   };
 
-  const incrementUsage = async () => {
-    if (!user || isGuest || !db) return;
-    const ref = doc(db, "users", user.uid);
-    await updateDoc(ref, { usageCount: increment(1) });
-    setUserData(p => ({ ...p, usageCount: (p?.usageCount || 0) + 1 }));
-  };
-
-  const canGenerate = () => isGuest ? false : (isPro || (userData?.usageCount || 0) < 1);
-
-  // AI call via Groq
-  // ── Groq: fast text AI (primary for all text calls) ─────────────────────
-  const callGroq = async (prompt) => {
+  // ── Groq: fast text AI — alternates between 2 keys ───────────────────
+  const callGroq = async (prompt, forceKey = null) => {
+    const key = forceKey || getGroqKey();
     const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
-      headers: { "Content-Type": "application/json", "Authorization": "Bearer " + groqKey },
+      headers: { "Content-Type": "application/json", "Authorization": "Bearer " + key },
       body: JSON.stringify({ model: "llama-3.3-70b-versatile", max_tokens: 2048, messages: [{ role: "user", content: prompt }] }),
     });
     const data = await res.json();
+    if ((res.status === 429 || data.error?.code === 429) && groqKey2 && key !== groqKey2) {
+      console.warn("Groq key 1 rate limited, switching to key 2");
+      return callGroq(prompt, groqKey2);
+    }
+    if ((res.status === 429 || data.error?.code === 429) && key === groqKey2) {
+      console.warn("Both Groq keys rate limited, trying Gemini");
+      if (geminiKey) return callGemini(prompt);
+    }
     if (data.error) throw new Error(data.error.message);
     return data.choices[0].message.content.replace(/```json|```/g, "").trim();
   };
 
-  // ── Gemini: vision AI (for image/PDF resume import) ───────────────────
+  // ── Gemini: text fallback ─────────────────────────────────────────────
   const callGemini = async (prompt) => {
     const res = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${geminiKey}`,
@@ -321,7 +268,7 @@ export default function SpiderResumeAI() {
     return data.candidates[0].content.parts[0].text.replace(/```json|```/g, "").trim();
   };
 
-  // ── callAI: uses Groq with Gemini as fallback ─────────────────────────
+  // ── callAI: Groq(alternating 2 keys) → Gemini fallback ───────────────
   const callAI = async (prompt) => {
     if (groqKey) {
       try { return await callGroq(prompt); }
@@ -335,35 +282,54 @@ export default function SpiderResumeAI() {
     throw new Error("No AI API key configured. Add VITE_GROQ_KEY or VITE_GEMINI_KEY.");
   };
 
-  // ── callVisionAI: always uses Gemini (vision/image support) ──────────
-  const callVisionAI = async (base64, mimeType, prompt, retryCount = 0) => {
-    if (!geminiKey) throw new Error("Gemini key required for image/PDF reading. Add VITE_GEMINI_KEY.");
+  // ── callVisionAI: Groq primary (fast), Gemini fallback (vision) ───────
+  const callVisionAI = async (base64, mimeType, prompt) => {
+    // Try Groq first using llama-4-scout (supports vision) — alternates keys
+    const visionGroqKey = getGroqKey();
+    if (visionGroqKey) {
+      try {
+        const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Authorization": "Bearer " + visionGroqKey },
+          body: JSON.stringify({
+            model: "meta-llama/llama-4-scout-17b-16e-instruct",
+            max_tokens: 1500,
+            messages: [{
+              role: "user",
+              content: [
+                { type: "image_url", image_url: { url: `data:${mimeType};base64,${base64}` } },
+                { type: "text", text: prompt }
+              ]
+            }]
+          }),
+        });
+        const data = await res.json();
+        if (!data.error) {
+          return data.choices?.[0]?.message?.content?.replace(/```json|```/g, "").trim() || "";
+        }
+        console.warn("Groq vision failed, trying Gemini:", data.error.message);
+      } catch (e) {
+        console.warn("Groq vision error, trying Gemini:", e.message);
+      }
+    }
+    // Fallback to Gemini
+    if (!geminiKey) throw new Error("No vision API available. Add VITE_GROQ_KEY or VITE_GEMINI_KEY.");
     const res = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${geminiKey}`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          contents: [{
-            parts: [
-              { inline_data: { mime_type: mimeType, data: base64 } },
-              { text: prompt }
-            ]
-          }],
+          contents: [{ parts: [
+            { inline_data: { mime_type: mimeType, data: base64 } },
+            { text: prompt }
+          ]}],
           generationConfig: { maxOutputTokens: 2048, temperature: 0.2 },
         }),
       }
     );
     const data = await res.json();
-    // Auto-retry on rate limit (up to 3 times, with increasing wait)
-    if (data.error?.status === "RESOURCE_EXHAUSTED" || res.status === 429) {
-      if (retryCount < 3) {
-        const waitMs = (retryCount + 1) * 8000; // 8s, 16s, 24s
-        await new Promise(r => setTimeout(r, waitMs));
-        return callVisionAI(base64, mimeType, prompt, retryCount + 1);
-      }
-      throw new Error("Gemini rate limit — try again in 30 seconds.");
-    }
+    if (data.error?.status === "RESOURCE_EXHAUSTED" || res.status === 429) throw new Error("Rate limit hit — wait 30 seconds and try again.");
     if (data.error) throw new Error(data.error.message);
     return data.candidates?.[0]?.content?.parts?.[0]?.text?.replace(/```json|```/g, "").trim() || "";
   };
