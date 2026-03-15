@@ -215,7 +215,8 @@ export default function SpiderResumeAI() {
   const updateExp = (i, f, v) => { const a = [...form.experience]; a[i][f] = v; setForm(p => ({ ...p, experience: a })); };
 
   // ── KEYS — edit these directly ──
-  const apiKey = import.meta.env.VITE_GROQ_KEY || "";
+  const geminiKey = import.meta.env.VITE_GEMINI_KEY || "";
+  const groqKey = import.meta.env.VITE_GROQ_KEY || "";
   const RAZORPAY_KEY = import.meta.env.VITE_RAZORPAY_KEY || "";
 
 
@@ -290,15 +291,72 @@ export default function SpiderResumeAI() {
   const canGenerate = () => isGuest ? false : (isPro || (userData?.usageCount || 0) < 1);
 
   // AI call via Groq
-  const callAI = async (prompt) => {
+  // ── Groq: fast text AI (primary for all text calls) ─────────────────────
+  const callGroq = async (prompt) => {
     const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
-      headers: { "Content-Type": "application/json", "Authorization": "Bearer " + apiKey },
-      body: JSON.stringify({ model: "llama-3.3-70b-versatile", max_tokens: 1000, messages: [{ role: "user", content: prompt }] }),
+      headers: { "Content-Type": "application/json", "Authorization": "Bearer " + groqKey },
+      body: JSON.stringify({ model: "llama-3.3-70b-versatile", max_tokens: 2048, messages: [{ role: "user", content: prompt }] }),
     });
     const data = await res.json();
     if (data.error) throw new Error(data.error.message);
     return data.choices[0].message.content.replace(/```json|```/g, "").trim();
+  };
+
+  // ── Gemini: vision AI (for image/PDF resume import) ───────────────────
+  const callGemini = async (prompt) => {
+    const res = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${geminiKey}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: { maxOutputTokens: 2048, temperature: 0.7 },
+        }),
+      }
+    );
+    const data = await res.json();
+    if (data.error) throw new Error(data.error.message);
+    return data.candidates[0].content.parts[0].text.replace(/```json|```/g, "").trim();
+  };
+
+  // ── callAI: uses Groq with Gemini as fallback ─────────────────────────
+  const callAI = async (prompt) => {
+    if (groqKey) {
+      try { return await callGroq(prompt); }
+      catch (e) {
+        console.warn("Groq failed, falling back to Gemini:", e.message);
+        if (geminiKey) return await callGemini(prompt);
+        throw e;
+      }
+    }
+    if (geminiKey) return await callGemini(prompt);
+    throw new Error("No AI API key configured. Add VITE_GROQ_KEY or VITE_GEMINI_KEY.");
+  };
+
+  // ── callVisionAI: always uses Gemini (vision/image support) ──────────
+  const callVisionAI = async (base64, mimeType, prompt) => {
+    if (!geminiKey) throw new Error("Gemini key required for image/PDF reading. Add VITE_GEMINI_KEY.");
+    const res = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${geminiKey}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contents: [{
+            parts: [
+              { inline_data: { mime_type: mimeType, data: base64 } },
+              { text: prompt }
+            ]
+          }],
+          generationConfig: { maxOutputTokens: 2048, temperature: 0.2 },
+        }),
+      }
+    );
+    const data = await res.json();
+    if (data.error) throw new Error(data.error.message);
+    return data.candidates?.[0]?.content?.parts?.[0]?.text?.replace(/```json|```/g, "").trim() || "";
   };
 
   const generateAI = async () => {
@@ -416,67 +474,46 @@ export default function SpiderResumeAI() {
       const isPDF = file.type === "application/pdf";
       const mediaType = file.type || "image/jpeg";
 
-      // Convert to base64
+      // Compress images before sending — large images exceed Groq token limits
       const base64 = await new Promise((res, rej) => {
         const reader = new FileReader();
-        reader.onload = () => res(reader.result.split(",")[1]);
+        reader.onload = (ev) => {
+          if (isPDF) {
+            // PDFs sent as-is (already base64)
+            res(ev.target.result.split(",")[1]);
+            return;
+          }
+          // Compress image using canvas — max 1024px, quality 0.7
+          const img = new Image();
+          img.onload = () => {
+            const MAX = 1024;
+            let { width, height } = img;
+            if (width > MAX || height > MAX) {
+              if (width > height) { height = Math.round(height * MAX / width); width = MAX; }
+              else { width = Math.round(width * MAX / height); height = MAX; }
+            }
+            const canvas = document.createElement("canvas");
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0, width, height);
+            const compressed = canvas.toDataURL("image/jpeg", 0.7);
+            res(compressed.split(",")[1]);
+          };
+          img.onerror = rej;
+          img.src = ev.target.result;
+        };
         reader.onerror = rej;
         reader.readAsDataURL(file);
       });
 
-      const extractPrompt = `You are a resume parser. Extract ALL information from this resume ${isPDF ? "document" : "image"} very carefully.
+      const extractPrompt = `Parse this resume ${isPDF ? "PDF" : "image"} and return ONLY valid JSON, no markdown, no explanation:
+{"name":"","email":"","phone":"","location":"","linkedin":"","summary":"write a 2-sentence professional summary","skills":"skill1,skill2,skill3","education":[{"degree":"","school":"","year":""}],"experience":[{"role":"","company":"","duration":"","desc":"2-3 sentence description of responsibilities and achievements"}]}
+Extract every visible detail. If a field is missing write empty string. Generate summary from their experience if not present.`;
 
-Return ONLY a valid JSON object with these exact fields. Extract every detail you can find:
-{
-  "name": "full name",
-  "email": "email address",
-  "phone": "phone number",
-  "location": "city and country",
-  "linkedin": "linkedin url if present",
-  "summary": "professional summary or objective, or generate one from their experience",
-  "skills": "comma-separated list of all skills found",
-  "education": [
-    { "degree": "degree name and field", "school": "institution name", "year": "graduation year or date range" }
-  ],
-  "experience": [
-    { "role": "job title", "company": "company name", "duration": "start - end dates", "desc": "job description and responsibilities" }
-  ]
-}
-
-Rules:
-- Extract EVERYTHING visible — do not skip any section
-- If summary is missing, write a short professional one based on their experience
-- Skills should be ALL technical and soft skills mentioned anywhere
-- Keep descriptions detailed
-- Return ONLY the JSON, no markdown, no explanation`;
-
-      // Use Groq vision API (llama-4-scout supports images + PDFs)
-      const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${apiKey}`
-        },
-        body: JSON.stringify({
-          model: "meta-llama/llama-4-scout-17b-16e-instruct",
-          max_tokens: 2000,
-          messages: [{
-            role: "user",
-            content: [
-              {
-                type: "image_url",
-                image_url: { url: `data:${mediaType};base64,${base64}` }
-              },
-              { type: "text", text: extractPrompt }
-            ]
-          }]
-        })
-      });
-
-      const data = await response.json();
-      if (data.error) throw new Error(data.error.message);
-
-      const rawText = data.choices?.[0]?.message?.content?.trim() || "";
+      // Always use Gemini for vision (image/PDF) — Groq has no vision support
+      const mimeType = isPDF ? "application/pdf" : "image/jpeg";
+      const rawText = await callVisionAI(base64, mimeType, extractPrompt);
       const jsonText = rawText.replace(/^```json\s*/i, "").replace(/^```\s*/i, "").replace(/```\s*$/i, "").trim();
       const parsed = JSON.parse(jsonText);
 
@@ -684,7 +721,7 @@ Rules:
 
         {/* Footer */}
         <div style={{ textAlign: "center", color: "rgba(180,160,135,0.4)", fontSize: "12px", paddingBottom: "40px" }}>
-          <p>🕷️ Spider Resume AI — Built with Groq AI</p>
+          <p>🕷️ Spider Resume AI — Built with Groq & Gemini AI</p>
           <p style={{ marginTop: "6px" }}>© 2026 ·{" "}
             <span onClick={() => setScreen("about")} style={{ cursor: "pointer", textDecoration: "underline", color: "rgba(201,169,110,0.6)" }}>About</span>
             {" · "}
@@ -849,7 +886,7 @@ Rules:
             <span style={{ fontSize: "10px", fontStyle: "italic", fontWeight: "600", background: `linear-gradient(135deg, ${theme.accent1}, ${theme.accent2})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>AI Resume Builder</span>
           </div>
           <span style={{ fontSize: "11px", color: textMuted, fontStyle: "italic", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-            Powered by <span style={{ fontWeight: "700", fontStyle: "normal", color: textSecondary }}>Groq AI</span> — {isGuest ? <span style={{color:"#e8a06e",fontStyle:"normal",fontWeight:"700"}}>Guest Mode — <span style={{cursor:"pointer",textDecoration:"underline"}} onClick={()=>setScreen("login")}>Login</span></span> : (isPro ? "Pro Plan ✦" : `${1 - (userData?.usageCount || 0)} free generate left today`)}
+            Powered by <span style={{ fontWeight: "700", fontStyle: "normal", color: textSecondary }}>Groq + Gemini AI</span> — {isGuest ? <span style={{color:"#e8a06e",fontStyle:"normal",fontWeight:"700"}}>Guest Mode — <span style={{cursor:"pointer",textDecoration:"underline"}} onClick={()=>setScreen("login")}>Login</span></span> : (isPro ? "Pro Plan ✦" : `${1 - (userData?.usageCount || 0)} free generate left today`)}
           </span>
         </div>
       </div>
