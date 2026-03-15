@@ -1245,7 +1245,7 @@ Rules:
       {page === "templates" && (
         <TemplatesPage callAI={callAI} form={form} setForm={setForm} setTemplate={setTemplate} setPage={setPage}
           glassCard={glassCard} glassBase={glassBase} glassBtn={glassBtn} glassInput={glassInput}
-          textPrimary={textPrimary} textSecondary={textSecondary} textMuted={textMuted} theme={theme} D={D} />
+          textPrimary={textPrimary} textSecondary={textSecondary} textMuted={textMuted} theme={theme} D={D} isPro={isPro} />
       )}
 
       {/* JOBS */}
