@@ -168,6 +168,7 @@ export default function SpiderResumeAI() {
   const [page, setPage] = useState("builder");
   const [loading, setLoading] = useState(false);
   const [template, setTemplate] = useState("Classic");
+  const [appliedTemplateHtml, setAppliedTemplateHtml] = useState(null); // null = use default preview
   const [form, setForm] = useState({ name: "", email: "", phone: "", location: "", linkedin: "", summary: "", education: [{ degree: "", school: "", year: "" }], experience: [{ role: "", company: "", duration: "", desc: "" }], skills: "", photo: "" });
   const [aiGenerated, setAiGenerated] = useState(false);
   const [scoreLoading, setScoreLoading] = useState(false);
@@ -1058,57 +1059,77 @@ Rules:
 
       {/* PREVIEW */}
       {page === "preview" && (
-        <div style={{ maxWidth: "620px", margin: "0 auto", padding: "28px 16px", position: "relative", zIndex: 1 }}>
-          <div id="resume-printable" style={{ ...glassCard, padding: "40px 36px" }}>
-            <div style={{ marginBottom: "28px", borderBottom: `1px solid ${theme.accent1}33`, paddingBottom: "20px", display: "flex", alignItems: "flex-start", gap: "20px" }}>
-              {form.photo && (
-                <img src={form.photo} alt="Profile" style={{ width: "80px", height: "80px", borderRadius: "50%", objectFit: "cover", flexShrink: 0, border: `2px solid ${theme.accent1}44` }} />
-              )}
-              <div style={{ flex: 1 }}>
-                <h1 style={{ fontSize: "28px", fontWeight: "700", color: textPrimary, letterSpacing: "-0.5px", marginBottom: "6px" }}>{form.name || "Your Name"}</h1>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: "14px", fontSize: "12px", color: textSecondary }}>
-                  {form.email && <span>✉ {form.email}</span>}
-                  {form.phone && <span>📞 {form.phone}</span>}
-                  {form.location && <span>📍 {form.location}</span>}
-                  {form.linkedin && <span>🔗 {form.linkedin}</span>}
-                </div>
-              </div>
+        <div style={{ maxWidth: "720px", margin: "0 auto", padding: "28px 16px", position: "relative", zIndex: 1 }}>
+
+          {/* Template indicator + clear */}
+          {appliedTemplateHtml && (
+            <div style={{ ...glassCard, padding: "10px 18px", marginBottom: 12, display: "flex", alignItems: "center", justifyContent: "space-between", background: D ? "rgba(76,175,125,0.08)" : "rgba(76,175,125,0.06)", border: "1px solid rgba(76,175,125,0.25)" }}>
+              <span style={{ fontSize: 13, color: D ? "#7dcfa0" : "#2e7d52", fontWeight: 600 }}>✅ Custom template applied</span>
+              <button onClick={() => setAppliedTemplateHtml(null)} style={{ ...glassBtn, padding: "5px 12px", fontSize: 12, color: textMuted, borderRadius: 10, cursor: "pointer" }}>✕ Use default</button>
             </div>
-            {form.summary && <div style={{ marginBottom: "22px" }}><h2 style={{ fontSize: "9px", fontWeight: "700", letterSpacing: "0.14em", textTransform: "uppercase", color: theme.accent1, marginBottom: "8px" }}>Summary</h2><p style={{ fontSize: "13px", color: textPrimary, lineHeight: "1.7" }}>{form.summary}</p></div>}
-            {form.experience.some(e => e.role) && (
-              <div style={{ marginBottom: "22px" }}>
-                <h2 style={{ fontSize: "9px", fontWeight: "700", letterSpacing: "0.14em", textTransform: "uppercase", color: theme.accent1, marginBottom: "10px" }}>Experience</h2>
-                {form.experience.filter(e => e.role).map((e, i) => (
-                  <div key={i} style={{ marginBottom: "14px" }}>
-                    <div style={{ display: "flex", justifyContent: "space-between" }}>
-                      <p style={{ fontSize: "13px", fontWeight: "600", color: textPrimary }}>{e.role}{e.company && <span style={{ color: textSecondary, fontWeight: "400" }}> · {e.company}</span>}</p>
-                      <p style={{ fontSize: "11px", color: textMuted }}>{e.duration}</p>
+          )}
+
+          {/* Resume output */}
+          <div id="resume-printable" style={{ background: "#fff", borderRadius: 20, overflow: "hidden", boxShadow: D ? "0 8px 40px rgba(0,0,0,0.4)" : "0 8px 40px rgba(0,0,0,0.12)" }}>
+            {appliedTemplateHtml ? (
+              // Render the chosen template HTML with user's real data
+              <div dangerouslySetInnerHTML={{ __html: appliedTemplateHtml }} />
+            ) : (
+              // Default clean preview
+              <div style={{ padding: "40px 36px", fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif", color: "#1a1612" }}>
+                <div style={{ marginBottom: "28px", borderBottom: "2px solid #e8e0d0", paddingBottom: "20px", display: "flex", alignItems: "flex-start", gap: "20px" }}>
+                  {form.photo && (
+                    <img src={form.photo} alt="Profile" style={{ width: "80px", height: "80px", borderRadius: "50%", objectFit: "cover", flexShrink: 0, border: "2px solid #e8d8a0" }} />
+                  )}
+                  <div style={{ flex: 1 }}>
+                    <h1 style={{ fontSize: "28px", fontWeight: "700", color: "#1a1612", letterSpacing: "-0.5px", marginBottom: "6px" }}>{form.name || "Your Name"}</h1>
+                    {form.experience?.[0]?.role && <p style={{ fontSize: "14px", color: "#888", margin: "0 0 8px", fontWeight: 400 }}>{form.experience[0].role}{form.experience[0].company ? ` · ${form.experience[0].company}` : ""}</p>}
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: "14px", fontSize: "12px", color: "#666" }}>
+                      {form.email && <span>✉ {form.email}</span>}
+                      {form.phone && <span>📞 {form.phone}</span>}
+                      {form.location && <span>📍 {form.location}</span>}
+                      {form.linkedin && <span>🔗 {form.linkedin}</span>}
                     </div>
-                    {e.desc && <p style={{ fontSize: "12px", color: textSecondary, lineHeight: "1.65", marginTop: "4px" }}>{e.desc}</p>}
                   </div>
-                ))}
-              </div>
-            )}
-            {form.education.some(e => e.degree) && (
-              <div style={{ marginBottom: "22px" }}>
-                <h2 style={{ fontSize: "9px", fontWeight: "700", letterSpacing: "0.14em", textTransform: "uppercase", color: theme.accent1, marginBottom: "10px" }}>Education</h2>
-                {form.education.filter(e => e.degree).map((e, i) => (
-                  <div key={i} style={{ display: "flex", justifyContent: "space-between", marginBottom: "6px" }}>
-                    <p style={{ fontSize: "13px", color: textPrimary }}>{e.degree}{e.school && <span style={{ color: textSecondary }}> — {e.school}</span>}</p>
-                    <p style={{ fontSize: "11px", color: textMuted }}>{e.year}</p>
-                  </div>
-                ))}
-              </div>
-            )}
-            {form.skills && (
-              <div>
-                <h2 style={{ fontSize: "9px", fontWeight: "700", letterSpacing: "0.14em", textTransform: "uppercase", color: theme.accent1, marginBottom: "10px" }}>Skills</h2>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
-                  {form.skills.split(",").map((s, i) => <span key={i} style={{ ...glassBtn, padding: "4px 14px", fontSize: "12px", fontWeight: "500", color: textSecondary, cursor: "default" }}>{s.trim()}</span>)}
                 </div>
+                {form.summary && <div style={{ marginBottom: "22px" }}><h2 style={{ fontSize: "9px", fontWeight: "700", letterSpacing: "0.14em", textTransform: "uppercase", color: "#c9a96e", marginBottom: "8px" }}>Summary</h2><p style={{ fontSize: "13px", color: "#333", lineHeight: "1.7", margin: 0 }}>{form.summary}</p></div>}
+                {form.experience?.some(e => e.role) && (
+                  <div style={{ marginBottom: "22px" }}>
+                    <h2 style={{ fontSize: "9px", fontWeight: "700", letterSpacing: "0.14em", textTransform: "uppercase", color: "#c9a96e", marginBottom: "10px" }}>Experience</h2>
+                    {form.experience.filter(e => e.role).map((e, i) => (
+                      <div key={i} style={{ marginBottom: "14px" }}>
+                        <div style={{ display: "flex", justifyContent: "space-between" }}>
+                          <p style={{ fontSize: "13px", fontWeight: "600", color: "#1a1612", margin: 0 }}>{e.role}{e.company && <span style={{ color: "#666", fontWeight: "400" }}> · {e.company}</span>}</p>
+                          <p style={{ fontSize: "11px", color: "#aaa", margin: 0 }}>{e.duration}</p>
+                        </div>
+                        {e.desc && <p style={{ fontSize: "12px", color: "#555", lineHeight: "1.65", marginTop: "4px", marginBottom: 0 }}>{e.desc}</p>}
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {form.education?.some(e => e.degree) && (
+                  <div style={{ marginBottom: "22px" }}>
+                    <h2 style={{ fontSize: "9px", fontWeight: "700", letterSpacing: "0.14em", textTransform: "uppercase", color: "#c9a96e", marginBottom: "10px" }}>Education</h2>
+                    {form.education.filter(e => e.degree).map((e, i) => (
+                      <div key={i} style={{ display: "flex", justifyContent: "space-between", marginBottom: "6px" }}>
+                        <p style={{ fontSize: "13px", color: "#1a1612", margin: 0 }}>{e.degree}{e.school && <span style={{ color: "#666" }}> — {e.school}</span>}</p>
+                        <p style={{ fontSize: "11px", color: "#aaa", margin: 0 }}>{e.year}</p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {form.skills && (
+                  <div>
+                    <h2 style={{ fontSize: "9px", fontWeight: "700", letterSpacing: "0.14em", textTransform: "uppercase", color: "#c9a96e", marginBottom: "10px" }}>Skills</h2>
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+                      {form.skills.split(",").map((s, i) => <span key={i} style={{ background: "#f5f0e8", border: "1px solid #e8d8a0", padding: "4px 14px", borderRadius: "6px", fontSize: "12px", color: "#666" }}>{s.trim()}</span>)}
+                    </div>
+                  </div>
+                )}
               </div>
             )}
           </div>
+
           <DownloadResume form={form} glassCard={glassCard} glassBase={glassBase} glassBtn={glassBtn} textPrimary={textPrimary} textSecondary={textSecondary} textMuted={textMuted} theme={theme} D={D} />
           {!isPro && <button onClick={() => setPage("upgrade")} style={{ ...glassBtn, width: "100%", padding: "13px", fontSize: "14px", marginTop: "10px", color: textSecondary, borderRadius: "16px" }}>✦ Remove Ads & Unlock Pro Templates</button>}
         </div>
@@ -1285,6 +1306,7 @@ Rules:
       {/* TEMPLATES */}
       {page === "templates" && (
         <TemplatesPage callAI={callAI} form={form} setForm={setForm} setTemplate={setTemplate} setPage={setPage}
+          setAppliedTemplateHtml={setAppliedTemplateHtml}
           glassCard={glassCard} glassBase={glassBase} glassBtn={glassBtn} glassInput={glassInput}
           textPrimary={textPrimary} textSecondary={textSecondary} textMuted={textMuted} theme={theme} D={D} isPro={isPro} />
       )}

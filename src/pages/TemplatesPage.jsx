@@ -76,7 +76,7 @@ async function setLastGen() {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-export default function TemplatesPage({ callAI, form, setPage, glassCard, glassBase, glassBtn, glassInput, textPrimary, textSecondary, textMuted, theme, D, isPro }) {
+export default function TemplatesPage({ callAI, form, setPage, setAppliedTemplateHtml, glassCard, glassBase, glassBtn, glassInput, textPrimary, textSecondary, textMuted, theme, D, isPro }) {
   const [templates, setTemplates] = useState([]);
   const [selected, setSelected] = useState(null);
   const [previewHtml, setPreviewHtml] = useState("");
@@ -294,7 +294,7 @@ Return ONLY the complete modified HTML starting with <div. Keep all {{PLACEHOLDE
                   </div>
                   <div style={{ display:"flex", gap:6, marginTop:"auto" }}>
                     <button onClick={()=>openPreview(tpl)} style={{ ...glassBtn, flex:1, padding:"7px", fontSize:12, color:textSecondary, borderRadius:10, cursor:"pointer" }}>👁 Preview</button>
-                    <button onClick={()=>{ if(!isPro){setPage("upgrade");return;} openPreview(tpl); }} style={{ ...glassBtn, flex:1, padding:"7px", fontSize:12, fontWeight:700, background:isPro?accent:undefined, color:isPro?(D?"#1a1410":"#2d2520"):textMuted, borderRadius:10, border:"none", cursor:"pointer" }}>
+                    <button onClick={()=>{ if(!isPro){setPage("upgrade");return;} const realHtml = renderTpl(tpl, form); if(setAppliedTemplateHtml) setAppliedTemplateHtml(realHtml); setPage("preview"); notify("✅ Template applied!"); }} style={{ ...glassBtn, flex:1, padding:"7px", fontSize:12, fontWeight:700, background:isPro?accent:undefined, color:isPro?(D?"#1a1410":"#2d2520"):textMuted, borderRadius:10, border:"none", cursor:"pointer" }}>
                       {isPro ? "Use ✓" : "🔒 Pro"}
                     </button>
                   </div>
@@ -362,11 +362,12 @@ Return ONLY the complete modified HTML starting with <div. Keep all {{PLACEHOLDE
               {/* Use in Resume + format buttons */}
               <div style={{ display:"flex", gap:8, marginBottom:14, flexWrap:"wrap" }}>
                 <button onClick={() => {
-                  // Apply this template's rendered HTML as user's active resume
+                  // Render template with user's REAL data and apply to preview
+                  const realHtml = renderTpl(selected, form);
+                  if (setAppliedTemplateHtml) setAppliedTemplateHtml(realHtml);
                   setShowPreview(false);
-                  notify("✅ Template applied to your resume! Go to Preview tab to download.");
-                  // Store selected template id for preview page to use
-                  if (typeof window !== "undefined") window._activeResumeTemplate = selected;
+                  setPage("preview");
+                  notify("✅ Template applied! Opening Preview...");
                 }} style={{ flex:1, padding:"10px 14px", borderRadius:12, border:`1.5px solid ${theme.accent1}`, background:`${theme.accent1}18`, color:theme.accent1, fontSize:13, fontWeight:700, cursor:"pointer" }}>
                   ✓ Use in Resume
                 </button>
