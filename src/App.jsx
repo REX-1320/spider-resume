@@ -10,7 +10,14 @@ import {
 import PrivacyPolicy from "./PrivacyPolicy";
 import Terms from "./Terms";
 import About from "./About";
-
+import AIExtras from "./components/AIExtras";
+import ChatPage from "./pages/ChatPage";
+import TemplatesPage from "./pages/TemplatesPage";
+import JobsPage from "./pages/JobsPage";
+import CoverPage from "./pages/CoverPage";
+import InterviewPage from "./pages/InterviewPage";
+import TrackerPage from "./pages/TrackerPage";
+import LinkedInPage from "./pages/LinkedInPage";
 const DESKTOP_STYLE = `
 @media (min-width: 860px) {
   .desktop-preview { display: block !important; }
@@ -812,7 +819,19 @@ Rules:
             {isPro && <span style={{ fontSize: "9px", fontWeight: "800", padding: "2px 6px", borderRadius: "10px", background: `linear-gradient(135deg, ${theme.accent1}, ${theme.accent2})`, color: D ? "#1a1410" : "#fff", flexShrink: 0 }}>PRO</span>}
           </div>
           <div style={{ display: "flex", gap: "3px", alignItems: "center", flexWrap: "nowrap", overflowX: "auto", flexShrink: 1 }}>
-            {[{key:"builder",icon:"✏️",label:"Build"},{key:"preview",icon:"👁",label:"Preview"},{key:"score",icon:"🎯",label:"Score"},{key:"account",icon:"👤",label:""}].map(({key,icon,label}) => (
+            {[
+              {key:"builder",icon:"✏️",label:"Build"},
+              {key:"chat",icon:"🤖",label:"AI Chat"},
+              {key:"templates",icon:"🎨",label:"Templates"},
+              {key:"jobs",icon:"🎯",label:"Jobs"},
+              {key:"cover",icon:"📝",label:"Cover"},
+              {key:"interview",icon:"🎤",label:"Interview"},
+              {key:"tracker",icon:"📊",label:"Tracker"},
+              {key:"linkedin",icon:"💼",label:"LinkedIn"},
+              {key:"preview",icon:"👁",label:"Preview"},
+              {key:"score",icon:"🔍",label:"Score"},
+              {key:"account",icon:"👤",label:""}
+            ].map(({key,icon,label}) => (
               <button key={key} onClick={() => setPage(key)} style={{ ...glassBtn, padding: "5px 8px", fontSize: "11px", color: page === key ? textPrimary : textSecondary, background: page === key ? (D ? "rgba(255,255,255,0.14)" : "rgba(255,255,255,0.55)") : (D ? "rgba(255,255,255,0.05)" : "rgba(255,255,255,0.15)"), whiteSpace: "nowrap", flexShrink: 0 }}>
                 {icon}{label ? " " + label : ""}
               </button>
@@ -928,7 +947,22 @@ Rules:
               <p style={{ fontSize: "12px", color: textSecondary }}>Upgrade to Pro for unlimited AI generates</p>
             </div>
           )}
-
+          <AIExtras
+            page={page}
+            setPage={setPage}
+            callAI={callAI}
+            form={form}
+            setForm={setForm}
+            glassCard={glassCard}
+            glassBase={glassBase}
+            glassBtn={glassBtn}
+            glassInput={glassInput}
+            textPrimary={textPrimary}
+            textSecondary={textSecondary}
+            textMuted={textMuted}
+            theme={theme}
+            D={D}
+          />
           {!isPro && <AdBanner isDark={D} />}
 
           <button onClick={generateAI} disabled={loading} style={{ ...glassBtn, width: "100%", padding: "14px", fontSize: "15px", marginBottom: "10px", background: loading ? (D ? "rgba(255,255,255,0.05)" : "rgba(200,200,200,0.2)") : `linear-gradient(135deg, ${theme.accent1}cc, ${theme.accent2}bb)`, color: loading ? textMuted : (D ? "#1a1410" : "#2d2520"), borderRadius: "16px" }}>
@@ -953,6 +987,22 @@ Rules:
           <button onClick={analyzeResume} disabled={scoreLoading} style={{ ...glassBtn, width: "100%", padding: "13px", fontSize: "14px", borderRadius: "16px", background: scoreLoading ? "transparent" : (D ? "rgba(255,80,80,0.15)" : "rgba(180,30,30,0.08)"), color: scoreLoading ? textMuted : (D ? "#ff9999" : "#8b1a1a"), border: `1px solid ${D ? "rgba(255,100,100,0.2)" : "rgba(180,30,30,0.15)"}` }}>
             {scoreLoading ? "🔍 Analyzing..." : "🎯 Check Resume Score & ATS"}
           </button>
+          <AIExtras
+            page={page}
+            setPage={setPage}
+            callAI={callAI}
+            form={form}
+            setForm={setForm}
+            glassCard={glassCard}
+            glassBase={glassBase}
+            glassBtn={glassBtn}
+            glassInput={glassInput}
+            textPrimary={textPrimary}
+            textSecondary={textSecondary}
+            textMuted={textMuted}
+            theme={theme}
+            D={D}
+          />
           {!isPro && <AdBanner isDark={D} />}
         </div>
         {/* Desktop right panel - live preview */}
@@ -1183,6 +1233,56 @@ Rules:
         </div>
       )}
 
+
+      {/* AI CHAT */}
+      {page === "chat" && (
+        <ChatPage callAI={callAI} setForm={setForm} setPage={setPage}
+          glassCard={glassCard} glassBase={glassBase} glassBtn={glassBtn} glassInput={glassInput}
+          textPrimary={textPrimary} textSecondary={textSecondary} textMuted={textMuted} theme={theme} D={D} />
+      )}
+
+      {/* TEMPLATES */}
+      {page === "templates" && (
+        <TemplatesPage callAI={callAI} form={form} setForm={setForm} setTemplate={setTemplate} setPage={setPage}
+          glassCard={glassCard} glassBase={glassBase} glassBtn={glassBtn} glassInput={glassInput}
+          textPrimary={textPrimary} textSecondary={textSecondary} textMuted={textMuted} theme={theme} D={D} />
+      )}
+
+      {/* JOBS */}
+      {page === "jobs" && (
+        <JobsPage callAI={callAI} form={form}
+          glassCard={glassCard} glassBase={glassBase} glassBtn={glassBtn} glassInput={glassInput}
+          textPrimary={textPrimary} textSecondary={textSecondary} textMuted={textMuted} theme={theme} D={D} />
+      )}
+
+      {/* COVER LETTER */}
+      {page === "cover" && (
+        <CoverPage callAI={callAI} form={form}
+          glassCard={glassCard} glassBase={glassBase} glassBtn={glassBtn} glassInput={glassInput}
+          textPrimary={textPrimary} textSecondary={textSecondary} textMuted={textMuted} theme={theme} D={D} />
+      )}
+
+      {/* INTERVIEW PREP */}
+      {page === "interview" && (
+        <InterviewPage callAI={callAI} form={form}
+          glassCard={glassCard} glassBase={glassBase} glassBtn={glassBtn} glassInput={glassInput}
+          textPrimary={textPrimary} textSecondary={textSecondary} textMuted={textMuted} theme={theme} D={D} />
+      )}
+
+      {/* JOB TRACKER */}
+      {page === "tracker" && (
+        <TrackerPage
+          glassCard={glassCard} glassBase={glassBase} glassBtn={glassBtn} glassInput={glassInput}
+          textPrimary={textPrimary} textSecondary={textSecondary} textMuted={textMuted} theme={theme} D={D} />
+      )}
+
+      {/* LINKEDIN OPTIMIZER */}
+      {page === "linkedin" && (
+        <LinkedInPage callAI={callAI} form={form}
+          glassCard={glassCard} glassBase={glassBase} glassBtn={glassBtn} glassInput={glassInput}
+          textPrimary={textPrimary} textSecondary={textSecondary} textMuted={textMuted} theme={theme} D={D} />
+      )}
+
       {/* UPGRADE */}
       {page === "upgrade" && (
         <div style={{ maxWidth: "440px", margin: "0 auto", padding: "48px 16px", textAlign: "center", position: "relative", zIndex: 1 }}>
@@ -1218,8 +1318,7 @@ Rules:
 
           <button onClick={() => setPage("builder")} style={{ background: "none", border: "none", cursor: "pointer", color: textMuted, fontSize: "13px" }}>← Back to builder</button>
         </div>
-      )}
-
+      )} 
       {!isPro && <AdBanner isDark={D} />}
     </div>
   );
