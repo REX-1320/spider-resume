@@ -486,7 +486,7 @@ export default function SpiderResumeAI() {
           // Compress image using canvas — max 1024px, quality 0.7
           const img = new Image();
           img.onload = () => {
-            const MAX = 1024;
+            const MAX = 1600;  // Higher resolution for better OCR
             let { width, height } = img;
             if (width > MAX || height > MAX) {
               if (width > height) { height = Math.round(height * MAX / width); width = MAX; }
@@ -497,7 +497,7 @@ export default function SpiderResumeAI() {
             canvas.height = height;
             const ctx = canvas.getContext("2d");
             ctx.drawImage(img, 0, 0, width, height);
-            const compressed = canvas.toDataURL("image/jpeg", 0.7);
+            const compressed = canvas.toDataURL("image/jpeg", 0.92); // Higher quality
             res(compressed.split(",")[1]);
           };
           img.onerror = rej;
@@ -514,7 +514,18 @@ Extract every visible detail. If a field is missing write empty string. Generate
       // Always use Gemini for vision (image/PDF) — Groq has no vision support
       const mimeType = isPDF ? "application/pdf" : "image/jpeg";
       const rawText = await callVisionAI(base64, mimeType, extractPrompt);
-      const jsonText = rawText.replace(/^```json\s*/i, "").replace(/^```\s*/i, "").replace(/```\s*$/i, "").trim();
+
+      // Robust JSON extraction — handles various Gemini response formats
+      let jsonText = rawText.trim();
+      // Strip markdown code fences
+      jsonText = jsonText.replace(/^```json\s*/i, "").replace(/^```\s*/i, "").replace(/```\s*$/i, "").trim();
+      // If response contains JSON somewhere, extract it
+      const jsonStart = jsonText.indexOf("{");
+      const jsonEnd = jsonText.lastIndexOf("}");
+      if (jsonStart !== -1 && jsonEnd !== -1 && jsonEnd > jsonStart) {
+        jsonText = jsonText.substring(jsonStart, jsonEnd + 1);
+      }
+      if (!jsonText || jsonText.length < 10) throw new Error("AI returned empty response — try a higher quality image.");
       const parsed = JSON.parse(jsonText);
 
       // Fill form fields — always prefer extracted over empty
@@ -532,7 +543,21 @@ Extract every visible detail. If a field is missing write empty string. Generate
       setFileImportDone(true);
     } catch (err) {
       console.error("Import error:", err);
-      setFileImportError("❌ Could not read file — try a clearer scan or text-based PDF.");
+      // Show the actual error so user knows what's happening
+      const msg = err.message || "";
+      if (msg.includes("Gemini key") || msg.includes("VITE_GEMINI")) {
+        setFileImportError("❌ Gemini API key missing — add VITE_GEMINI_KEY in Vercel settings.");
+      } else if (msg.includes("API key") || msg.includes("401") || msg.includes("403")) {
+        setFileImportError("❌ Invalid Gemini API key — check VITE_GEMINI_KEY in Vercel settings.");
+      } else if (msg.includes("JSON") || msg.includes("parse") || msg.includes("Unexpected")) {
+        setFileImportError("❌ AI couldn't extract resume data — try a clearer image or text-based PDF.");
+      } else if (msg.includes("quota") || msg.includes("429") || msg.includes("limit")) {
+        setFileImportError("❌ API rate limit hit — wait a minute and try again.");
+      } else if (!msg) {
+        setFileImportError("❌ Upload failed — check your internet connection and try again.");
+      } else {
+        setFileImportError(`❌ ${msg}`);
+      }
     }
     setFileImporting(false);
     e.target.value = "";
