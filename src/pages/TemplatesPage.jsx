@@ -11,7 +11,7 @@ import {
 const STARTERS = [
   {
     id:"classic-clean", name:"Classic Clean", style:"Classic", tags:["professional","ats-friendly"],
-    render:(d)=>`<div style="font-family:'Georgia',serif;max-width:720px;margin:0 auto;padding:40px;color:#222;background:#fff;line-height:1.6"><div style="border-bottom:2px solid #222;padding-bottom:16px;margin-bottom:24px"><h1 style="font-size:28px;margin:0 0 6px">${d.name||"Your Name"}</h1><div style="font-size:13px;color:#555;display:flex;flex-wrap:wrap;gap:16px">${d.email?`<span>✉ ${d.email}</span>`:""}${d.phone?`<span>📞 ${d.phone}</span>`:""}${d.location?`<span>📍 ${d.location}</span>`:""}</div></div>${d.summary?`<div style="margin-bottom:20px"><h2 style="font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:#666;margin:0 0 8px;border-bottom:1px solid #ddd;padding-bottom:4px">SUMMARY</h2><p style="font-size:14px;color:#333;margin:0">${d.summary}</p></div>`:""}${d.experience?.some(e=>e.role)?`<div style="margin-bottom:20px"><h2 style="font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:#666;margin:0 0 12px;border-bottom:1px solid #ddd;padding-bottom:4px">EXPERIENCE</h2>${d.experience.filter(e=>e.role).map(e=>`<div style="margin-bottom:14px"><div style="display:flex;justify-content:space-between"><strong>${e.role}</strong><span style="font-size:12px;color:#888">${e.duration||""}</span></div><div style="font-size:13px;color:#666">${e.company||""}</div>${e.desc?`<p style="font-size:13px;color:#444;margin:4px 0 0">${e.desc}</p>`:""}</div>`).join("")}</div>`:""}${d.education?.some(e=>e.degree)?`<div style="margin-bottom:20px"><h2 style="font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:#666;margin:0 0 10px;border-bottom:1px solid #ddd;padding-bottom:4px">EDUCATION</h2>${d.education.filter(e=>e.degree).map(e=>`<div style="display:flex;justify-content:space-between;margin-bottom:6px"><span><strong>${e.degree}</strong>${e.school?` — ${e.school}`:""}</span><span style="font-size:12px;color:#888">${e.year||""}</span></div>`).join("")}</div>`:""}${d.skills?`<div><h2 style="font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:#666;margin:0 0 10px;border-bottom:1px solid #ddd;padding-bottom:4px">SKILLS</h2><div style="display:flex;flex-wrap:wrap;gap:8px">${d.skills.split(",").map(s=>`<span style="background:#f0f0f0;padding:4px 12px;border-radius:4px;font-size:12px">${s.trim()}</span>`).join("")}</div></div>`:""}</div>`
+    render:(d)=>`<div style="font-family:'Georgia',serif;max-width:720px;margin:0 auto;padding:40px;color:#222;background:#fff;line-height:1.6"><div style="border-bottom:2px solid #222;padding-bottom:16px;margin-bottom:24px;display:flex;align-items:center;gap:20px">${d.photo?`<img src="${d.photo}" alt="Profile" style="width:80px;height:80px;border-radius:50%;object-fit:cover;flex-shrink:0;border:2px solid #ddd" />`:`<div style="width:80px;height:80px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;color:#999;flex-shrink:0">${(d.name||"?")[0].toUpperCase()}</div>`}<div><h1 style="font-size:28px;margin:0 0 6px">${d.name||"Your Name"}</h1><div style="font-size:13px;color:#555;display:flex;flex-wrap:wrap;gap:16px">${d.email?`<span>✉ ${d.email}</span>`:""}${d.phone?`<span>📞 ${d.phone}</span>`:""}${d.location?`<span>📍 ${d.location}</span>`:""}</div></div></div>${d.summary?`<div style="margin-bottom:20px"><h2 style="font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:#666;margin:0 0 8px;border-bottom:1px solid #ddd;padding-bottom:4px">SUMMARY</h2><p style="font-size:14px;color:#333;margin:0">${d.summary}</p></div>`:""}${d.experience?.some(e=>e.role)?`<div style="margin-bottom:20px"><h2 style="font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:#666;margin:0 0 12px;border-bottom:1px solid #ddd;padding-bottom:4px">EXPERIENCE</h2>${d.experience.filter(e=>e.role).map(e=>`<div style="margin-bottom:14px"><div style="display:flex;justify-content:space-between"><strong>${e.role}</strong><span style="font-size:12px;color:#888">${e.duration||""}</span></div><div style="font-size:13px;color:#666">${e.company||""}</div>${e.desc?`<p style="font-size:13px;color:#444;margin:4px 0 0">${e.desc}</p>`:""}</div>`).join("")}</div>`:""}${d.education?.some(e=>e.degree)?`<div style="margin-bottom:20px"><h2 style="font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:#666;margin:0 0 10px;border-bottom:1px solid #ddd;padding-bottom:4px">EDUCATION</h2>${d.education.filter(e=>e.degree).map(e=>`<div style="display:flex;justify-content:space-between;margin-bottom:6px"><span><strong>${e.degree}</strong>${e.school?` — ${e.school}`:""}</span><span style="font-size:12px;color:#888">${e.year||""}</span></div>`).join("")}</div>`:""}${d.skills?`<div><h2 style="font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:#666;margin:0 0 10px;border-bottom:1px solid #ddd;padding-bottom:4px">SKILLS</h2><div style="display:flex;flex-wrap:wrap;gap:8px">${d.skills.split(",").map(s=>`<span style="background:#f0f0f0;padding:4px 12px;border-radius:4px;font-size:12px">${s.trim()}</span>`).join("")}</div></div>`:""}</div>`
   },
   {
     id:"modern-sidebar", name:"Modern Sidebar", style:"Modern", tags:["two-column","tech"],
@@ -149,24 +149,39 @@ TEMPLATE_HTML:
     setTimeout(checkHourly, 3600000);
   };
 
-  const renderTpl = (tpl) => {
+  // ── Random sample data for card previews so templates look filled ──────
+  const SAMPLES = [
+    { name:"Priya Sharma", email:"priya.sharma@gmail.com", phone:"+91 98765 43210", location:"Bangalore, India", linkedin:"linkedin.com/in/priyasharma", summary:"Full-stack developer with 4 years of experience building scalable web applications. Passionate about clean code and user-centric design. Led cross-functional teams at two high-growth startups.", skills:"React, Node.js, TypeScript, MongoDB, AWS, Docker, Figma, PostgreSQL", photo:"", education:[{degree:"B.Tech Computer Science",school:"IIT Delhi",year:"2020"}], experience:[{role:"Senior Frontend Engineer",company:"Razorpay",duration:"2022 – Present",desc:"Led development of the merchant dashboard serving 5M+ transactions monthly. Reduced load time by 40% through code splitting and lazy loading."},{role:"Software Engineer",company:"Freshworks",duration:"2020 – 2022",desc:"Built real-time customer support features using WebSockets. Collaborated with design to ship 12 product features in 18 months."}]},
+    { name:"Arjun Mehta", email:"arjun.mehta@outlook.com", phone:"+91 91234 56789", location:"Mumbai, India", linkedin:"linkedin.com/in/arjunmehta", summary:"Product Manager with 5+ years driving growth at B2B SaaS companies. Expert in agile methodologies, user research, and data-driven decision making. Previously grew ARR from ₹2Cr to ₹18Cr.", skills:"Product Strategy, Roadmapping, SQL, Mixpanel, Jira, User Research, A/B Testing, Go-to-Market", photo:"", education:[{degree:"MBA Marketing",school:"IIM Ahmedabad",year:"2019"}], experience:[{role:"Senior Product Manager",company:"Zoho Corporation",duration:"2021 – Present",desc:"Owns the CRM mobile product with 2M+ active users. Launched 3 major feature releases that increased user retention by 28%."},{role:"Product Manager",company:"CleverTap",duration:"2019 – 2021",desc:"Defined product vision for push notification analytics. Coordinated with engineering and design to deliver quarterly OKRs."}]},
+    { name:"Sneha Reddy", email:"sneha.reddy@yahoo.com", phone:"+91 87654 32109", location:"Hyderabad, India", linkedin:"linkedin.com/in/snehareddy", summary:"UI/UX Designer specialising in mobile-first design systems. 3 years of experience creating intuitive digital experiences for fintech and healthtech products. Design thinking advocate.", skills:"Figma, Adobe XD, Sketch, Prototyping, User Testing, CSS, Motion Design, Design Systems", photo:"", education:[{degree:"B.Des Visual Communication",school:"NID Ahmedabad",year:"2021"}], experience:[{role:"Product Designer",company:"PhonePe",duration:"2022 – Present",desc:"Redesigned the payments onboarding flow reducing drop-off by 35%. Built and maintains the company's design system with 200+ components."},{role:"UX Designer",company:"Practo",duration:"2021 – 2022",desc:"Conducted 40+ user interviews to improve doctor consultation booking flow. Shipped redesigned appointment screen to 8M users."}]},
+    { name:"Rohan Kapoor", email:"rohan.kapoor@gmail.com", phone:"+91 99887 76655", location:"Delhi, India", linkedin:"linkedin.com/in/rohankapoor", summary:"Data Scientist with expertise in ML and NLP. 3 years building predictive models that directly impact business outcomes. Published researcher with 2 papers in IEEE.", skills:"Python, TensorFlow, PyTorch, SQL, Spark, Scikit-learn, NLP, Computer Vision, Tableau", photo:"", education:[{degree:"M.Tech Data Science",school:"IIT Bombay",year:"2021"}], experience:[{role:"Data Scientist",company:"Flipkart",duration:"2021 – Present",desc:"Built recommendation engine that increased average order value by 22%. Deployed real-time fraud detection model saving ₹4Cr annually."},{role:"ML Intern",company:"Microsoft Research",duration:"2020",desc:"Developed NLP pipeline for multilingual sentiment analysis across 8 Indian languages with 91% accuracy."}]},
+  ];
+
+  const getSampleData = (idx) => SAMPLES[idx % SAMPLES.length];
+
+  const renderTpl = (tpl, data = null) => {
+    const d = data || form;
     const starter = STARTERS.find(s => s.id === tpl.templateId);
-    if (starter) return starter.render(form);
+    if (starter) return starter.render(d);
     if (tpl.htmlTemplate) {
+      const photoHtml = d.photo ? `<img src="${d.photo}" alt="Profile" style="width:80px;height:80px;border-radius:50%;object-fit:cover;border:2px solid #ccc" />` : "";
       return tpl.htmlTemplate
-        .replace(/\{\{NAME\}\}/g, form.name || "Your Name")
-        .replace(/\{\{ROLE\}\}/g, form.experience?.[0]?.role || "Professional")
-        .replace(/\{\{EMAIL\}\}/g, form.email || "")
-        .replace(/\{\{PHONE\}\}/g, form.phone || "")
-        .replace(/\{\{LOCATION\}\}/g, form.location || "")
-        .replace(/\{\{SUMMARY\}\}/g, form.summary || "")
-        .replace(/\{\{SKILLS\}\}/g, form.skills || "")
-        .replace(/\{\{EXP_ITEMS\}\}/g, form.experience?.filter(e=>e.role).map(e=>`<div style="margin-bottom:10px"><strong>${e.role}</strong> at ${e.company||""} (${e.duration||""})<p style="margin:4px 0 0;font-size:12px">${e.desc||""}</p></div>`).join("") || "")
-        .replace(/\{\{EDU_ITEMS\}\}/g, form.education?.filter(e=>e.degree).map(e=>`<div><strong>${e.degree}</strong> — ${e.school||""} ${e.year?`(${e.year})`:""}</div>`).join("") || "");
+        .replace(/\{\{NAME\}\}/g, d.name || "Your Name")
+        .replace(/\{\{ROLE\}\}/g, d.experience?.[0]?.role || "Professional")
+        .replace(/\{\{EMAIL\}\}/g, d.email || "")
+        .replace(/\{\{PHONE\}\}/g, d.phone || "")
+        .replace(/\{\{LOCATION\}\}/g, d.location || "")
+        .replace(/\{\{SUMMARY\}\}/g, d.summary || "")
+        .replace(/\{\{SKILLS\}\}/g, d.skills || "")
+        .replace(/\{\{PHOTO\}\}/g, photoHtml)
+        .replace(/\{\{EXP_ITEMS\}\}/g, d.experience?.filter(e=>e.role).map(e=>`<div style="margin-bottom:10px"><strong>${e.role}</strong> at ${e.company||""} (${e.duration||""})<p style="margin:4px 0 0;font-size:12px">${e.desc||""}</p></div>`).join("") || "")
+        .replace(/\{\{EDU_ITEMS\}\}/g, d.education?.filter(e=>e.degree).map(e=>`<div><strong>${e.degree}</strong> — ${e.school||""} ${e.year?`(${e.year})`:""}</div>`).join("") || "");
     }
     return `<div style="padding:40px;text-align:center;color:#888">Preview not available</div>`;
   };
 
+  // Card preview uses random sample data; full modal uses real user data
+  const renderCard = (tpl, idx) => renderTpl(tpl, getSampleData(idx));
   const openPreview = (tpl) => { setSelected(tpl); setPreviewHtml(renderTpl(tpl)); setShowPreview(true); };
 
   const genCustom = async () => {
@@ -263,7 +278,7 @@ Return ONLY the complete modified HTML starting with <div. Keep all {{PLACEHOLDE
                 {/* Mini preview */}
                 <div style={{ height:155, overflow:"hidden", cursor:"pointer", background:"#fff", position:"relative", borderRadius:"20px 20px 0 0" }} onClick={()=>openPreview(tpl)}>
                   <div style={{ transform:"scale(0.33)", transformOrigin:"top left", width:"303%", pointerEvents:"none" }}>
-                    <div dangerouslySetInnerHTML={{ __html: renderTpl(tpl) }} />
+                    <div dangerouslySetInnerHTML={{ __html: renderCard(tpl, idx) }} />
                   </div>
                   <div style={{ position:"absolute", inset:0, background:"transparent" }} />
                   <div style={{ position:"absolute", bottom:8, right:8, background:"rgba(0,0,0,0.55)", color:"#fff", fontSize:10, padding:"3px 8px", borderRadius:6, fontWeight:600 }}>👁 View</div>
