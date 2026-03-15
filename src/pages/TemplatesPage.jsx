@@ -1,4 +1,4 @@
-// src/pages/TemplatesPage.jsx — AI Template Generator (20 templates, regenerate, custom prompt)
+// src/pages/TemplatesPage.jsx — AI Template Generator (10 templates, regenerate, custom prompt)
 import { useState } from "react";
 
 const TEMPLATE_STYLES = [
@@ -37,17 +37,17 @@ export default function TemplatesPage({ callAI, form, setForm, setTemplate, setP
     const extra = customPrompt ? `User's specific request: "${customPrompt}"` : "";
 
     try {
-      const raw = await callAI(`Generate exactly 20 unique resume template designs for ${person}, a ${role}${edu ? ` with ${edu}` : ""}, skilled in ${skills}.
+      const raw = await callAI(`Generate exactly 10 unique resume template designs for ${person}, a ${role}${edu ? ` with ${edu}` : ""}, skilled in ${skills}.
 Style focus: ${styleNote}. ${extra}
 This is generation #${genCount + 1} — make these DIFFERENT from any previous generation. Be creative and varied.
 
-Return ONLY a valid JSON array of exactly 20 objects. No markdown, no explanation:
+Return ONLY a valid JSON array of exactly 10 objects. No markdown, no explanation:
 [{"id":1,"name":"Template name (2-4 words)","style":"Modern|Minimal|Premium|Luxury|Bold|Classic|Creative|Tech|Executive|Fresher","vibe":"One punchy sentence describing its feel","accent":"#hexcolor","layout":"Single column|Two column|Sidebar|Header-focused|Skills-first","font":"Font pairing suggestion","bestFor":"Specific role/industry","colorScheme":"brief color description","summary":"Custom 1-2 sentence professional summary for this person in this template's voice"}]
 Make each genuinely different. Vary styles, colors, layouts, tones. Use real hex colors. Be specific about who each template suits.`);
 
       const cleaned = raw.replace(/```json|```/g, "").trim();
       const parsed = JSON.parse(cleaned);
-      setTemplates(Array.isArray(parsed) ? parsed.slice(0, 20) : []);
+      setTemplates(Array.isArray(parsed) ? parsed.slice(0, 10) : []);
       setGenCount(c => c + 1);
     } catch (e) {
       alert("Generation failed — please try again.");
@@ -72,7 +72,7 @@ Make each genuinely different. Vary styles, colors, layouts, tones. Use real hex
         <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
           <div>
             <p style={{ fontSize: 17, fontWeight: 800, color: textPrimary, margin: "0 0 4px" }}>🎨 AI Template Generator</p>
-            <p style={{ fontSize: 11, color: textMuted, margin: 0 }}>Generate 20 unique resume designs tailored to your profile</p>
+            <p style={{ fontSize: 11, color: textMuted, margin: 0 }}>Generate 10 unique resume designs tailored to your profile</p>
           </div>
           {genCount > 0 && (
             <span style={{ fontSize: 10, padding: "4px 10px", borderRadius: 10, background: `${theme.accent1}22`, color: theme.accent1, fontWeight: 700, border: `1px solid ${theme.accent1}44`, alignSelf: "flex-start" }}>
@@ -105,7 +105,7 @@ Make each genuinely different. Vary styles, colors, layouts, tones. Use real hex
         </div>
 
         <button onClick={generate} disabled={loading} style={{ ...glassBtn, width: "100%", padding: 13, fontSize: 14, fontWeight: 700, background: loading ? "transparent" : accent, color: loading ? textMuted : (D ? "#1a1410" : "#2d2520"), borderRadius: 14, cursor: loading ? "not-allowed" : "pointer", border: "none" }}>
-          {loading ? "✨ Generating 20 templates..." : genCount > 0 ? "🔄 Regenerate 20 New Templates" : "✨ Generate 20 Templates"}
+          {loading ? "✨ Generating 10 templates..." : genCount > 0 ? "🔄 Regenerate 10 New Templates" : "✨ Generate 10 Templates"}
         </button>
       </div>
 
@@ -126,16 +126,16 @@ Make each genuinely different. Vary styles, colors, layouts, tones. Use real hex
           <p style={{ fontSize: 44, marginBottom: 14 }}>🎨</p>
           <p style={{ fontSize: 15, fontWeight: 700, color: textPrimary, marginBottom: 8 }}>No templates yet</p>
           <p style={{ fontSize: 13, color: textSecondary, marginBottom: 22, lineHeight: 1.6 }}>
-            Choose a style focus, optionally describe what you want,<br />then hit Generate — AI creates 20 personalized designs.
+            Choose a style focus, optionally describe what you want,<br />then hit Generate — AI creates 10 personalized designs.
           </p>
-          <button onClick={generate} style={{ ...glassBtn, padding: "12px 28px", fontSize: 14, fontWeight: 700, background: accent, color: D ? "#1a1410" : "#2d2520", borderRadius: 14, border: "none" }}>✨ Generate 20 Templates</button>
+          <button onClick={generate} style={{ ...glassBtn, padding: "12px 28px", fontSize: 14, fontWeight: 700, background: accent, color: D ? "#1a1410" : "#2d2520", borderRadius: 14, border: "none" }}>✨ Generate 10 Templates</button>
         </div>
       )}
 
       {/* Loading skeleton */}
       {loading && (
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(200px,1fr))", gap: 12 }}>
-          {Array.from({ length: 20 }).map((_, i) => (
+          {Array.from({ length: 10 }).map((_, i) => (
             <div key={i} style={{ ...glassCard, padding: 18, minHeight: 160, opacity: 0.5 + (i % 3) * 0.1, animation: `tmplpulse 1.4s ease ${i * 0.04}s infinite` }}>
               <div style={{ height: 3, borderRadius: 3, background: D ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.08)", marginBottom: 12 }} />
               <div style={{ height: 10, width: "60%", borderRadius: 6, background: D ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.06)", marginBottom: 8 }} />
@@ -186,7 +186,7 @@ Make each genuinely different. Vary styles, colors, layouts, tones. Use real hex
       {/* Regenerate button at bottom */}
       {!loading && templates.length > 0 && (
         <button onClick={generate} style={{ ...glassBtn, width: "100%", padding: 13, fontSize: 14, fontWeight: 700, marginTop: 20, background: accent, color: D ? "#1a1410" : "#2d2520", borderRadius: 14, border: "none" }}>
-          🔄 Generate 20 New Templates
+          🔄 Generate 10 New Templates
         </button>
       )}
 
