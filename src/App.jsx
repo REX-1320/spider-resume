@@ -200,6 +200,22 @@ export default function SpiderResumeAI() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [themeMenuOpen]);
 
+  // Auth listener — MUST be here or app stays on loading screen forever
+  useEffect(() => {
+    if (!auth) { setAuthLoading(false); return; }
+    const unsub = onAuthStateChanged(auth, async (u) => {
+      setUser(u);
+      setAuthLoading(false);
+      if (u) {
+        await loadUserData(u.uid, u.email, u.displayName);
+        setScreen("app");
+      } else {
+        setScreen("landing");
+      }
+    });
+    return unsub;
+  }, []);
+
   const textPrimary = D ? "rgba(240,230,215,0.95)" : "#1a1612";
   const textSecondary = D ? "rgba(200,180,155,0.65)" : "rgba(100,80,60,0.6)";
   const textMuted = D ? "rgba(180,160,135,0.45)" : "rgba(150,120,100,0.5)";
@@ -213,6 +229,35 @@ export default function SpiderResumeAI() {
   const update = (f, v) => setForm(p => ({ ...p, [f]: v }));
   const updateEdu = (i, f, v) => { const a = [...form.education]; a[i][f] = v; setForm(p => ({ ...p, education: a })); };
   const updateExp = (i, f, v) => { const a = [...form.experience]; a[i][f] = v; setForm(p => ({ ...p, experience: a })); };
+
+  // Load or create user doc in Firestore
+  const loadUserData = async (uid, email, name) => {
+    if (!db) return;
+    const ref = doc(db, "users", uid);
+    const snap = await getDoc(ref);
+    const today = new Date().toDateString();
+    if (!snap.exists()) {
+      const newUser = { email, name: name || email, isPro: false, usageDate: today, usageCount: 0, createdAt: new Date().toISOString() };
+      await setDoc(ref, newUser);
+      setUserData(newUser); setIsPro(false);
+    } else {
+      const data = snap.data();
+      if (data.usageDate !== today) {
+        await updateDoc(ref, { usageDate: today, usageCount: 0 });
+        data.usageDate = today; data.usageCount = 0;
+      }
+      setUserData(data); setIsPro(data.isPro || false);
+    }
+  };
+
+  const incrementUsage = async () => {
+    if (!user || isGuest || !db) return;
+    const ref = doc(db, "users", user.uid);
+    await updateDoc(ref, { usageCount: increment(1) });
+    setUserData(p => ({ ...p, usageCount: (p?.usageCount || 0) + 1 }));
+  };
+
+  const canGenerate = () => isGuest ? false : (isPro || (userData?.usageCount || 0) < 1);
 
   // ── KEYS — edit these directly ──
   const geminiKey = import.meta.env.VITE_GEMINI_KEY || "";
