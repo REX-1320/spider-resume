@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { auth, db, googleProvider } from "./firebase";
 import {
   signInWithPopup, createUserWithEmailAndPassword,
