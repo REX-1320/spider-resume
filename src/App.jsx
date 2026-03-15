@@ -11,6 +11,7 @@ import PrivacyPolicy from "./PrivacyPolicy";
 import Terms from "./Terms";
 import About from "./About";
 import AIExtras from "./components/AIExtras";
+import DownloadResume from "./components/DownloadResume";
 import ChatPage from "./pages/ChatPage";
 import TemplatesPage from "./pages/TemplatesPage";
 import JobsPage from "./pages/JobsPage";
@@ -1108,7 +1109,7 @@ Rules:
               </div>
             )}
           </div>
-          <button onClick={() => window.print()} style={{ ...glassBtn, width: "100%", padding: "14px", fontSize: "14px", marginTop: "14px", background: `linear-gradient(135deg, ${theme.accent1}cc, ${theme.accent2}bb)`, color: D ? "#1a1410" : "#2d2520", borderRadius: "16px" }}>⬇ Download PDF</button>
+          <DownloadResume form={form} glassCard={glassCard} glassBase={glassBase} glassBtn={glassBtn} textPrimary={textPrimary} textSecondary={textSecondary} textMuted={textMuted} theme={theme} D={D} />
           {!isPro && <button onClick={() => setPage("upgrade")} style={{ ...glassBtn, width: "100%", padding: "13px", fontSize: "14px", marginTop: "10px", color: textSecondary, borderRadius: "16px" }}>✦ Remove Ads & Unlock Pro Templates</button>}
         </div>
       )}
