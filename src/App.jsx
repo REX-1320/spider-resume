@@ -131,13 +131,36 @@ export default function SpiderResumeAI() {
   const textPrimary = D ? "rgba(240,230,215,0.95)" : "rgba(10,8,20,0.88)";
   const textSecondary = D ? "rgba(200,180,155,0.65)" : "rgba(40,30,50,0.55)";
   const textMuted = D ? "rgba(180,160,135,0.45)" : "rgba(80,60,90,0.4)";
-  // True liquid glass — transparent with high blur, only bg gradient shows through
-  const glassBase = D
-    ? { background: "rgba(255,255,255,0.05)", backdropFilter: "blur(40px) saturate(180%)", WebkitBackdropFilter: "blur(40px) saturate(180%)", border: "1px solid rgba(255,255,255,0.10)", boxShadow: "0 8px 32px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.06)" }
-    : { background: "rgba(255,255,255,0.15)", backdropFilter: "blur(40px) saturate(200%) brightness(1.05)", WebkitBackdropFilter: "blur(40px) saturate(200%) brightness(1.05)", border: "1px solid rgba(255,255,255,0.35)", boxShadow: "0 8px 32px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.5), inset 0 -1px 0 rgba(0,0,0,0.02)" };
+  // True liquid glass — pure transparency, heavy blur, structural rim lighting
+  const glassBase = {
+    background: D ? "rgba(255,255,255,0.015)" : "rgba(255,255,255,0.03)",
+    backdropFilter: "blur(48px) saturate(200%) brightness(1.1)",
+    WebkitBackdropFilter: "blur(48px) saturate(200%) brightness(1.1)",
+    border: "1px solid transparent",
+    borderTopColor: D ? "rgba(255,255,255,0.12)" : "rgba(255,255,255,0.35)",
+    borderLeftColor: D ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.25)",
+    borderRightColor: D ? "rgba(0,0,0,0.2)" : "rgba(0,0,0,0.05)",
+    borderBottomColor: D ? "rgba(0,0,0,0.3)" : "rgba(0,0,0,0.1)",
+    boxShadow: D ? "0 12px 40px rgba(0,0,0,0.35)" : "0 12px 40px rgba(0,0,0,0.06)"
+  };
   const glassCard = { ...glassBase, borderRadius: "24px" };
-  const glassInput = { ...glassBase, borderRadius: "14px", padding: "11px 16px", fontSize: "14px", color: textPrimary, width: "100%", outline: "none", background: D ? "rgba(255,255,255,0.04)" : "rgba(255,255,255,0.18)" };
-  const glassBtn = { ...glassBase, borderRadius: "100px", cursor: "pointer", fontWeight: "600", fontSize: "14px", transition: "all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)", background: D ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.2)" };
+  const glassInput = { 
+    ...glassBase, 
+    borderRadius: "14px", padding: "11px 16px", fontSize: "14px", 
+    color: textPrimary, width: "100%", outline: "none", 
+    background: D ? "rgba(0,0,0,0.18)" : "rgba(0,0,0,0.03)",
+    boxShadow: D ? "inset 0 2px 10px rgba(0,0,0,0.3)" : "inset 0 4px 12px rgba(0,0,0,0.03)",
+    borderTopColor: D ? "rgba(0,0,0,0.3)" : "rgba(0,0,0,0.06)",
+    borderLeftColor: D ? "rgba(0,0,0,0.15)" : "rgba(0,0,0,0.03)",
+    borderRightColor: D ? "rgba(255,255,255,0.04)" : "rgba(255,255,255,0.3)",
+    borderBottomColor: D ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.4)"
+  };
+  const glassBtn = { 
+    ...glassBase, 
+    borderRadius: "100px", cursor: "pointer", fontWeight: "600", fontSize: "14px", 
+    transition: "all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)", 
+    background: D ? "rgba(255,255,255,0.05)" : "rgba(255,255,255,0.1)"
+  };
 
   // ── Business Logic ──
 
