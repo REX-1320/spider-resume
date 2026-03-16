@@ -48,109 +48,158 @@ Mix: 5 behavioral, 5 technical, 5 situational, 5 HR. Make questions specific to 
   const practicedCount = practiced.size;
 
   return (
-    <div style={{ maxWidth: 640, margin: "0 auto", padding: "20px 16px 40px", zIndex: 1, position: "relative" }}>
+    <div className="animate-fade-in" style={{ maxWidth: "800px", margin: "0 auto", padding: "40px 24px", zIndex: 1, position: "relative" }}>
       {/* Header */}
-      <div style={{ ...glassCard, padding: "18px 22px", marginBottom: 14 }}>
-        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
-          <div>
-            <p style={{ fontSize: 17, fontWeight: 800, color: textPrimary, margin: "0 0 4px" }}>🎤 Interview Prep</p>
-            <p style={{ fontSize: 11, color: textMuted, margin: 0 }}>AI generates questions from your resume — with tips and sample answers</p>
-          </div>
-          {questions.length > 0 && (
-            <div style={{ textAlign: "right" }}>
-              <p style={{ fontSize: 20, fontWeight: 800, color: theme.accent1, margin: 0 }}>{practicedCount}/{questions.length}</p>
-              <p style={{ fontSize: 10, color: textMuted, margin: 0 }}>practiced</p>
+      <div className="animate-fade-in-down" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "32px", flexWrap: "wrap", gap: "16px" }}>
+        <div>
+          <h2 style={{ fontSize: "28px", fontWeight: "800", fontFamily: "var(--font-display)", color: textPrimary, marginBottom: "6px", letterSpacing: "-0.5px" }}>Interview Prep</h2>
+          <p style={{ fontSize: "14px", color: textSecondary, margin: 0 }}>AI-generated questions tailored to your resume, with tips and samples.</p>
+        </div>
+        
+        {questions.length > 0 && (
+          <div className="animate-fade-in-scale" style={{ display: "flex", alignItems: "center", gap: "16px", padding: "12px 20px", borderRadius: "16px", background: D ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.02)", border: `1px solid ${D ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)"}` }}>
+            <div style={{ position: "relative", width: "48px", height: "48px" }}>
+              <svg viewBox="0 0 36 36" style={{ width: "48px", height: "48px", transform: "rotate(-90deg)" }}>
+                <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke={D ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)"} strokeWidth="3" />
+                <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke={theme.accent1} strokeWidth="3" strokeDasharray={`${(practicedCount / questions.length) * 100}, 100`} style={{ transition: "stroke-dasharray 0.5s ease" }} />
+              </svg>
+              <div style={{ position: "absolute", inset:0, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "12px", fontWeight: "800", fontFamily: "var(--font-display)", color: textPrimary }}>
+                {Math.round((practicedCount / questions.length) * 100)}%
+              </div>
             </div>
-          )}
-        </div>
+            <div>
+              <p style={{ fontSize: "16px", fontWeight: "800", color: textPrimary, margin: "0 0 2px", fontFamily: "var(--font-display)" }}>{practicedCount} / {questions.length}</p>
+              <p style={{ fontSize: "11px", fontWeight: "700", letterSpacing: "0.1em", textTransform: "uppercase", color: textMuted, margin: 0 }}>Practiced</p>
+            </div>
+          </div>
+        )}
+      </div>
 
-        <div style={{ marginTop: 14, marginBottom: 12 }}>
-          <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: textMuted, marginBottom: 6 }}>Target Role (optional)</p>
-          <input value={targetRole} onChange={e => setTargetRole(e.target.value)} placeholder={form.experience?.[0]?.role || "e.g. Senior Frontend Engineer at Google"} style={{ ...glassInput, borderRadius: 14, padding: "10px 16px", fontSize: 13, color: textPrimary, width: "100%", boxSizing: "border-box" }} />
+      <div className="card-hover-lift animate-fade-in-up delay-1" style={{ ...glassCard, padding: "24px 28px", marginBottom: "32px", position: "relative", overflow: "hidden" }}>
+        <div style={{ position: "absolute", top: "-50%", right: "-10%", width: "300px", height: "300px", background: `radial-gradient(circle, ${theme.accent1}15 0%, transparent 60%)`, pointerEvents: "none" }} />
+        
+        <label style={{ display: "block", fontSize: "12px", fontWeight: "800", letterSpacing: "0.16em", textTransform: "uppercase", color: textMuted, marginBottom: "12px" }}>Target Role (Optional)</label>
+        <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", alignItems: "stretch" }}>
+          <input value={targetRole} onChange={e => setTargetRole(e.target.value)} placeholder={form.experience?.[0]?.role || "e.g. Senior Frontend Engineer at Google"} style={{ flex: 1, minWidth: "250px", background: D ? "rgba(255,255,255,0.03)" : "rgba(255,255,255,0.6)", border: `1px solid ${D ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)"}`, borderRadius:"14px", padding:"16px 20px", fontSize: "15px", color:textPrimary, outline: "none", transition: "all 0.2s" }} />
+          <button onClick={generate} disabled={loading} className={loading ? "btn-glass" : "btn-premium animate-pulse-glow"} style={{ padding:"0 28px", height: "auto", minHeight: "54px", fontSize: "15px", fontWeight: "700", background: loading ? "transparent" : accent, color: loading ? textMuted : (D?"#0c0a08":"#fff"), borderRadius:"14px", border: loading ? undefined : "none", cursor:loading?"not-allowed":"pointer", flexShrink:0, display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }}>
+            {loading ? (
+              <><span className="spinner" style={{ display: "inline-block", width: "16px", height: "16px", border: `2px solid ${textMuted}`, borderTopColor: "transparent", borderRadius: "50%", animation: "spin 1s linear infinite" }} /> Generating AI Questions...</>
+            ) : questions.length > 0 ? "🔄 Regenerate" : "🎤 Generate Questions"}
+          </button>
         </div>
-
-        <button onClick={generate} disabled={loading} style={{ ...glassBtn, width: "100%", padding: 13, fontSize: 14, fontWeight: 700, background: loading ? "transparent" : accent, color: loading ? textMuted : (D ? "#1a1410" : "#2d2520"), borderRadius: 14, cursor: loading ? "not-allowed" : "pointer", border: "none" }}>
-          {loading ? "🤖 Generating your questions..." : questions.length > 0 ? "🔄 Regenerate Questions" : "🎤 Generate 20 Interview Questions"}
-        </button>
       </div>
 
       {/* Empty state */}
       {!loading && questions.length === 0 && (
-        <div style={{ ...glassCard, padding: "48px 24px", textAlign: "center" }}>
-          <p style={{ fontSize: 44, marginBottom: 14 }}>🎤</p>
-          <p style={{ fontSize: 15, fontWeight: 700, color: textPrimary, marginBottom: 8 }}>Ready to practice?</p>
-          <p style={{ fontSize: 13, color: textSecondary, lineHeight: 1.6, marginBottom: 22 }}>AI will generate 20 questions tailored to your resume — behavioral, technical, situational, and HR rounds.</p>
-          <button onClick={generate} style={{ ...glassBtn, padding: "12px 28px", fontSize: 14, fontWeight: 700, background: accent, color: D ? "#1a1410" : "#2d2520", borderRadius: 14, border: "none" }}>Generate Questions</button>
+        <div className="card-hover-lift animate-fade-in-up delay-2" style={{ ...glassCard, padding: "80px 24px", textAlign: "center", border: `1px dashed ${theme.accent1}40` }}>
+          <div className="ambient-blob animate-float" style={{ position: "relative", width: "80px", height: "80px", margin: "0 auto 24px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "40px", background: `linear-gradient(135deg, ${theme.accent1}20, ${theme.accent2}20)`, borderRadius: "50%" }}>🎤</div>
+          <p style={{ fontSize: "24px", fontWeight: "800", fontFamily: "var(--font-display)", color: textPrimary, marginBottom: "12px", letterSpacing: "-0.5px" }}>Ready to practice?</p>
+          <p style={{ fontSize: "15px", color: textSecondary, lineHeight: 1.6, marginBottom: "32px", maxWidth: "480px", margin: "0 auto 32px" }}>AI will generate 20 highly specific questions tailored to your resume—covering behavioral, technical, situational, and HR rounds.</p>
+          <button onClick={generate} className="btn-premium animate-pulse-glow" style={{ padding: "16px 32px", fontSize: "15px", fontWeight: "800", background: `linear-gradient(135deg, ${theme.accent1}, ${theme.accent2})`, color: D ? "#0c0a08" : "#fff", borderRadius: "100px", border: "none" }}>Generate AI Questions</button>
         </div>
       )}
 
       {/* Filter tabs */}
       {questions.length > 0 && (
-        <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 14 }}>
+        <div className="animate-fade-in-up delay-1" style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "24px" }}>
           {CATEGORIES.map(c => (
-            <button key={c.id} onClick={() => setFilter(c.id)} style={{ ...glassBtn, padding: "7px 14px", fontSize: 12, borderRadius: 12, border: filter === c.id ? `1.5px solid ${theme.accent1}` : undefined, color: filter === c.id ? theme.accent1 : textSecondary, background: filter === c.id ? `${theme.accent1}18` : undefined, cursor: "pointer" }}>
-              {c.icon} {c.label} {c.id !== "all" && <span style={{ fontSize: 10, opacity: 0.7 }}>({questions.filter(q => q.category === c.id).length})</span>}
+            <button key={c.id} onClick={() => setFilter(c.id)} style={{ padding: "10px 20px", fontSize: "13px", fontWeight: "600", borderRadius: "100px", border: filter === c.id ? `1px solid ${theme.accent1}` : `1px solid transparent`, color: filter === c.id ? theme.accent1 : textSecondary, background: filter === c.id ? `linear-gradient(135deg, ${theme.accent1}15, ${theme.accent2}05)` : (D ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.03)"), cursor: "pointer", transition: "all 0.2s", display: "flex", alignItems: "center", gap: "8px" }}>
+              <span>{c.icon}</span> {c.label} {c.id !== "all" && <span style={{ opacity: 0.6, fontSize: "11px", fontWeight: "700" }}>{questions.filter(q => q.category === c.id).length}</span>}
             </button>
           ))}
         </div>
       )}
 
-      {/* Loading */}
+      {/* Loading Skeleton */}
       {loading && (
-        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-          {Array.from({ length: 8 }).map((_, i) => (
-            <div key={i} style={{ ...glassCard, padding: 18, opacity: 0.5, animation: `intpulse 1.3s ease ${i * 0.1}s infinite` }}>
-              <div style={{ height: 10, width: "40%", borderRadius: 6, background: D ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.06)", marginBottom: 8 }} />
-              <div style={{ height: 8, width: "85%", borderRadius: 6, background: D ? "rgba(255,255,255,0.07)" : "rgba(0,0,0,0.04)" }} />
+        <div className="animate-fade-in" style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+          {Array.from({ length: 5 }).map((_, i) => (
+            <div key={i} style={{ ...glassCard, padding: "24px", opacity: 0.5, animation: `pulseGLow 2s ease ${i * 0.1}s infinite`, border: `1px solid ${theme.accent1}20` }}>
+              <div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
+                <div style={{ width: "32px", height: "32px", borderRadius: "50%", background: D ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.06)", flexShrink: 0 }} />
+                <div style={{ flex: 1 }}>
+                  <div style={{ height: "12px", width: "30%", borderRadius: "6px", background: D ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.06)", marginBottom: "12px" }} />
+                  <div style={{ height: "10px", width: "85%", borderRadius: "6px", background: D ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.04)" }} />
+                </div>
+              </div>
             </div>
           ))}
         </div>
       )}
 
-      {/* Questions */}
+      {/* Questions list */}
       {!loading && filtered.length > 0 && (
-        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+        <div className="animate-fade-in-up delay-2" style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
           {filtered.map((q, idx) => {
             const color = catColors[q.category] || theme.accent1;
             const isOpen = expanded === q.id;
             const done = practiced.has(q.id);
+            
             return (
-              <div key={q.id} style={{ ...glassCard, overflow: "hidden", opacity: done ? 0.7 : 1, transition: "opacity 0.2s" }}>
-                <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: 3, background: color, borderRadius: "20px 0 0 20px" }} />
-                <div style={{ padding: "14px 16px 14px 20px" }}>
-                  <div style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
-                    <div style={{ minWidth: 26, height: 26, borderRadius: "50%", background: color + "22", border: `1.5px solid ${color}55`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 800, color, flexShrink: 0 }}>{idx + 1}</div>
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 5 }}>
-                        <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color, padding: "2px 7px", borderRadius: 7, background: color + "18" }}>{q.category}</span>
-                        {done && <span style={{ fontSize: 9, fontWeight: 700, color: D ? "#7dcfa0" : "#2e7d52", padding: "2px 7px", borderRadius: 7, background: "rgba(76,175,125,0.15)" }}>✓ Practiced</span>}
-                      </div>
-                      <p style={{ fontSize: 13, fontWeight: 600, color: textPrimary, margin: 0, lineHeight: 1.5 }}>{q.question}</p>
+              <div key={q.id} className="card-hover-lift" style={{ ...glassCard, overflow: "hidden", opacity: done ? 0.6 : 1, transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)", padding: 0, border: isOpen ? `1px solid ${color}40` : `1px solid ${D ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)"}`, boxShadow: isOpen ? `0 12px 40px ${color}15` : undefined }}>
+                {/* Left Accent Bar */}
+                <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: "4px", background: done ? (D ? "#7dcfa0" : "#2e7d52") : color }} />
+                
+                <div style={{ padding: "24px 24px 24px 28px" }}>
+                  <div style={{ display: "flex", alignItems: "flex-start", gap: "16px" }}>
+                    {/* Index / Category Icon Base */}
+                    <div style={{ minWidth: "36px", height: "36px", borderRadius: "12px", background: done ? "rgba(76,175,125,0.15)" : color + "15", border: `1px solid ${done ? "rgba(76,175,125,0.3)" : color + "30"}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "14px", fontWeight: "800", color: done ? (D ? "#7dcfa0" : "#2e7d52") : color, flexShrink: 0 }}>
+                      {done ? "✓" : (isOpen ? idx + 1 : idx + 1)}
                     </div>
-                    <div style={{ display: "flex", gap: 6, flexShrink: 0 }}>
-                      <button onClick={() => setPracticed(s => { const n = new Set(s); done ? n.delete(q.id) : n.add(q.id); return n; })} style={{ ...glassBtn, padding: "5px 10px", fontSize: 11, borderRadius: 9, color: done ? (D ? "#7dcfa0" : "#2e7d52") : textMuted, border: done ? "1px solid rgba(76,175,125,0.4)" : undefined, cursor: "pointer" }}>
+                    
+                    {/* Question Content */}
+                    <div style={{ flex: 1, minWidth: 0, paddingTop: "2px", cursor: "pointer" }} onClick={() => setExpanded(isOpen ? null : q.id)}>
+                      <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "8px", flexWrap: "wrap" }}>
+                        <span style={{ fontSize: "10px", fontWeight: "800", letterSpacing: "0.1em", textTransform: "uppercase", color, padding: "4px 8px", borderRadius: "100px", background: color + "15", border: `1px solid ${color}30` }}>
+                          {CATEGORIES.find(c => c.id === q.category)?.icon} {q.category}
+                        </span>
+                        {done && <span style={{ fontSize: "10px", fontWeight: "800", letterSpacing: "0.05em", color: D ? "#7dcfa0" : "#2e7d52", padding: "4px 8px", borderRadius: "100px", background: "rgba(76,175,125,0.15)", border: "1px solid rgba(76,175,125,0.3)" }}>✓ Practiced</span>}
+                      </div>
+                      <p style={{ fontSize: isOpen ? "16px" : "15px", fontWeight: isOpen ? "700" : "600", color: textPrimary, margin: 0, lineHeight: 1.5, transition: "all 0.2s" }}>{q.question}</p>
+                    </div>
+                    
+                    {/* Actions */}
+                    <div style={{ display: "flex", gap: "8px", flexShrink: 0 }}>
+                      <button onClick={(e) => { e.stopPropagation(); setPracticed(s => { const n = new Set(s); done ? n.delete(q.id) : n.add(q.id); return n; }); }} className="btn-glass" style={{ width: "40px", height: "40px", display: "flex", alignItems: "center", justifyContent: "center", padding: 0, fontSize: "14px", borderRadius: "12px", color: done ? (D ? "#7dcfa0" : "#2e7d52") : textMuted, border: done ? "1px solid rgba(76,175,125,0.4)" : `1px solid ${D ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)"}`, background: done ? "rgba(76,175,125,0.1)" : undefined }}>
                         {done ? "✓" : "○"}
                       </button>
-                      <button onClick={() => setExpanded(isOpen ? null : q.id)} style={{ ...glassBtn, padding: "5px 10px", fontSize: 11, borderRadius: 9, color: textSecondary, cursor: "pointer" }}>
+                      <button onClick={(e) => { e.stopPropagation(); setExpanded(isOpen ? null : q.id); }} className="btn-glass" style={{ width: "40px", height: "40px", display: "flex", alignItems: "center", justifyContent: "center", padding: 0, fontSize: "12px", borderRadius: "12px", color: textSecondary }}>
                         {isOpen ? "▲" : "▼"}
                       </button>
                     </div>
                   </div>
 
+                  {/* Expanded Content (AI Tips & Answers) */}
                   {isOpen && (
-                    <div style={{ marginTop: 12, paddingLeft: 36 }}>
-                      <div style={{ padding: "10px 14px", borderRadius: 12, background: D ? "rgba(255,255,255,0.04)" : "rgba(255,255,255,0.4)", border: `1px solid ${D ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.6)"}`, marginBottom: 8 }}>
-                        <p style={{ fontSize: 10, fontWeight: 700, color: textMuted, margin: "0 0 4px", letterSpacing: "0.06em", textTransform: "uppercase" }}>Why they ask this</p>
-                        <p style={{ fontSize: 12, color: textSecondary, margin: 0, lineHeight: 1.6 }}>{q.why}</p>
+                    <div className="animate-fade-in-down" style={{ marginTop: "24px", paddingLeft: "52px" }}>
+                      <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: "16px" }}>
+                        <div style={{ padding: "16px 20px", borderRadius: "16px", background: D ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.02)", border: `1px solid ${D ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)"}` }}>
+                          <p style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "11px", fontWeight: "800", color: textMuted, margin: "0 0 8px", letterSpacing: "0.1em", textTransform: "uppercase" }}>
+                            <span style={{ fontSize: "14px" }}>🤔</span> Why they ask this
+                          </p>
+                          <p style={{ fontSize: "14px", color: textSecondary, margin: 0, lineHeight: 1.6 }}>{q.why}</p>
+                        </div>
+                        
+                        <div style={{ padding: "16px 20px", borderRadius: "16px", background: color + "08", border: `1px solid ${color}30` }}>
+                          <p style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "11px", fontWeight: "800", color, margin: "0 0 8px", letterSpacing: "0.1em", textTransform: "uppercase" }}>
+                            <span style={{ fontSize: "14px" }}>💡</span> Pro Tip
+                          </p>
+                          <p style={{ fontSize: "14px", color: textSecondary, margin: 0, lineHeight: 1.6 }}>{q.tip}</p>
+                        </div>
+                        
+                        <div style={{ padding: "20px", borderRadius: "16px", background: D ? "rgba(255,255,255,0.05)" : "rgba(255,255,255,0.6)", border: `1px solid ${D ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.05)"}`, boxShadow: "0 4px 12px rgba(0,0,0,0.05)" }}>
+                          <p style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "11px", fontWeight: "800", color: theme.accent1, margin: "0 0 12px", letterSpacing: "0.1em", textTransform: "uppercase" }}>
+                            <span style={{ fontSize: "14px" }}>🤖</span> Sample AI Answer
+                          </p>
+                          <p style={{ fontSize: "15px", color: textPrimary, margin: 0, lineHeight: 1.7, fontStyle: "italic", borderLeft: `2px solid ${theme.accent1}60`, paddingLeft: "16px" }}>"{q.sampleAnswer}"</p>
+                        </div>
                       </div>
-                      <div style={{ padding: "10px 14px", borderRadius: 12, background: color + "10", border: `1px solid ${color}30`, marginBottom: 8 }}>
-                        <p style={{ fontSize: 10, fontWeight: 700, color, margin: "0 0 4px", letterSpacing: "0.06em", textTransform: "uppercase" }}>How to answer</p>
-                        <p style={{ fontSize: 12, color: textSecondary, margin: 0, lineHeight: 1.6 }}>{q.tip}</p>
-                      </div>
-                      <div style={{ padding: "10px 14px", borderRadius: 12, background: D ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.5)", border: `1px solid ${D ? "rgba(255,255,255,0.1)" : "rgba(255,255,255,0.7)"}` }}>
-                        <p style={{ fontSize: 10, fontWeight: 700, color: textMuted, margin: "0 0 4px", letterSpacing: "0.06em", textTransform: "uppercase" }}>Sample answer framework</p>
-                        <p style={{ fontSize: 12, color: textPrimary, margin: 0, lineHeight: 1.7, fontStyle: "italic" }}>"{q.sampleAnswer}"</p>
-                      </div>
+                      
+                      {!done && (
+                        <button onClick={() => setPracticed(s => { const n = new Set(s); n.add(q.id); return n; })} className="btn-premium animate-pulse-glow" style={{ marginTop: "20px", padding: "12px 24px", fontSize: "13px", fontWeight: "700", background: "rgba(76,175,125,0.15)", color: D ? "#7dcfa0" : "#2e7d52", border: "1px solid rgba(76,175,125,0.3)", borderRadius: "100px", display: "flex", alignItems: "center", gap: "8px" }}>
+                          ✓ Mark as Practiced
+                        </button>
+                      )}
                     </div>
                   )}
                 </div>
@@ -160,22 +209,17 @@ Mix: 5 behavioral, 5 technical, 5 situational, 5 HR. Make questions specific to 
         </div>
       )}
 
-      {/* Progress bar */}
-      {questions.length > 0 && (
-        <div style={{ ...glassCard, padding: "16px 20px", marginTop: 16 }}>
-          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}>
-            <span style={{ fontSize: 12, color: textSecondary }}>Practice Progress</span>
-            <span style={{ fontSize: 12, fontWeight: 700, color: textPrimary }}>{practicedCount} / {questions.length} done</span>
-          </div>
-          <div style={{ height: 6, borderRadius: 99, background: D ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.07)" }}>
-            <div style={{ height: "100%", borderRadius: 99, width: `${(practicedCount / questions.length) * 100}%`, background: accent, transition: "width 0.3s ease" }} />
-          </div>
-          {practicedCount === questions.length && questions.length > 0 && (
-            <p style={{ textAlign: "center", fontSize: 13, color: D ? "#7dcfa0" : "#2e7d52", fontWeight: 700, marginTop: 10 }}>🎉 All questions practiced! You're ready for your interview.</p>
-          )}
+      {/* Progress Completion State */}
+      {questions.length > 0 && practicedCount === questions.length && (
+        <div className="animate-fade-in-scale" style={{ ...glassCard, padding: "32px", marginTop: "32px", textAlign: "center", background: "linear-gradient(135deg, rgba(76,175,125,0.1), rgba(76,175,125,0.05))", border: "1px solid rgba(76,175,125,0.3)" }}>
+          <div style={{ fontSize: "48px", marginBottom: "16px" }}>🎉</div>
+          <p style={{ fontSize: "20px", fontWeight: "800", fontFamily: "var(--font-display)", color: D ? "#7dcfa0" : "#2e7d52", margin: "0 0 8px" }}>All 20 questions practiced!</p>
+          <p style={{ fontSize: "14px", color: textSecondary, margin: "0 0 24px" }}>You are well prepared. Want to tackle a different role?</p>
+          <button onClick={() => { setTargetRole(""); setQuestions([]); setPracticed(new Set()); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="btn-glass" style={{ padding: "12px 24px", fontSize: "14px", fontWeight: "700", borderRadius: "100px", background: "rgba(76,175,125,0.15)", color: D ? "#7dcfa0" : "#2e7d52" }}>
+            Start Fresh
+          </button>
         </div>
       )}
-      <style>{`@keyframes intpulse{0%,100%{opacity:.4}50%{opacity:.7}}`}</style>
     </div>
   );
 }

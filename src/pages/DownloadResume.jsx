@@ -210,61 +210,126 @@ export default function DownloadResume({ form, glassCard, glassBase, glassBtn, t
   };
 
   return (
-    <div style={{ position: "relative", width: "100%" }}>
+    <div style={{ position: "relative", width: "100%", zIndex: 10 }}>
       {/* Toast */}
       {toast && (
-        <div style={{ position: "fixed", top: 76, left: "50%", transform: "translateX(-50%)", zIndex: 9999, background: D ? "rgba(20,20,30,0.96)" : "#fff", border: `1px solid ${theme.accent1}66`, borderRadius: 14, padding: "11px 22px", fontSize: 13, fontWeight: 600, color: textPrimary, boxShadow: "0 8px 32px rgba(0,0,0,0.2)", backdropFilter: "blur(20px)", whiteSpace: "nowrap" }}>
+        <div className="animate-fade-in-down" style={{ position: "fixed", top: "80px", left: "50%", transform: "translateX(-50%)", zIndex: 9999, background: D ? "rgba(20,20,30,0.96)" : "rgba(255,255,255,0.96)", border: `1px solid ${theme.accent1}40`, borderRadius: "100px", padding: "12px 24px", fontSize: "14px", fontWeight: "700", color: textPrimary, boxShadow: `0 12px 32px ${theme.accent1}20`, backdropFilter: "blur(20px)", whiteSpace: "nowrap", display: "flex", alignItems: "center", gap: "10px" }}>
           {toast}
         </div>
       )}
 
       {/* Main download row */}
-      <div style={{ display: "flex", gap: 10, marginTop: 14 }}>
+      <div style={{ display: "flex", gap: "12px", marginTop: "24px" }}>
         {/* Primary PDF button */}
         <button
           onClick={() => download("pdf")}
           disabled={downloading === "pdf"}
-          style={{ ...glassBtn, flex: 1, padding: "14px", fontSize: "14px", fontWeight: 700, background: downloading === "pdf" ? "transparent" : accent, color: downloading === "pdf" ? textMuted : (D ? "#1a1410" : "#2d2520"), borderRadius: "16px", border: "none", cursor: downloading === "pdf" ? "not-allowed" : "pointer" }}
+          className={downloading === "pdf" ? "btn-glass" : "btn-premium animate-pulse-glow"}
+          style={{ 
+            flex: 1, 
+            padding: "16px 24px", 
+            fontSize: "15px", 
+            fontWeight: "800", 
+            background: downloading === "pdf" ? (D ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)") : `linear-gradient(135deg, ${theme.accent1}, ${theme.accent2})`, 
+            color: downloading === "pdf" ? textMuted : (D ? "#0c0a08" : "#fff"), 
+            borderRadius: "16px", 
+            border: downloading === "pdf" ? `1px solid ${D ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)"}` : "none", 
+            cursor: downloading === "pdf" ? "not-allowed" : "pointer",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "10px",
+            boxShadow: downloading === "pdf" ? "none" : `0 8px 24px ${theme.accent1}40`,
+            transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)"
+          }}
         >
-          {downloading === "pdf" ? "⏳ Generating PDF..." : "⬇ Download PDF"}
+          {downloading === "pdf" ? (
+            <><span className="spinner" style={{ display: "inline-block", width: "16px", height: "16px", border: `2px solid ${textMuted}`, borderTopColor: "transparent", borderRadius: "50%", animation: "spin 1s linear infinite" }} /> Generating PDF...</>
+          ) : (
+            <>⬇ Download High-Res PDF</>
+          )}
         </button>
 
         {/* Format picker button */}
         <button
           onClick={() => setOpen(o => !o)}
-          style={{ ...glassBtn, padding: "14px 16px", fontSize: 13, fontWeight: 700, borderRadius: "16px", color: textSecondary, cursor: "pointer", position: "relative", flexShrink: 0 }}
+          className="btn-glass"
+          style={{ 
+            padding: "0 20px", 
+            fontSize: "15px", 
+            fontWeight: "700", 
+            borderRadius: "16px", 
+            color: textSecondary, 
+            cursor: "pointer", 
+            position: "relative", 
+            flexShrink: 0,
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+            background: open ? (D ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.05)") : undefined
+          }}
         >
-          📂 Format {open ? "▲" : "▼"}
+          📂 More Formats {open ? "▲" : "▼"}
         </button>
       </div>
 
       {/* Format dropdown */}
       {open && (
-        <div style={{ ...glassCard, padding: "12px", marginTop: 8, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
-          <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: textMuted, margin: "0 0 4px", gridColumn: "1/-1" }}>Choose Download Format</p>
+        <div className="animate-fade-in-up" style={{ ...glassCard, padding: "24px", marginTop: "12px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", border: `1px solid ${theme.accent1}30`, boxShadow: `0 16px 40px rgba(0,0,0,0.2)` }}>
+          <p style={{ fontSize: "12px", fontWeight: "800", letterSpacing: "0.15em", textTransform: "uppercase", color: textMuted, margin: "0 0 8px", gridColumn: "1/-1", display: "flex", alignItems: "center", gap: "8px" }}>
+            <span style={{ flex: 1, height: "1px", background: D ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)" }} />
+            Choose Format
+            <span style={{ flex: 1, height: "1px", background: D ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)" }} />
+          </p>
+          
           {FORMATS.map(f => (
             <button
               key={f.id}
               onClick={() => download(f.id)}
               disabled={!!downloading}
-              style={{ ...glassBase, borderRadius: 14, padding: "12px 14px", cursor: downloading ? "not-allowed" : "pointer", border: `1px solid ${f.color}33`, background: downloading === f.id ? `${f.color}22` : (D ? "rgba(255,255,255,0.04)" : "rgba(255,255,255,0.4)"), display: "flex", alignItems: "center", gap: 10, transition: "all 0.15s", opacity: downloading && downloading !== f.id ? 0.5 : 1 }}
+              className="card-hover-lift"
+              style={{ 
+                borderRadius: "16px", 
+                padding: "16px", 
+                cursor: downloading ? "not-allowed" : "pointer", 
+                border: `1px solid ${f.color}40`, 
+                background: downloading === f.id ? `${f.color}20` : `linear-gradient(135deg, ${f.color}10, transparent)`, 
+                display: "flex", 
+                alignItems: "center", 
+                gap: "16px", 
+                transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)", 
+                opacity: downloading && downloading !== f.id ? 0.4 : 1,
+                textAlign: "left"
+              }}
             >
-              <span style={{ fontSize: 22, flexShrink: 0 }}>{downloading === f.id ? "⏳" : f.icon}</span>
-              <div style={{ textAlign: "left" }}>
-                <p style={{ fontSize: 13, fontWeight: 700, color: f.color, margin: 0 }}>{f.label}</p>
-                <p style={{ fontSize: 10, color: textMuted, margin: 0 }}>{f.desc}</p>
+              <span style={{ fontSize: "28px", flexShrink: 0, filter: `drop-shadow(0 4px 8px ${f.color}40)` }}>{downloading === f.id ? "⏳" : f.icon}</span>
+              <div style={{ flex: 1 }}>
+                <p style={{ fontSize: "15px", fontWeight: "800", color: f.color, margin: "0 0 4px", textShadow: `0 2px 4px ${f.color}20` }}>{f.label}</p>
+                <p style={{ fontSize: "12px", color: textMuted, margin: 0, lineHeight: 1.4 }}>{f.desc}</p>
               </div>
             </button>
           ))}
 
           {/* Format guide */}
-          <div style={{ gridColumn: "1/-1", marginTop: 4, padding: "10px 12px", borderRadius: 12, background: D ? "rgba(255,255,255,0.04)" : "rgba(255,255,255,0.5)", border: `1px solid ${D ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.6)"}` }}>
-            <p style={{ fontSize: 11, color: textSecondary, margin: 0, lineHeight: 1.6 }}>
-              💡 <strong style={{ color: textPrimary }}>Which to use?</strong> PDF for most jobs · Word for portals like Naukri/LinkedIn · PNG for WhatsApp/social · TXT for maximum ATS compatibility
-            </p>
+          <div style={{ gridColumn: "1/-1", marginTop: "12px", padding: "16px", borderRadius: "16px", background: D ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.02)", border: `1px solid ${D ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)"}` }}>
+            <div style={{ display: "flex", gap: "12px", alignItems: "flex-start" }}>
+              <span style={{ fontSize: "20px" }}>💡</span>
+              <div>
+                <strong style={{ display: "block", fontSize: "13px", color: textPrimary, marginBottom: "4px" }}>Which format to use?</strong>
+                <p style={{ fontSize: "12px", color: textSecondary, margin: 0, lineHeight: 1.6 }}>
+                  Use <strong>PDF</strong> for direct emails and modern applications. Use <strong>Word</strong> (DOCX) or <strong>TXT</strong> if specifically requested by older ATS portals (like Naukri/Indeed). Use <strong>PNG</strong> to share on WhatsApp or LinkedIn posts.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       )}
+      <style>{`
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+      `}</style>
     </div>
   );
 }

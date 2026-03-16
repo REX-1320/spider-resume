@@ -54,98 +54,151 @@ Include all ${ALL_PLATFORMS.length} platforms with a score 0-100.`);
   const displayed = showAll ? sorted : sorted.slice(0, 6);
 
   return (
-    <div style={{ maxWidth: 680, margin: "0 auto", padding: "20px 16px 40px", zIndex: 1, position: "relative" }}>
+    <div className="animate-fade-in" style={{ maxWidth: "800px", margin: "0 auto", padding: "40px 24px", zIndex: 1, position: "relative" }}>
       {/* Header */}
-      <div style={{ ...glassCard, padding: "18px 22px", marginBottom: 16 }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
-          <div>
-            <p style={{ fontSize: 17, fontWeight: 800, color: textPrimary, margin: "0 0 4px" }}>🎯 Job Platforms</p>
-            <p style={{ fontSize: 11, color: textMuted, margin: 0 }}>Curated job boards with AI-matched recommendations for your profile</p>
-          </div>
-          {!aiMatches && (
-            <button onClick={getAIMatches} disabled={loading} style={{ ...glassBtn, padding: "10px 18px", fontSize: 13, fontWeight: 700, background: loading ? "transparent" : accent, color: loading ? textMuted : (D ? "#1a1410" : "#2d2520"), borderRadius: 14, border: "none", cursor: loading ? "not-allowed" : "pointer", flexShrink: 0 }}>
-              {loading ? "🤖 Matching..." : "🤖 AI Match for Me"}
-            </button>
-          )}
-          {aiMatches && (
-            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              <span style={{ fontSize: 10, padding: "4px 10px", borderRadius: 10, background: "rgba(76,175,125,0.15)", color: D ? "#7dcfa0" : "#2e7d52", fontWeight: 700, border: "1px solid rgba(76,175,125,0.3)" }}>✅ AI Ranked</span>
-              <button onClick={() => setAiMatches(null)} style={{ ...glassBtn, padding: "5px 10px", fontSize: 11, color: textMuted, borderRadius: 10 }}>Reset</button>
-            </div>
-          )}
+      <div className="animate-fade-in-down" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "32px", flexWrap: "wrap", gap: "16px" }}>
+        <div>
+          <h2 style={{ fontSize: "28px", fontWeight: "800", fontFamily: "var(--font-display)", color: textPrimary, marginBottom: "6px", letterSpacing: "-0.5px" }}>Job Platforms</h2>
+          <p style={{ fontSize: "14px", color: textSecondary, margin: 0 }}>Curated job boards with AI-matched recommendations for your profile</p>
         </div>
-        {form.name && (
-          <div style={{ marginTop: 12, padding: "8px 12px", borderRadius: 12, background: D ? "rgba(255,255,255,0.05)" : "rgba(255,255,255,0.35)", display: "flex", alignItems: "center", gap: 8 }}>
-            <span style={{ fontSize: 11, color: textMuted }}>Matching for:</span>
-            <span style={{ fontSize: 11, fontWeight: 700, color: textPrimary }}>{form.name}</span>
-            {form.experience?.[0]?.role && <><span style={{ fontSize: 11, color: textMuted }}>·</span><span style={{ fontSize: 11, color: textSecondary }}>{form.experience[0].role}</span></>}
-            {form.skills && <><span style={{ fontSize: 11, color: textMuted }}>·</span><span style={{ fontSize: 11, color: textSecondary }}>{form.skills.split(",").slice(0, 3).join(", ")}</span></>}
+        
+        {!aiMatches ? (
+          <button onClick={getAIMatches} disabled={loading} className={loading ? "btn-glass" : "btn-premium animate-pulse-glow"} style={{ padding: "12px 24px", fontSize: "14px", fontWeight: "700", background: loading ? "transparent" : accent, color: loading ? textMuted : (D ? "#0c0a08" : "#fff"), borderRadius: "100px", border: "none", cursor: loading ? "not-allowed" : "pointer", flexShrink: 0, display: "flex", alignItems: "center", gap: "8px", boxShadow: loading ? "none" : `0 8px 16px ${theme.accent1}40` }}>
+            {loading ? (
+              <><span className="spinner" style={{ display: "inline-block", width: "16px", height: "16px", border: `2px solid ${textMuted}`, borderTopColor: "transparent", borderRadius: "50%", animation: "spin 1s linear infinite" }} /> Analyzing Profile...</>
+            ) : "🤖 Generate AI Match"}
+          </button>
+        ) : (
+          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+            <div className="animate-fade-in" style={{ display: "flex", alignItems: "center", gap: "8px", padding: "8px 16px", borderRadius: "100px", background: "rgba(76,175,125,0.15)", border: "1px solid rgba(76,175,125,0.3)" }}>
+              <span style={{ fontSize: "14px" }}>✨</span>
+              <span style={{ fontSize: "12px", color: D ? "#7dcfa0" : "#2e7d52", fontWeight: "800", letterSpacing: "0.05em", textTransform: "uppercase" }}>AI Ranked</span>
+            </div>
+            <button onClick={() => setAiMatches(null)} className="btn-glass" style={{ padding: "8px 16px", fontSize: "13px", fontWeight: "600", color: textMuted, borderRadius: "100px" }}>Reset</button>
           </div>
         )}
       </div>
 
+      {form.name && (
+        <div className="animate-fade-in-up delay-1" style={{ padding: "16px 20px", borderRadius: "16px", background: D ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.02)", display: "flex", alignItems: "center", gap: "12px", marginBottom: "32px", border: `1px solid ${D ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)"}` }}>
+          <div style={{ width: "32px", height: "32px", borderRadius: "50%", background: `linear-gradient(135deg, ${theme.accent1}, ${theme.accent2})`, display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontWeight: "800", fontSize: "14px" }}>
+            {form.name[0]?.toUpperCase()}
+          </div>
+          <div style={{ display: "flex", alignItems: "center", flexWrap: "wrap", gap: "8px" }}>
+            <span style={{ fontSize: "13px", color: textMuted }}>Targeting profile:</span>
+            <span style={{ fontSize: "14px", fontWeight: "700", color: textPrimary }}>{form.name}</span>
+            {form.experience?.[0]?.role && <><span style={{ fontSize: "14px", color: textMuted }}>·</span><span style={{ fontSize: "13px", color: textSecondary, fontWeight: "500" }}>{form.experience[0].role}</span></>}
+            {form.skills && <><span style={{ fontSize: "14px", color: textMuted }}>·</span><span style={{ fontSize: "13px", color: textSecondary }}>{form.skills.split(",").slice(0, 3).join(", ")}</span></>}
+          </div>
+        </div>
+      )}
+
       {/* Platform cards */}
-      <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+      <div className="animate-fade-in-up delay-2" style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
         {displayed.map((p, idx) => {
           const match = aiMatches?.[p.name];
           const isOpen = expanded === p.name;
           const rank = aiMatches ? idx + 1 : null;
+          
           return (
-            <div key={p.name} style={{ ...glassCard, overflow: "hidden", position: "relative" }}>
+            <div key={p.name} className="card-hover-lift" style={{ ...glassCard, overflow: "hidden", position: "relative", padding: 0, transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)", border: `1px solid ${isOpen ? (D ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.1)") : (D ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)")}`, boxShadow: isOpen ? "0 12px 40px rgba(0,0,0,0.15)" : undefined }}>
               {/* Left accent */}
-              <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: 3, background: p.color, borderRadius: "20px 0 0 20px" }} />
+              <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: "4px", background: p.color }} />
 
-              <div style={{ padding: "16px 18px 16px 22px" }}>
+              <div style={{ padding: "20px 24px 20px 28px" }}>
                 {/* Top row */}
-                <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 10 }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 10, flex: 1, minWidth: 0 }}>
-                    <span style={{ fontSize: 22, flexShrink: 0 }}>{p.icon}</span>
-                    <div style={{ minWidth: 0 }}>
-                      <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
-                        <span style={{ fontSize: 15, fontWeight: 800, color: textPrimary }}>{p.name}</span>
-                        <span style={{ fontSize: 9, fontWeight: 700, padding: "2px 7px", borderRadius: 7, background: p.color + "22", color: p.color, border: `1px solid ${p.color}40`, flexShrink: 0 }}>{p.tag}</span>
-                        {rank && rank <= 3 && <span style={{ fontSize: 9, fontWeight: 700, padding: "2px 7px", borderRadius: 7, background: `${theme.accent1}22`, color: theme.accent1, border: `1px solid ${theme.accent1}44` }}>#{rank} for you</span>}
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "16px", flexWrap: "wrap" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "16px", flex: 1, minWidth: "200px" }}>
+                    <div style={{ width: "48px", height: "48px", borderRadius: "14px", background: `${p.color}15`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "24px", flexShrink: 0, border: `1px solid ${p.color}30` }}>
+                      {p.icon}
+                    </div>
+                    <div>
+                      <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap", marginBottom: "4px" }}>
+                        <span style={{ fontSize: "18px", fontWeight: "800", fontFamily: "var(--font-display)", color: textPrimary, letterSpacing: "-0.3px" }}>{p.name}</span>
+                        <span style={{ fontSize: "10px", fontWeight: "800", padding: "4px 8px", borderRadius: "100px", background: p.color + "15", color: p.color, border: `1px solid ${p.color}40`, letterSpacing: "0.05em", textTransform: "uppercase" }}>{p.tag}</span>
+                        
+                        {rank && rank <= 3 && (
+                          <div className="animate-pulse-glow" style={{ display: "flex", alignItems: "center", gap: "4px", padding: "4px 10px", borderRadius: "100px", background: `linear-gradient(135deg, ${theme.accent1}20, ${theme.accent2}20)`, border: `1px solid ${theme.accent1}40` }}>
+                            <span style={{ fontSize: "12px" }}>🏆</span>
+                            <span style={{ fontSize: "10px", fontWeight: "800", color: theme.accent1, letterSpacing: "0.05em", textTransform: "uppercase" }}>Top Pick</span>
+                          </div>
+                        )}
                       </div>
-                      {match?.reason && <p style={{ fontSize: 11, color: theme.accent1, margin: "3px 0 0", fontStyle: "italic" }}>🤖 {match.reason}</p>}
-                      {!match && <p style={{ fontSize: 11, color: textMuted, margin: "3px 0 0" }}>Best for: {p.bestFor.join(", ")}</p>}
+                      
+                      {match?.reason ? (
+                        <p style={{ fontSize: "13px", color: textSecondary, margin: 0, display: "flex", alignItems: "center", gap: "6px" }}>
+                          <span style={{ color: theme.accent1 }}>🤖</span> {match.reason}
+                        </p>
+                      ) : (
+                        <p style={{ fontSize: "13px", color: textMuted, margin: 0 }}>
+                          Best for: <span style={{ color: textSecondary }}>{p.bestFor.join(", ")}</span>
+                        </p>
+                      )}
                     </div>
                   </div>
 
-                  <div style={{ display: "flex", alignItems: "center", gap: 6, flexShrink: 0 }}>
-                    {/* Score badge */}
-                    {match && (
-                      <div style={{ width: 38, height: 38, borderRadius: "50%", background: match.score >= 80 ? "rgba(76,175,125,0.15)" : match.score >= 60 ? `${theme.accent1}20` : "rgba(180,180,180,0.1)", border: `2px solid ${match.score >= 80 ? "rgba(76,175,125,0.5)" : match.score >= 60 ? theme.accent1 + "80" : "rgba(180,180,180,0.3)"}`, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column" }}>
-                        <span style={{ fontSize: 11, fontWeight: 800, color: match.score >= 80 ? (D ? "#7dcfa0" : "#2e7d52") : match.score >= 60 ? theme.accent1 : textMuted, lineHeight: 1 }}>{match.score}</span>
+                  <div style={{ display: "flex", alignItems: "center", gap: "12px", flexShrink: 0 }}>
+                    {/* Score/Rating */}
+                    {match ? (
+                      <div className="animate-fade-in-scale" style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", width: "52px", height: "52px", borderRadius: "50%", background: match.score >= 80 ? "rgba(76,175,125,0.1)" : match.score >= 60 ? `${theme.accent1}10` : "rgba(180,180,180,0.05)", border: `2px solid ${match.score >= 80 ? "rgba(76,175,125,0.4)" : match.score >= 60 ? theme.accent1 + "60" : "rgba(180,180,180,0.2)"}` }}>
+                        <span style={{ fontSize: "16px", fontWeight: "800", fontFamily: "var(--font-display)", color: match.score >= 80 ? (D ? "#7dcfa0" : "#2e7d52") : match.score >= 60 ? theme.accent1 : textMuted, lineHeight: 1 }}>{match.score}</span>
+                        <span style={{ fontSize: "8px", fontWeight: "700", color: textMuted, textTransform: "uppercase", letterSpacing: "0.1em", marginTop: "2px" }}>Match</span>
+                      </div>
+                    ) : (
+                      <div style={{ display: "flex", gap: "4px", padding: "8px 12px", borderRadius: "100px", background: D ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.02)" }}>
+                        {[1,2,3,4,5].map(i => <div key={i} style={{ width: "8px", height: "8px", borderRadius: "50%", background: i <= p.rating ? p.color : (D ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)"), transition: "all 0.2s" }} />)}
                       </div>
                     )}
-                    {/* Rating dots */}
-                    {!match && (
-                      <div style={{ display: "flex", gap: 2 }}>
-                        {[1,2,3,4,5].map(i => <div key={i} style={{ width: 6, height: 6, borderRadius: "50%", background: i <= p.rating ? p.color : (D ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.08)") }} />)}
-                      </div>
-                    )}
-                    <button onClick={() => setExpanded(isOpen ? null : p.name)} style={{ ...glassBtn, padding: "6px 10px", fontSize: 12, color: textSecondary, borderRadius: 10, cursor: "pointer" }}>
+                    
+                    <button onClick={() => setExpanded(isOpen ? null : p.name)} className="btn-glass" style={{ width: "40px", height: "40px", display: "flex", alignItems: "center", justifyContent: "center", padding: 0, fontSize: "12px", color: textSecondary, borderRadius: "12px" }}>
                       {isOpen ? "▲" : "▼"}
                     </button>
-                    <a href={p.url} target="_blank" rel="noopener noreferrer" style={{ ...glassBtn, padding: "7px 14px", fontSize: 12, fontWeight: 700, color: p.color, border: `1px solid ${p.color}44`, background: `${p.color}11`, borderRadius: 12, textDecoration: "none", display: "inline-block", cursor: "pointer" }}>Apply →</a>
+                    
+                    <a href={p.url} target="_blank" rel="noopener noreferrer" className="btn-premium" style={{ padding: "10px 20px", fontSize: "13px", fontWeight: "700", color: "#fff", background: p.color, borderRadius: "12px", textDecoration: "none", display: "inline-block", cursor: "pointer", border: "none" }}>
+                      Apply ↗
+                    </a>
                   </div>
                 </div>
 
-                {/* Expanded pros/cons */}
+                {/* Expanded Sections */}
                 {isOpen && (
-                  <div style={{ marginTop: 14 }}>
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 12 }}>
-                      <div style={{ padding: "10px 12px", borderRadius: 12, background: D ? "rgba(76,175,125,0.08)" : "rgba(76,175,125,0.06)", border: "1px solid rgba(76,175,125,0.2)" }}>
-                        <p style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: D ? "#7dcfa0" : "#2e7d52", marginBottom: 7 }}>✓ Pros</p>
-                        {p.pros.map((pro, i) => <p key={i} style={{ fontSize: 11, color: textSecondary, margin: "0 0 4px", lineHeight: 1.5 }}>• {pro}</p>)}
+                  <div className="animate-fade-in-down" style={{ marginTop: "20px", paddingTop: "20px", borderTop: `1px solid ${D ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)"}` }}>
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "16px", marginBottom: "16px" }}>
+                      <div style={{ padding: "16px", borderRadius: "16px", background: D ? "rgba(76,175,125,0.05)" : "rgba(76,175,125,0.03)", border: "1px solid rgba(76,175,125,0.15)" }}>
+                        <p style={{ fontSize: "11px", fontWeight: "800", letterSpacing: "0.1em", textTransform: "uppercase", color: D ? "#7dcfa0" : "#2e7d52", marginBottom: "12px", display: "flex", alignItems: "center", gap: "6px" }}>
+                          <span style={{ fontSize: "14px" }}>✓</span> Why it's great
+                        </p>
+                        <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                          {p.pros.map((pro, i) => (
+                            <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: "8px" }}>
+                              <span style={{ color: D ? "#7dcfa0" : "#2e7d52", fontSize: "10px", marginTop: "4px" }}>●</span>
+                              <p style={{ fontSize: "13px", color: textSecondary, margin: 0, lineHeight: 1.5 }}>{pro}</p>
+                            </div>
+                          ))}
+                        </div>
                       </div>
-                      <div style={{ padding: "10px 12px", borderRadius: 12, background: D ? "rgba(224,92,92,0.08)" : "rgba(224,92,92,0.05)", border: "1px solid rgba(224,92,92,0.18)" }}>
-                        <p style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: D ? "#f08080" : "#b03030", marginBottom: 7 }}>✗ Cons</p>
-                        {p.cons.map((con, i) => <p key={i} style={{ fontSize: 11, color: textSecondary, margin: "0 0 4px", lineHeight: 1.5 }}>• {con}</p>)}
+                      
+                      <div style={{ padding: "16px", borderRadius: "16px", background: D ? "rgba(224,92,92,0.05)" : "rgba(224,92,92,0.03)", border: "1px solid rgba(224,92,92,0.15)" }}>
+                        <p style={{ fontSize: "11px", fontWeight: "800", letterSpacing: "0.1em", textTransform: "uppercase", color: D ? "#f08080" : "#b03030", marginBottom: "12px", display: "flex", alignItems: "center", gap: "6px" }}>
+                          <span style={{ fontSize: "14px" }}>✕</span> Things to note
+                        </p>
+                        <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                          {p.cons.map((con, i) => (
+                            <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: "8px" }}>
+                              <span style={{ color: D ? "#f08080" : "#b03030", fontSize: "10px", marginTop: "4px" }}>●</span>
+                              <p style={{ fontSize: "13px", color: textSecondary, margin: 0, lineHeight: 1.5 }}>{con}</p>
+                            </div>
+                          ))}
+                        </div>
                       </div>
                     </div>
-                    <div style={{ padding: "10px 14px", borderRadius: 12, background: D ? "rgba(255,255,255,0.04)" : "rgba(255,255,255,0.4)", border: `1px solid ${D ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.6)"}` }}>
-                      <span style={{ fontSize: 12, color: textSecondary, fontStyle: "italic" }}>💬 {p.verdict}</span>
+                    
+                    <div style={{ padding: "16px", borderRadius: "16px", background: D ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.02)", border: `1px solid ${D ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)"}`, display: "flex", alignItems: "flex-start", gap: "12px" }}>
+                      <span style={{ fontSize: "20px" }}>💡</span>
+                      <div>
+                        <p style={{ fontSize: "11px", fontWeight: "800", letterSpacing: "0.1em", textTransform: "uppercase", color: textMuted, margin: "0 0 4px" }}>The Verdict</p>
+                        <p style={{ fontSize: "14px", color: textPrimary, margin: 0, lineHeight: 1.5 }}>{p.verdict}</p>
+                      </div>
                     </div>
                   </div>
                 )}
@@ -157,16 +210,24 @@ Include all ${ALL_PLATFORMS.length} platforms with a score 0-100.`);
 
       {/* Show more/less */}
       {sorted.length > 6 && (
-        <button onClick={() => setShowAll(s => !s)} style={{ ...glassBtn, width: "100%", padding: 13, fontSize: 13, color: textSecondary, borderRadius: 14, marginTop: 14, cursor: "pointer" }}>
-          {showAll ? `▲ Show less` : `▼ Show all ${sorted.length} platforms`}
+        <button onClick={() => setShowAll(s => !s)} className="btn-glass animate-fade-in-up delay-3" style={{ width: "100%", padding: "16px", fontSize: "14px", fontWeight: "600", color: textSecondary, borderRadius: "16px", marginTop: "24px", cursor: "pointer", border: `1px solid ${D ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)"}` }}>
+          {showAll ? "▲ Show less platforms" : `▼ Show all ${sorted.length} platforms`}
         </button>
       )}
 
-      {/* Tip */}
-      <div style={{ ...glassCard, padding: "16px 20px", marginTop: 18, textAlign: "center" }}>
-        <p style={{ fontSize: 12, color: textSecondary, margin: 0, lineHeight: 1.7 }}>
-          💡 <strong style={{ color: textPrimary }}>Power move:</strong> Apply on LinkedIn + Naukri for India coverage, Wellfound for startup equity, and Remotive for remote global roles. Research every company on Glassdoor before your interview.
-        </p>
+      {/* Strategic Tip */}
+      <div className="card-hover-lift animate-fade-in-up delay-3" style={{ ...glassCard, padding: "24px", marginTop: "32px", border: `1px solid ${theme.accent1}40`, background: `linear-gradient(135deg, ${theme.accent1}05, ${theme.accent2}05)` }}>
+        <div style={{ display: "flex", gap: "16px", alignItems: "flex-start" }}>
+          <div style={{ width: "40px", height: "40px", borderRadius: "12px", background: `${theme.accent1}20`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "20px", flexShrink: 0 }}>
+            ⚡
+          </div>
+          <div>
+            <h3 style={{ fontSize: "16px", fontWeight: "800", fontFamily: "var(--font-display)", color: textPrimary, margin: "0 0 6px" }}>The Power Strategy</h3>
+            <p style={{ fontSize: "14px", color: textSecondary, margin: 0, lineHeight: 1.6 }}>
+              Apply on <strong style={{ color: textPrimary }}>LinkedIn + Naukri</strong> for broad India coverage, <strong style={{ color: textPrimary }}>Wellfound</strong> for high-growth startup equity, and <strong style={{ color: textPrimary }}>Remotive</strong> for remote global roles. Always research the company on Glassdoor before your first interview.
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );

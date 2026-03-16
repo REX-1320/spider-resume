@@ -236,66 +236,81 @@ Return ONLY the complete modified HTML starting with <div. Keep all {{PLACEHOLDE
   const filtered = activeTab === "all" ? templates : templates.filter(t => activeTab === "ai" ? t.type === "ai-hourly" : t.type === activeTab);
 
   return (
-    <div style={{ maxWidth: 860, margin: "0 auto", padding: "20px 16px 40px", zIndex: 1, position: "relative" }}>
-      {toast && <div style={{ position:"fixed", top:76, left:"50%", transform:"translateX(-50%)", zIndex:999, background: D?"rgba(20,20,30,0.96)":"#fff", border:`1px solid ${theme.accent1}66`, borderRadius:14, padding:"11px 22px", fontSize:13, fontWeight:600, color:textPrimary, boxShadow:"0 8px 32px rgba(0,0,0,0.18)", backdropFilter:"blur(20px)", whiteSpace:"nowrap" }}>{toast}</div>}
+    <div className="animate-fade-in" style={{ maxWidth: "1000px", margin: "0 auto", padding: "40px 24px", zIndex: 1, position: "relative" }}>
+      {toast && <div className="animate-fade-in-down" style={{ position:"fixed", top: 80, left:"50%", transform:"translateX(-50%)", zIndex:999, background: D?"rgba(20,20,30,0.8)":"rgba(255,255,255,0.8)", border:`1px solid ${theme.accent1}44`, borderRadius: "100px", padding:"12px 24px", fontSize: "14px", fontWeight: "700", color:textPrimary, boxShadow:`0 12px 40px ${theme.accent1}30`, backdropFilter:"blur(24px) saturate(200%)", WebkitBackdropFilter:"blur(24px) saturate(200%)", whiteSpace:"nowrap", display: "flex", alignItems: "center", gap: "8px" }}>{toast}</div>}
 
-      {/* Header + Custom Generator */}
-      <div style={{ ...glassCard, padding:"18px 22px", marginBottom:14 }}>
-        <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", flexWrap:"wrap", gap:10, marginBottom:14 }}>
-          <div>
-            <p style={{ fontSize:17, fontWeight:800, color:textPrimary, margin:"0 0 3px" }}>🎨 Resume Templates</p>
-            <p style={{ fontSize:11, color:textMuted, margin:0 }}>{templates.length} templates · Auto-updated hourly · Stored in Firestore</p>
-          </div>
-          <span style={{ fontSize:10, padding:"4px 10px", borderRadius:10, background:"rgba(139,92,246,0.15)", color:"#8B5CF6", fontWeight:700, border:"1px solid rgba(139,92,246,0.3)" }}>⚡ Live Updates</span>
+      <div className="animate-fade-in-down" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "32px" }}>
+        <div>
+          <h2 style={{ fontSize: "28px", fontWeight: "800", fontFamily: "var(--font-display)", color: textPrimary, marginBottom: "6px", letterSpacing: "-0.5px" }}>Resume Templates</h2>
+          <p style={{ fontSize: "14px", color: textSecondary, margin: 0 }}>{templates.length} templates · Auto-updated hourly · Stored in Firestore</p>
         </div>
-        <p style={{ fontSize:10, fontWeight:700, letterSpacing:"0.1em", textTransform:"uppercase", color:textMuted, margin:"0 0 7px" }}>✨ Generate Custom Template {!isPro && <span style={{ color:theme.accent1 }}>· Pro Only</span>}</p>
-        <div style={{ display:"flex", gap:8 }}>
-          <input value={customPrompt} onChange={e=>setCustomPrompt(e.target.value)} onKeyDown={e=>e.key==="Enter"&&genCustom()} placeholder='e.g. "dark navy with gold, two-column, finance executive"' style={{ ...glassInput, flex:1, borderRadius:12, padding:"10px 14px", fontSize:13, color:textPrimary, boxSizing:"border-box" }} />
-          <button onClick={genCustom} disabled={customLoading||!customPrompt.trim()} style={{ ...glassBtn, padding:"10px 18px", fontSize:13, fontWeight:700, background:customLoading?"transparent":accent, color:customLoading?textMuted:(D?"#1a1410":"#2d2520"), borderRadius:12, border:"none", cursor:customLoading?"not-allowed":"pointer", flexShrink:0 }}>
-            {customLoading ? "⏳" : "Generate →"}
+        <div className="animate-pulse-glow" style={{ padding: "8px 16px", borderRadius: "100px", background: `linear-gradient(135deg, ${theme.accent1}15, ${theme.accent2}10)`, color: theme.accent1, fontWeight: "700", fontSize: "12px", border: `1px solid ${theme.accent1}40`, display: "flex", alignItems: "center", gap: "6px" }}>
+          <span>✨</span> Live Updates
+        </div>
+      </div>
+
+      {/* Custom Generator */}
+      <div className="card-hover-lift animate-fade-in-up delay-1" style={{ ...glassCard, padding:"32px", marginBottom: "32px", position: "relative", overflow: "hidden" }}>
+        <div style={{ position: "absolute", top: "-50%", right: "-10%", width: "300px", height: "300px", background: `radial-gradient(circle, ${theme.accent1}20 0%, transparent 60%)`, pointerEvents: "none" }} />
+        
+        <p style={{ fontSize: "12px", fontWeight: "800", letterSpacing: "0.16em", textTransform: "uppercase", color: textMuted, marginBottom: "16px", display: "flex", alignItems: "center", gap: "6px" }}>
+          🎨 Generate Custom Template 
+          {!isPro && <span style={{ padding: "3px 8px", background: D ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.05)", borderRadius: "100px", fontSize: "9px", color: theme.accent1 }}>PRO</span>}
+        </p>
+        
+        <div style={{ display:"flex", gap: "12px", flexWrap: "wrap" }}>
+          <input value={customPrompt} onChange={e=>setCustomPrompt(e.target.value)} onKeyDown={e=>e.key==="Enter"&&genCustom()} placeholder='e.g. "dark navy with gold accents, two-column layout, finance executive styling"' style={{ flex: 1, minWidth: "250px", background: D ? "rgba(255,255,255,0.03)" : "rgba(255,255,255,0.6)", border: `1px solid ${D ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)"}`, borderRadius:"14px", padding:"16px 20px", fontSize: "14px", color:textPrimary, outline: "none", transition: "all 0.2s" }} />
+          <button onClick={genCustom} disabled={customLoading||!customPrompt.trim()} className={!customLoading && customPrompt.trim() ? "btn-premium animate-pulse-glow" : "btn-glass"} style={{ padding:"0 28px", height: "54px", fontSize: "14px", fontWeight: "700", background: customLoading ? "transparent" : (!customPrompt.trim() ? "transparent" : accent), color: customLoading ? textMuted : (!customPrompt.trim() ? textSecondary : (D?"#0c0a08":"#fff")), borderRadius:"14px", border: !customLoading && customPrompt.trim() ? "none" : undefined, cursor:customLoading?"not-allowed":"pointer", flexShrink:0, display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }}>
+            {customLoading ? "⏳ Generating..." : "Generate AI Template →"}
           </button>
         </div>
       </div>
 
       {/* Tabs */}
-      <div style={{ display:"flex", gap:6, marginBottom:14, flexWrap:"wrap" }}>
+      <div className="animate-fade-in-up delay-2" style={{ display:"flex", gap: "8px", marginBottom: "24px", flexWrap:"wrap" }}>
         {TABS.map(([id,label,count])=>(
-          <button key={id} onClick={()=>setActiveTab(id)} style={{ ...glassBtn, padding:"7px 14px", fontSize:12, borderRadius:12, border:activeTab===id?`1.5px solid ${theme.accent1}`:undefined, color:activeTab===id?theme.accent1:textSecondary, background:activeTab===id?`${theme.accent1}18`:undefined, cursor:"pointer" }}>
-            {label} <span style={{ opacity:.6 }}>({count})</span>
+          <button key={id} onClick={()=>setActiveTab(id)} style={{ padding:"10px 20px", fontSize: "13px", fontWeight: "600", borderRadius:"100px", border: activeTab === id ? `1px solid ${theme.accent1}` : `1px solid transparent`, color: activeTab === id ? theme.accent1 : textSecondary, background: activeTab === id ? `linear-gradient(135deg, ${theme.accent1}15, ${theme.accent2}08)` : (D ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.03)"), cursor:"pointer", transition: "all 0.2s" }}>
+            {label} <span style={{ opacity:0.6, fontSize: "11px", marginLeft: "4px" }}>{count}</span>
           </button>
         ))}
       </div>
 
-      {loading && <div style={{ ...glassCard, padding:"48px 24px", textAlign:"center" }}><p style={{ fontSize:32, marginBottom:10 }}>⏳</p><p style={{ fontSize:14, fontWeight:700, color:textPrimary }}>Loading templates...</p></div>}
+      {loading && (
+        <div className="animate-fade-in" style={{ padding:"80px 24px", textAlign:"center" }}>
+          <div className="ambient-blob animate-pulse" style={{ position: "relative", width: "80px", height: "80px", margin: "0 auto 24px" }} />
+          <p style={{ fontSize: "16px", fontWeight: "700", color: textPrimary, fontFamily: "var(--font-display)" }}>Loading your templates...</p>
+        </div>
+      )}
 
       {/* Grid */}
       {!loading && (
-        <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(235px,1fr))", gap:14 }}>
+        <div className="animate-fade-in-up delay-3" style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(280px,1fr))", gap: "24px" }}>
           {filtered.map((tpl, idx) => {
             const color = TYPE_COLOR[tpl.type] || theme.accent1;
             return (
-              <div key={tpl.firestoreId||idx} style={{ ...glassCard, overflow:"hidden", display:"flex", flexDirection:"column" }}>
+              <div key={tpl.firestoreId||idx} className="card-hover-lift" style={{ ...glassCard, overflow:"hidden", display:"flex", flexDirection:"column", border: `1px solid ${D ? "rgba(201,169,110,0.15)" : "rgba(201,169,110,0.3)"}` }}>
                 {/* Mini preview */}
-                <div style={{ height:155, overflow:"hidden", cursor:"pointer", background:"#fff", position:"relative", borderRadius:"20px 20px 0 0" }} onClick={()=>openPreview(tpl)}>
-                  <div style={{ transform:"scale(0.33)", transformOrigin:"top left", width:"303%", pointerEvents:"none" }}>
+                <div style={{ height: "220px", overflow:"hidden", cursor:"pointer", background:"#fff", position:"relative", borderBottom: `1px solid ${D ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)"}` }} onClick={()=>openPreview(tpl)}>
+                  <div style={{ transform:"scale(0.35)", transformOrigin:"top left", width:"285%", pointerEvents:"none" }}>
                     <div dangerouslySetInnerHTML={{ __html: renderCard(tpl, idx) }} />
                   </div>
-                  <div style={{ position:"absolute", inset:0, background:"transparent" }} />
-                  <div style={{ position:"absolute", bottom:8, right:8, background:"rgba(0,0,0,0.55)", color:"#fff", fontSize:10, padding:"3px 8px", borderRadius:6, fontWeight:600 }}>👁 View</div>
+                  <div className="glass-reveal" style={{ position:"absolute", inset:0, background: "linear-gradient(to top, rgba(0,0,0,0.4), transparent)", opacity: 0, transition: "opacity 0.3s", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    <span style={{ padding: "8px 20px", background: "rgba(255,255,255,0.2)", backdropFilter: "blur(10px)", color: "#fff", fontWeight: "700", borderRadius: "100px", fontSize: "13px" }}>👁️ View Template</span>
+                  </div>
                 </div>
                 {/* Info */}
-                <div style={{ padding:"12px 14px", flex:1, display:"flex", flexDirection:"column", gap:7 }}>
-                  <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", gap:6 }}>
-                    <p style={{ fontSize:13, fontWeight:700, color:textPrimary, margin:0, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>{tpl.name}</p>
-                    <span style={{ fontSize:9, padding:"2px 7px", borderRadius:7, background:color+"22", color, fontWeight:700, border:`1px solid ${color}44`, flexShrink:0 }}>{TYPE_LABEL[tpl.type]||tpl.type}</span>
+                <div style={{ padding:"20px", flex:1, display:"flex", flexDirection:"column", gap: "12px", background: D ? "rgba(0,0,0,0.2)" : "rgba(255,255,255,0.4)" }}>
+                  <div style={{ display:"flex", alignItems:"flex-start", justifyContent:"space-between", gap: "8px" }}>
+                    <p style={{ fontSize: "16px", fontWeight: "800", color: textPrimary, margin:0, fontFamily: "var(--font-display)", lineHeight: 1.2 }}>{tpl.name}</p>
+                    <span style={{ fontSize: "10px", padding:"4px 8px", borderRadius:"6px", background: `${color}15`, color, fontWeight: "800", border:`1px solid ${color}30`, flexShrink:0, letterSpacing: "0.05em", textTransform: "uppercase" }}>{TYPE_LABEL[tpl.type]||tpl.type}</span>
                   </div>
-                  <div style={{ display:"flex", flexWrap:"wrap", gap:4 }}>
-                    {(tpl.tags||[]).slice(0,3).map(tag=><span key={tag} style={{ fontSize:9, padding:"2px 7px", borderRadius:6, background:D?"rgba(255,255,255,0.06)":"rgba(0,0,0,0.05)", color:textMuted }}>{tag}</span>)}
+                  <div style={{ display:"flex", flexWrap:"wrap", gap: "6px" }}>
+                    {(tpl.tags||[]).slice(0,3).map(tag=><span key={tag} style={{ fontSize: "10px", padding:"4px 10px", borderRadius:"100px", background:D?"rgba(255,255,255,0.05)":"rgba(0,0,0,0.04)", color:textSecondary, fontWeight: "500" }}>{tag}</span>)}
                   </div>
-                  <div style={{ display:"flex", gap:6, marginTop:"auto" }}>
-                    <button onClick={()=>openPreview(tpl)} style={{ ...glassBtn, flex:1, padding:"7px", fontSize:12, color:textSecondary, borderRadius:10, cursor:"pointer" }}>👁 Preview</button>
-                    <button onClick={()=>{ if(!isPro){setPage("upgrade");return;} const realHtml = renderTpl(tpl, form); if(setAppliedTemplateHtml) setAppliedTemplateHtml(realHtml); setPage("preview"); notify("✅ Template applied!"); }} style={{ ...glassBtn, flex:1, padding:"7px", fontSize:12, fontWeight:700, background:isPro?accent:undefined, color:isPro?(D?"#1a1410":"#2d2520"):textMuted, borderRadius:10, border:"none", cursor:"pointer" }}>
-                      {isPro ? "Use ✓" : "🔒 Pro"}
+                  <div style={{ display:"flex", gap: "10px", marginTop:"auto", paddingTop: "8px" }}>
+                    <button onClick={()=>openPreview(tpl)} className="btn-glass" style={{ flex:1, padding:"10px", fontSize: "13px", fontWeight: "600", color:textSecondary, borderRadius:"12px" }}>Preview</button>
+                    <button onClick={()=>{ if(!isPro){setPage("upgrade");return;} const realHtml = renderTpl(tpl, form); if(setAppliedTemplateHtml) setAppliedTemplateHtml(realHtml); setPage("preview"); notify("✅ Premium template applied!"); }} className={isPro ? "btn-premium" : "btn-glass"} style={{ flex:1, padding:"10px", fontSize: "13px", fontWeight: "700", background:isPro?accent:undefined, color:isPro?(D?"#0c0a08":"#fff"):textMuted, borderRadius:"12px", border:"none", cursor:"pointer", boxShadow: isPro ? `0 4px 12px ${theme.accent1}44` : "none" }}>
+                      {isPro ? "Use Template" : "🔒 Pro Only"}
                     </button>
                   </div>
                 </div>
@@ -306,27 +321,32 @@ Return ONLY the complete modified HTML starting with <div. Keep all {{PLACEHOLDE
       )}
 
       {!loading && filtered.length === 0 && (
-        <div style={{ ...glassCard, padding:"48px 24px", textAlign:"center" }}>
-          <p style={{ fontSize:36, marginBottom:12 }}>📭</p>
-          <p style={{ fontSize:14, fontWeight:700, color:textPrimary, marginBottom:8 }}>No templates here yet</p>
-          <p style={{ fontSize:13, color:textSecondary }}>Use the generator above to create a custom template.</p>
+        <div className="card-hover-lift animate-fade-in-up" style={{ ...glassCard, padding:"80px 24px", textAlign:"center", border: `1px dashed ${theme.accent1}66` }}>
+          <p className="animate-float" style={{ fontSize: "48px", marginBottom: "16px" }}>📭</p>
+          <p style={{ fontSize: "18px", fontWeight: "800", fontFamily: "var(--font-display)", color: textPrimary, marginBottom: "8px" }}>No templates found</p>
+          <p style={{ fontSize: "14px", color: textSecondary }}>Use the AI generator above to create your perfect custom template.</p>
         </div>
       )}
 
       {/* PREVIEW MODAL */}
       {showPreview && selected && (
-        <div onClick={()=>setShowPreview(false)} style={{ position:"fixed", inset:0, zIndex:500, background:"rgba(0,0,0,0.75)", backdropFilter:"blur(8px)", display:"flex", alignItems:"center", justifyContent:"center", padding:16 }}>
-          <div onClick={e=>e.stopPropagation()} style={{ width:"100%", maxWidth:760, maxHeight:"92vh", display:"flex", flexDirection:"column", borderRadius:20, overflow:"hidden", background:D?"#161616":"#f0f0f0" }}>
+        <div className="animate-fade-in" onClick={()=>setShowPreview(false)} style={{ position:"fixed", inset:0, zIndex:1000, background:"rgba(0,0,0,0.8)", backdropFilter:"blur(12px)", WebkitBackdropFilter:"blur(12px)", display:"flex", alignItems:"center", justifyContent:"center", padding: "24px" }}>
+          <div className="animate-fade-in-scale" onClick={e=>e.stopPropagation()} style={{ width:"100%", maxWidth: "840px", height: "90vh", display:"flex", flexDirection:"column", borderRadius: "24px", overflow:"hidden", background:D?"#111":"#f8f9fa", border: `1px solid ${D ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)"}`, boxShadow: "0 24px 80px rgba(0,0,0,0.4)" }}>
+            
             {/* Modal top bar */}
-            <div style={{ padding:"12px 18px", display:"flex", alignItems:"center", justifyContent:"space-between", background:D?"rgba(255,255,255,0.07)":"rgba(255,255,255,0.85)", backdropFilter:"blur(20px)", flexShrink:0, gap:8, flexWrap:"wrap" }}>
+            <div style={{ padding:"16px 24px", display:"flex", alignItems:"center", justifyContent:"space-between", background:D?"rgba(26,26,26,0.9)":"rgba(255,255,255,0.9)", backdropFilter:"blur(20px)", borderBottom: `1px solid ${D ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)"}`, flexShrink:0, gap:8, flexWrap:"wrap" }}>
               <div>
-                <p style={{ fontSize:14, fontWeight:700, color:textPrimary, margin:0 }}>{selected.name}</p>
-                <p style={{ fontSize:10, color:textMuted, margin:0 }}>{selected.style} · {TYPE_LABEL[selected.type]||selected.type}</p>
+                <p style={{ fontSize: "18px", fontWeight: "800", fontFamily: "var(--font-display)", color:textPrimary, margin: "0 0 4px" }}>{selected.name}</p>
+                <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                  <span style={{ fontSize: "11px", color:textSecondary, fontWeight: "500" }}>{selected.style}</span>
+                  <span style={{ width: "4px", height: "4px", borderRadius: "50%", background: textMuted }} />
+                  <span style={{ fontSize: "11px", fontWeight: "800", letterSpacing: "0.05em", color: TYPE_COLOR[selected.type] || theme.accent1, textTransform: "uppercase" }}>{TYPE_LABEL[selected.type]||selected.type}</span>
+                </div>
               </div>
-              <div style={{ display:"flex", gap:8 }}>
+              <div style={{ display:"flex", gap: "10px" }}>
                 {isPro && (
                   <button onClick={async () => {
-                    // Load html2pdf and download the preview
+                    notify("⏳ Preparing ultra-high-res PDF...");
                     await new Promise((res,rej)=>{
                       if(window.html2pdf){res();return;}
                       const s=document.createElement("script");
@@ -336,68 +356,66 @@ Return ONLY the complete modified HTML starting with <div. Keep all {{PLACEHOLDE
                     const el = document.getElementById("tpl-preview-content");
                     if(!el) return;
                     await window.html2pdf().set({
-                      margin:[10,10,10,10],
-                      filename:`${form.name||"resume"}_resume.pdf`,
-                      image:{type:"jpeg",quality:0.98},
-                      html2canvas:{scale:2,useCORS:true},
+                      margin:[0,0,0,0],
+                      filename:`${form.name||"spider"}_premium_resume.pdf`,
+                      image:{type:"jpeg",quality:1},
+                      html2canvas:{scale:3,useCORS:true},
                       jsPDF:{unit:"mm",format:"a4",orientation:"portrait"}
                     }).from(el).save();
-                    notify("✅ PDF downloaded!");
-                  }} style={{ ...glassBtn, padding:"7px 14px", fontSize:12, fontWeight:700, background:accent, color:D?"#1a1410":"#2d2520", borderRadius:10, border:"none", cursor:"pointer" }}>⬇ PDF</button>
+                    notify("✨ Premium PDF downloaded successfully!");
+                  }} className="btn-premium animate-pulse-glow" style={{ padding:"8px 16px", fontSize: "13px", fontWeight: "700", background:accent, color:D?"#0c0a08":"#fff", borderRadius:"12px", border:"none", cursor:"pointer" }}>
+                    ⬇ Download PDF
+                  </button>
                 )}
-                <button onClick={()=>setShowPreview(false)} style={{ ...glassBtn, padding:"7px 12px", fontSize:13, color:textSecondary, borderRadius:10, cursor:"pointer" }}>✕</button>
+                <button onClick={()=>setShowPreview(false)} className="btn-glass" style={{ width: "40px", height: "40px", display: "flex", alignItems: "center", justifyContent: "center", padding:0, fontSize: "16px", color:textSecondary, borderRadius:"12px" }}>✕</button>
               </div>
             </div>
+
             {/* Modify bar — Pro only */}
             {isPro && (
-              <div style={{ padding:"9px 14px", background:D?"rgba(255,255,255,0.03)":"rgba(255,255,255,0.65)", borderBottom:`1px solid ${D?"rgba(255,255,255,0.08)":"rgba(0,0,0,0.06)"}`, display:"flex", gap:8, flexShrink:0 }}>
-                <input value={modifyPrompt} onChange={e=>setModifyPrompt(e.target.value)} onKeyDown={e=>e.key==="Enter"&&modifyTpl()} placeholder='Modify: e.g. "change to blue, add a photo placeholder, make header bigger"' style={{ ...glassInput, flex:1, borderRadius:10, padding:"8px 14px", fontSize:12, color:textPrimary, boxSizing:"border-box" }} />
-                <button onClick={modifyTpl} disabled={modifyLoading||!modifyPrompt.trim()} style={{ ...glassBtn, padding:"8px 16px", fontSize:12, fontWeight:700, background:modifyLoading?"transparent":accent, color:modifyLoading?textMuted:(D?"#1a1410":"#2d2520"), borderRadius:10, border:"none", cursor:modifyLoading?"not-allowed":"pointer", flexShrink:0 }}>
-                  {modifyLoading ? "⏳" : "✏️ Modify & Save"}
+              <div style={{ padding:"12px 24px", background:D?"rgba(255,255,255,0.02)":"rgba(255,255,255,0.5)", borderBottom:`1px solid ${D?"rgba(255,255,255,0.05)":"rgba(0,0,0,0.05)"}`, display:"flex", gap: "12px", flexShrink:0 }}>
+                <input value={modifyPrompt} onChange={e=>setModifyPrompt(e.target.value)} onKeyDown={e=>e.key==="Enter"&&modifyTpl()} placeholder='✨ Tell AI to modify: "change headers to blue", "add a photo", "change to two-column"' style={{ background: D ? "rgba(0,0,0,0.2)" : "rgba(255,255,255,0.8)", border: `1px solid ${theme.accent1}44`, flex:1, borderRadius:"12px", padding:"12px 16px", fontSize: "14px", color:textPrimary, outline: "none", transition: "all 0.2s" }} />
+                <button onClick={modifyTpl} disabled={modifyLoading||!modifyPrompt.trim()} className={!modifyLoading && modifyPrompt.trim() ? "btn-premium" : "btn-glass"} style={{ padding:"0 20px", fontSize: "14px", fontWeight: "700", background:modifyLoading?"transparent":accent, color:modifyLoading?textMuted:(D?"#0c0a08":"#fff"), borderRadius:"12px", border:"none", cursor:modifyLoading?"not-allowed":"pointer", flexShrink:0, display: "flex", alignItems: "center", gap: "8px" }}>
+                  {modifyLoading ? "⏳ Updating..." : "Apply Changes"}
                 </button>
               </div>
             )}
-            {/* Preview */}
-            <div style={{ flex:1, overflowY:"auto", padding:18 }}>
-              {/* Use in Resume + format buttons */}
-              <div style={{ display:"flex", gap:8, marginBottom:14, flexWrap:"wrap" }}>
+
+            {/* Preview Area */}
+            <div style={{ flex:1, overflowY:"auto", padding: "24px", background: D ? "#0a0a0c" : "#e4e5e7", display: "flex", flexDirection: "column", alignItems: "center" }}>
+              
+              {/* Actions */}
+              <div style={{ display:"flex", gap: "12px", marginBottom: "24px", flexWrap:"wrap", width: "100%", maxWidth: "800px" }}>
                 <button onClick={() => {
-                  // Render template with user's REAL data and apply to preview
                   const realHtml = renderTpl(selected, form);
                   if (setAppliedTemplateHtml) setAppliedTemplateHtml(realHtml);
                   setShowPreview(false);
                   setPage("preview");
-                  notify("✅ Template applied! Opening Preview...");
-                }} style={{ flex:1, padding:"10px 14px", borderRadius:12, border:`1.5px solid ${theme.accent1}`, background:`${theme.accent1}18`, color:theme.accent1, fontSize:13, fontWeight:700, cursor:"pointer" }}>
-                  ✓ Use in Resume
+                  notify("✨ Premium template applied!");
+                }} className="btn-premium animate-pulse-glow" style={{ flex:1, padding:"16px", borderRadius:"16px", background: `linear-gradient(135deg, ${theme.accent1}, ${theme.accent2})`, color: D ? "#0c0a08" : "#fff", fontSize: "15px", fontWeight: "800", border: "none" }}>
+                  ✓ Set as Active Resume
                 </button>
+                
                 {[
-                  { label:"⬇ PDF", fmt:"pdf" },
-                  { label:"📝 Word", fmt:"docx" },
-                  { label:"🖼 PNG", fmt:"png" },
-                  { label:"📃 TXT", fmt:"txt" },
-                ].map(({label, fmt}) => (
+                  { label:"⬇ PDF", fmt:"pdf", icon: "📄" },
+                  { label:"⬇ Word", fmt:"docx", icon: "📝" },
+                  { label:"⬇ Image", fmt:"png", icon: "🖼️" },
+                ].map(({label, fmt, icon}) => (
                   <button key={fmt} onClick={async () => {
                     if (!isPro) { setPage("upgrade"); return; }
-                    notify("⏳ Preparing download...");
+                    notify(`⏳ Preparing high-res ${fmt.toUpperCase()}...`);
                     try {
                       const el = document.getElementById("tpl-preview-content");
                       if (fmt === "pdf") {
                         await new Promise((res,rej)=>{ if(window.html2pdf){res();return;} const s=document.createElement("script"); s.src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"; s.onload=res; s.onerror=rej; document.head.appendChild(s); });
-                        await window.html2pdf().set({ margin:[10,10,10,10], filename:`${form.name||"resume"}_resume.pdf`, image:{type:"jpeg",quality:0.98}, html2canvas:{scale:2,useCORS:true}, jsPDF:{unit:"mm",format:"a4",orientation:"portrait"} }).from(el).save();
-                        notify("✅ PDF downloaded!");
+                        await window.html2pdf().set({ margin:[0,0,0,0], filename:`${form.name||"spider"}_resume.pdf`, image:{type:"jpeg",quality:1}, html2canvas:{scale:3,useCORS:true}, jsPDF:{unit:"mm",format:"a4",orientation:"portrait"} }).from(el).save();
+                        notify("✨ Superior PDF downloaded!");
                       } else if (fmt === "png") {
                         await new Promise((res,rej)=>{ if(window.html2canvas){res();return;} const s=document.createElement("script"); s.src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"; s.onload=res; s.onerror=rej; document.head.appendChild(s); });
-                        const canvas = await window.html2canvas(el, {scale:2, useCORS:true, backgroundColor:"#fff"});
-                        const a = document.createElement("a"); a.href=canvas.toDataURL("image/png"); a.download=`${form.name||"resume"}_resume.png`; document.body.appendChild(a); a.click(); document.body.removeChild(a);
-                        notify("✅ PNG downloaded!");
-                      } else if (fmt === "txt") {
-                        const lines = [form.name||"", [form.email,form.phone,form.location].filter(Boolean).join(" | "), "", form.summary||"", "", ...(form.experience?.filter(e=>e.role).flatMap(e=>[`${e.role} at ${e.company||""} (${e.duration||""})`, e.desc||"", ""])||[]), ...(form.education?.filter(e=>e.degree).map(e=>`${e.degree} — ${e.school||""} ${e.year||""}`)||[]), "", `Skills: ${form.skills||""}`];
-                        const blob = new Blob([lines.join("\n")], {type:"text/plain"});
-                        const a = document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=`${form.name||"resume"}_resume.txt`; document.body.appendChild(a); a.click(); document.body.removeChild(a);
-                        notify("✅ TXT downloaded!");
+                        const canvas = await window.html2canvas(el, {scale:3, useCORS:true, backgroundColor:"#fff"});
+                        const a = document.createElement("a"); a.href=canvas.toDataURL("image/png"); a.download=`${form.name||"spider"}_resume.png`; document.body.appendChild(a); a.click(); document.body.removeChild(a);
+                        notify("✨ HD Canvas PNG downloaded!");
                       } else if (fmt === "docx") {
-                        // Load JSZip and generate
                         await new Promise((res,rej)=>{ if(window.JSZip){res();return;} const s=document.createElement("script"); s.src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"; s.onload=res; s.onerror=rej; document.head.appendChild(s); });
                         const esc=(s="")=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
                         const p=(t,b)=>`<w:p><w:r><w:rPr>${b?"<w:b/>":""}<w:sz w:val="22"/></w:rPr><w:t xml:space="preserve">${esc(t)}</w:t></w:r></w:p>`;
@@ -413,17 +431,19 @@ Return ONLY the complete modified HTML starting with <div. Keep all {{PLACEHOLDE
                         zip.file("word/document.xml",docXml);
                         zip.file("word/_rels/document.xml.rels",`<?xml version="1.0"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"></Relationships>`);
                         const blob=await zip.generateAsync({type:"blob",mimeType:"application/vnd.openxmlformats-officedocument.wordprocessingml.document"});
-                        const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=`${form.name||"resume"}_resume.docx`; document.body.appendChild(a); a.click(); document.body.removeChild(a);
-                        notify("✅ Word doc downloaded!");
+                        const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=`${form.name||"spider"}_resume.docx`; document.body.appendChild(a); a.click(); document.body.removeChild(a);
+                        notify("✨ MS Word doc downloaded!");
                       }
-                    } catch(e) { notify("❌ Download failed — try again."); }
-                  }} style={{ padding:"8px 12px", borderRadius:10, border:`1px solid ${D?"rgba(255,255,255,0.12)":"rgba(0,0,0,0.08)"}`, background:D?"rgba(255,255,255,0.06)":"rgba(255,255,255,0.45)", color:textSecondary, fontSize:12, fontWeight:600, cursor:"pointer", backdropFilter:"blur(10px)" }}>
-                    {label}
+                    } catch(e) { notify("❌ Export failed — try again."); }
+                  }} className="btn-glass card-hover-lift" style={{ padding:"0 16px", borderRadius:"16px", background: D?"rgba(255,255,255,0.05)":"rgba(255,255,255,0.8)", color:textSecondary, fontSize: "14px", fontWeight: "600", display: "flex", alignItems: "center", gap: "8px", boxShadow: D ? "none" : "0 4px 12px rgba(0,0,0,0.05)" }}>
+                    {icon} {label}
                   </button>
                 ))}
               </div>
-              <div id="tpl-preview-content" style={{ background:"#fff", borderRadius:12, overflow:"hidden", boxShadow:"0 4px 24px rgba(0,0,0,0.14)" }}>
-                <div dangerouslySetInnerHTML={{ __html: previewHtml }} />
+
+              {/* The actual HTML document */}
+              <div id="tpl-preview-content" style={{ background:"#fff", width: "100%", maxWidth: "210mm", minHeight: "297mm", padding: 0, boxShadow:"0 24px 80px rgba(0,0,0,0.15)", overflow: "hidden" }}>
+                <div dangerouslySetInnerHTML={{ __html: previewHtml }} style={{ width: "100%", height: "100%" }} />
               </div>
             </div>
           </div>
