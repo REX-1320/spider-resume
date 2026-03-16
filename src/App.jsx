@@ -125,15 +125,16 @@ export default function SpiderResumeAI() {
   }, []);
 
   // Derived styles
-  const textPrimary = D ? "rgba(240,230,215,0.95)" : "#1a1612";
-  const textSecondary = D ? "rgba(200,180,155,0.65)" : "rgba(100,80,60,0.6)";
-  const textMuted = D ? "rgba(180,160,135,0.45)" : "rgba(150,120,100,0.5)";
+  const textPrimary = D ? "rgba(240,230,215,0.95)" : "rgba(10,8,20,0.88)";
+  const textSecondary = D ? "rgba(200,180,155,0.65)" : "rgba(40,30,50,0.55)";
+  const textMuted = D ? "rgba(180,160,135,0.45)" : "rgba(80,60,90,0.4)";
+  // True liquid glass — transparent with high blur, only bg gradient shows through
   const glassBase = D
-    ? { background: "rgba(255,255,255,0.06)", backdropFilter: "blur(28px) saturate(180%)", WebkitBackdropFilter: "blur(28px) saturate(180%)", border: "1px solid rgba(255,255,255,0.10)", boxShadow: "0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.08)" }
-    : { background: "rgba(255,255,255,0.22)", backdropFilter: "blur(30px) saturate(200%)", WebkitBackdropFilter: "blur(30px) saturate(200%)", border: "1px solid rgba(255,255,255,0.5)", boxShadow: "0 12px 40px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.7), inset 0 -1px 0 rgba(0,0,0,0.04)" };
-  const glassCard = { ...glassBase, borderRadius: "20px" };
-  const glassInput = { ...glassBase, borderRadius: "10px", padding: "9px 14px", fontSize: "13px", color: textPrimary, width: "100%", outline: "none", background: D ? "rgba(255,255,255,0.07)" : "rgba(255,255,255,0.35)" };
-  const glassBtn = { ...glassBase, borderRadius: "14px", cursor: "pointer", fontWeight: "600", fontSize: "14px", transition: "all 0.2s ease", background: D ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.25)" };
+    ? { background: "rgba(255,255,255,0.05)", backdropFilter: "blur(40px) saturate(180%)", WebkitBackdropFilter: "blur(40px) saturate(180%)", border: "1px solid rgba(255,255,255,0.10)", boxShadow: "0 8px 32px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.06)" }
+    : { background: "rgba(255,255,255,0.15)", backdropFilter: "blur(40px) saturate(200%) brightness(1.05)", WebkitBackdropFilter: "blur(40px) saturate(200%) brightness(1.05)", border: "1px solid rgba(255,255,255,0.35)", boxShadow: "0 8px 32px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.5), inset 0 -1px 0 rgba(0,0,0,0.02)" };
+  const glassCard = { ...glassBase, borderRadius: "24px" };
+  const glassInput = { ...glassBase, borderRadius: "14px", padding: "11px 16px", fontSize: "14px", color: textPrimary, width: "100%", outline: "none", background: D ? "rgba(255,255,255,0.04)" : "rgba(255,255,255,0.18)" };
+  const glassBtn = { ...glassBase, borderRadius: "100px", cursor: "pointer", fontWeight: "600", fontSize: "14px", transition: "all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)", background: D ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.2)" };
 
   // ── Business Logic ──
 
@@ -318,203 +319,201 @@ export default function SpiderResumeAI() {
   );
 
   // ─── MAIN APP ───
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const navItems = [
+    { key: "builder",   icon: "✏️",  label: "Build" },
+    { key: "chat",      icon: "🤖",  label: "AI Chat" },
+    { key: "templates", icon: "🎨",  label: "Templates" },
+    { key: "jobs",      icon: "🎯",  label: "Jobs" },
+    { key: "cover",     icon: "📝",  label: "Cover Letter" },
+    { key: "interview", icon: "🎤",  label: "Interview" },
+    { key: "tracker",   icon: "📊",  label: "Tracker" },
+    { key: "linkedin",  icon: "💼",  label: "LinkedIn" },
+    { key: "preview",   icon: "👁",  label: "Preview" },
+    { key: "score",     icon: "🔍",  label: "ATS Score" },
+    { key: "account",   icon: "👤",  label: "Account" },
+  ];
+
+  const handleNavClick = (key) => { setPage(key); setMenuOpen(false); };
+
   return (
-    <div style={{ fontFamily: "var(--font-body)", background: theme.bg, position: "relative", overflow: "hidden", paddingBottom: !isPro ? "70px" : "0", display: "flex", flexDirection: "column", minHeight: "100vh", width: "100vw", boxSizing: "border-box", transition: "background 0.8s ease" }}>
+    <div style={{ fontFamily: "var(--font-body)", background: theme.bg, position: "relative", overflow: "hidden", minHeight: "100vh", width: "100vw", boxSizing: "border-box", transition: "background 0.8s ease" }}>
       
-      {/* Spider watermark */}
-      <div className="animate-breathe" style={{ position: "fixed", right: "-60px", bottom: "-40px", width: "55vw", height: "55vw", maxWidth: "700px", maxHeight: "700px", backgroundImage: "url(/spider_hero.png)", backgroundSize: "contain", backgroundRepeat: "no-repeat", backgroundPosition: "bottom right", opacity: D ? 0.06 : 0.04, pointerEvents: "none", zIndex: 0, mixBlendMode: D ? "screen" : "multiply", filter: D ? "drop-shadow(0 0 60px rgba(201,169,110,0.15))" : "none" }} />
+      {/* Spider watermark — blended into bg */}
+      <div className="animate-breathe" style={{
+        position: "fixed", right: "-20px", bottom: "-20px",
+        width: "60vw", height: "60vw", maxWidth: "800px", maxHeight: "800px",
+        backgroundImage: "url(/spider_hero.png)", backgroundSize: "contain",
+        backgroundRepeat: "no-repeat", backgroundPosition: "bottom right",
+        opacity: D ? 0.12 : 0.08, pointerEvents: "none", zIndex: 0,
+        mixBlendMode: "soft-light",
+        filter: `drop-shadow(0 0 80px ${theme.accent1}30) brightness(${D ? 1.2 : 0.9})`,
+      }} />
       
       {/* Animated ambient blobs */}
       {[
-        ["fixed","top","-80px","left","-80px","380px",theme.blob1],
-        ["fixed","bottom","-60px","right","-60px","320px",theme.blob2],
-        ["fixed","top","40%","left","60%","240px",theme.blob3]
+        ["fixed","top","-80px","left","-80px","420px",theme.blob1],
+        ["fixed","bottom","-60px","right","-60px","360px",theme.blob2],
+        ["fixed","top","35%","left","55%","280px",theme.blob3]
       ].map(([pos,v1,v1v,v2,v2v,size,color],i) => (
         <div key={i} className="ambient-blob" style={{ position: pos, [v1]: v1v, [v2]: v2v, width: size, height: size, background: `radial-gradient(circle, ${color} 0%, transparent 70%)`, animationDelay: `${i * -7}s` }} />
       ))}
 
-      {/* ── PREMIUM LIQUID GLASS HEADER ── */}
-      <div className="animate-fade-in-down" style={{ position: "sticky", top: 0, zIndex: 100 }}>
-
-        {/* Top bar: Logo + Theme + Dark toggle + User */}
-        <div style={{
-          ...glassBase,
-          borderRadius: 0, border: "none",
-          borderBottom: `1px solid ${D ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.5)"}`,
-          padding: "10px 20px",
-          display: "flex", alignItems: "center", justifyContent: "space-between",
-          backdropFilter: "blur(40px) saturate(220%)", WebkitBackdropFilter: "blur(40px) saturate(220%)",
-          background: D ? "rgba(15,10,25,0.65)" : "rgba(255,255,255,0.55)",
-        }}>
-          {/* Logo */}
-          <div style={{ display: "flex", alignItems: "center", gap: "10px", flexShrink: 0 }}>
-            <img src={LOGO_SRC} alt="Spider" onError={e => { e.target.style.display = "none"; }}
-              style={{ height: "36px", width: "auto", objectFit: "contain", mixBlendMode: D ? "screen" : "multiply", filter: D ? "drop-shadow(0 0 10px rgba(201,169,110,0.3))" : "drop-shadow(0 1px 4px rgba(80,0,0,0.12))" }} />
-            <span style={{ fontSize: "13px", fontWeight: "800", letterSpacing: "0.08em", fontFamily: "var(--font-display)", background: `linear-gradient(135deg, ${theme.accent1}, ${theme.accent2})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>SPIDER AI</span>
-            {isPro && <span className="badge-pro animate-pulse-glow" style={{ color: D ? "#0c0a08" : "#fff" }}>PRO</span>}
-          </div>
-
-          {/* Right controls */}
-          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-            {/* Theme picker */}
-            <div style={{ position: "relative" }} data-theme-menu>
-              <button
-                onClick={() => setThemeMenuOpen(o => !o)}
-                style={{
-                  width: "32px", height: "32px", borderRadius: "50%",
-                  background: `linear-gradient(135deg, ${theme.accent1}, ${theme.accent2})`,
-                  border: `2px solid ${D ? "rgba(255,255,255,0.2)" : "rgba(255,255,255,0.8)"}`,
-                  cursor: "pointer", boxShadow: `0 4px 16px ${theme.accent1}40`,
-                  transition: "all 0.3s var(--ease-spring)",
-                }}
-                title="Change Theme"
-              />
-              {themeMenuOpen && (
-                <div className="animate-fade-in-scale" style={{
-                  position: "absolute", top: "calc(100% + 10px)", right: 0,
-                  width: "320px", padding: "16px",
-                  ...glassBase, borderRadius: "20px",
-                  border: `1px solid ${D ? "rgba(255,255,255,0.12)" : "rgba(255,255,255,0.7)"}`,
-                  boxShadow: D ? "0 24px 64px rgba(0,0,0,0.6)" : "0 24px 64px rgba(0,0,0,0.15)",
-                  zIndex: 200, maxHeight: "420px", overflowY: "auto",
-                }}>
-                  {[
-                    { label: "☀️ Light", themes: LIGHT_THEMES_FREE },
-                    { label: "🌙 Dark", themes: DARK_THEMES_FREE },
-                    { label: "✨ Premium Light", themes: isPro ? LIGHT_THEMES_PRO : [] },
-                  ].map(({ label, themes: tList }) => tList.length > 0 && (
-                    <div key={label} style={{ marginBottom: "12px" }}>
-                      <p style={{ fontSize: "10px", fontWeight: "800", letterSpacing: "0.12em", textTransform: "uppercase", color: textMuted, marginBottom: "8px" }}>{label}</p>
-                      <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
-                        {tList.map(t => (
-                          <button key={t.id} onClick={() => { setThemeId(t.id); setIsDark(DARK_THEMES_FREE.some(x => x.id === t.id) || DARK_THEMES_PRO.some(x => x.id === t.id)); setThemeMenuOpen(false); }}
-                            title={t.name}
-                            style={{
-                              width: "28px", height: "28px", borderRadius: "50%",
-                              background: `linear-gradient(135deg, ${t.accent1}, ${t.accent2})`,
-                              border: themeId === t.id ? `3px solid ${D ? "#fff" : "#222"}` : `2px solid ${D ? "rgba(255,255,255,0.15)" : "rgba(255,255,255,0.8)"}`,
-                              cursor: "pointer",
-                              boxShadow: themeId === t.id ? `0 0 0 2px ${t.accent1}` : "0 2px 8px rgba(0,0,0,0.1)",
-                              transform: themeId === t.id ? "scale(1.2)" : "scale(1)",
-                              transition: "all 0.2s var(--ease-spring)",
-                            }}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                  {!isPro && (
-                    <div style={{ paddingTop: "10px", borderTop: `1px solid ${D ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)"}`, marginTop: "4px" }}>
-                      <p style={{ fontSize: "11px", color: textMuted, marginBottom: "8px" }}>🔒 20 Premium themes — Pro plan</p>
-                      <button onClick={() => { setPage("upgrade"); setThemeMenuOpen(false); }} className="btn-premium" style={{ width: "100%", padding: "9px", fontSize: "12px", fontWeight: "700", background: `linear-gradient(135deg, ${theme.accent1}, ${theme.accent2})`, color: D ? "#0c0a08" : "#fff", borderRadius: "12px", border: "none" }}>Unlock All Themes ✦</button>
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-
-            {/* Dark/Light toggle */}
-            <button onClick={() => setIsDark(d => !d)} style={{
-              width: "36px", height: "36px", borderRadius: "50%", cursor: "pointer",
-              display: "flex", alignItems: "center", justifyContent: "center", fontSize: "16px",
-              background: D ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.5)",
-              border: `1px solid ${D ? "rgba(255,255,255,0.12)" : "rgba(255,255,255,0.8)"}`,
-              backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)",
-              transition: "all 0.3s var(--ease-spring)",
-            }}>
-              {D ? "☀️" : "🌙"}
-            </button>
-
-            {/* Status display */}
-            <div style={{
-              padding: "6px 14px", borderRadius: "100px",
-              background: D ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.45)",
-              border: `1px solid ${D ? "rgba(255,255,255,0.1)" : "rgba(255,255,255,0.7)"}`,
-              backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)",
-              fontSize: "11px", color: textSecondary, fontWeight: "600", flexShrink: 0,
-              display: "flex", alignItems: "center", gap: "6px",
-            }}>
-              <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: theme.accent1, display: "inline-block", animation: "pulseGlowing 2s infinite", boxShadow: `0 0 6px ${theme.accent1}` }} />
-              {isGuest ? <span style={{ color: "#e8a06e" }}>Guest Mode</span> : isPro ? <span style={{ color: theme.accent1, fontWeight: "800" }}>Pro ✦</span> : `${1 - (userData?.usageCount || 0)} AI left`}
-            </div>
-          </div>
+      {/* ── FLOATING TOP BAR ── */}
+      <div className="animate-fade-in-down" style={{
+        position: "fixed", top: "12px", left: "12px", right: "12px", zIndex: 200,
+        display: "flex", alignItems: "center", justifyContent: "space-between",
+        padding: "10px 16px", borderRadius: "20px",
+        background: D ? "rgba(255,255,255,0.04)" : "rgba(255,255,255,0.12)",
+        backdropFilter: "blur(40px) saturate(200%)", WebkitBackdropFilter: "blur(40px) saturate(200%)",
+        border: `1px solid ${D ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.35)"}`,
+        boxShadow: D ? "0 8px 40px rgba(0,0,0,0.3)" : "0 8px 40px rgba(0,0,0,0.06)",
+      }}>
+        {/* Left: Menu button + Logo */}
+        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+          <button onClick={() => setMenuOpen(o => !o)} style={{
+            width: "40px", height: "40px", borderRadius: "14px", cursor: "pointer",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            background: menuOpen ? (D ? "rgba(255,255,255,0.12)" : "rgba(255,255,255,0.4)") : (D ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.2)"),
+            backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)",
+            border: `1px solid ${D ? "rgba(255,255,255,0.12)" : "rgba(255,255,255,0.4)"}`,
+            transition: "all 0.3s var(--ease-spring)",
+            fontSize: "18px", color: textPrimary,
+          }}>
+            {menuOpen ? "✕" : "☰"}
+          </button>
+          <img src={LOGO_SRC} alt="Spider" onError={e => { e.target.style.display = "none"; }}
+            style={{ height: "34px", width: "auto", objectFit: "contain", mixBlendMode: D ? "screen" : "multiply", filter: D ? `drop-shadow(0 0 12px ${theme.accent1}40)` : `drop-shadow(0 2px 6px rgba(0,0,0,0.1))` }} />
+          {isPro && <span className="badge-pro" style={{ color: D ? "#0c0a08" : "#fff", fontSize: "9px" }}>PRO</span>}
         </div>
 
-        {/* Nav capsule bar */}
-        <div style={{
-          backdropFilter: "blur(32px) saturate(200%)", WebkitBackdropFilter: "blur(32px) saturate(200%)",
-          background: D ? "rgba(12,8,20,0.50)" : "rgba(255,255,255,0.40)",
-          borderBottom: `1px solid ${D ? "rgba(255,255,255,0.05)" : "rgba(255,255,255,0.55)"}`,
-          padding: "8px 16px",
-          display: "flex", alignItems: "center", gap: "6px",
-          overflowX: "auto", scrollbarWidth: "none",
-        }}>
-          {[
-            { key: "builder",   icon: "✏️",  label: "Build" },
-            { key: "chat",      icon: "🤖",  label: "AI Chat" },
-            { key: "templates", icon: "🎨",  label: "Templates" },
-            { key: "jobs",      icon: "🎯",  label: "Jobs" },
-            { key: "cover",     icon: "📝",  label: "Cover Letter" },
-            { key: "interview", icon: "🎤",  label: "Interview" },
-            { key: "tracker",   icon: "📊",  label: "Tracker" },
-            { key: "linkedin",  icon: "💼",  label: "LinkedIn" },
-            { key: "preview",   icon: "👁",  label: "Preview" },
-            { key: "score",     icon: "🔍",  label: "ATS Score" },
-            { key: "account",   icon: "👤",  label: "Account" },
-          ].map(({ key, icon, label }) => {
+        {/* Right: Current page indicator + dark toggle */}
+        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+          {/* Current page capsule */}
+          <div style={{
+            padding: "6px 16px", borderRadius: "100px",
+            background: D ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.25)",
+            backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)",
+            border: `1px solid ${D ? "rgba(255,255,255,0.1)" : "rgba(255,255,255,0.45)"}`,
+            fontSize: "12px", fontWeight: "600", color: textSecondary,
+            display: "flex", alignItems: "center", gap: "6px",
+          }}>
+            <span>{navItems.find(n => n.key === page)?.icon}</span>
+            <span className="hide-mobile">{navItems.find(n => n.key === page)?.label}</span>
+          </div>
+
+          {/* Dark/Light toggle */}
+          <button onClick={() => setIsDark(d => !d)} style={{
+            width: "38px", height: "38px", borderRadius: "14px", cursor: "pointer",
+            display: "flex", alignItems: "center", justifyContent: "center", fontSize: "16px",
+            background: D ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.25)",
+            backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)",
+            border: `1px solid ${D ? "rgba(255,255,255,0.1)" : "rgba(255,255,255,0.4)"}`,
+            transition: "all 0.3s var(--ease-spring)", color: textPrimary,
+          }}>
+            {D ? "☀️" : "🌙"}
+          </button>
+        </div>
+      </div>
+
+      {/* ── SIDEBAR OVERLAY (click outside to close) ── */}
+      {menuOpen && (
+        <div onClick={() => setMenuOpen(false)} className="animate-fade-in" style={{
+          position: "fixed", inset: 0, zIndex: 250,
+          background: D ? "rgba(0,0,0,0.4)" : "rgba(0,0,0,0.15)",
+          backdropFilter: "blur(4px)", WebkitBackdropFilter: "blur(4px)",
+        }} />
+      )}
+
+      {/* ── VERTICAL SLIDE-IN SIDEBAR ── */}
+      <div style={{
+        position: "fixed", top: 0, left: 0, bottom: 0, zIndex: 300,
+        width: "260px",
+        transform: menuOpen ? "translateX(0)" : "translateX(-110%)",
+        transition: "transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)",
+        display: "flex", flexDirection: "column",
+        padding: "24px 16px",
+        background: D ? "rgba(15,10,25,0.7)" : "rgba(255,255,255,0.2)",
+        backdropFilter: "blur(60px) saturate(200%)", WebkitBackdropFilter: "blur(60px) saturate(200%)",
+        borderRight: `1px solid ${D ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.4)"}`,
+        boxShadow: D ? "8px 0 60px rgba(0,0,0,0.5)" : "8px 0 60px rgba(0,0,0,0.08)",
+      }}>
+        {/* Sidebar header */}
+        <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "32px", paddingLeft: "8px" }}>
+          <img src={LOGO_SRC} alt="Spider" onError={e => { e.target.style.display = "none"; }}
+            style={{ height: "32px", mixBlendMode: D ? "screen" : "multiply", filter: D ? `drop-shadow(0 0 10px ${theme.accent1}40)` : "none" }} />
+          <button onClick={() => setMenuOpen(false)} style={{
+            marginLeft: "auto", width: "32px", height: "32px", borderRadius: "10px",
+            background: D ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.25)",
+            border: `1px solid ${D ? "rgba(255,255,255,0.1)" : "rgba(255,255,255,0.35)"}`,
+            cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
+            fontSize: "14px", color: textMuted, transition: "all 0.2s",
+          }}>✕</button>
+        </div>
+
+        {/* Nav items */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "4px", flex: 1, overflowY: "auto" }}>
+          {navItems.map(({ key, icon, label }) => {
             const active = page === key;
             return (
-              <button key={key} onClick={() => setPage(key)} style={{
-                display: "flex", alignItems: "center", gap: "6px",
-                padding: "8px 16px", borderRadius: "100px", flexShrink: 0,
-                fontSize: "13px", fontWeight: active ? "700" : "500",
-                fontFamily: "var(--font-body)", cursor: "pointer",
-                transition: "all 0.3s var(--ease-spring)",
-                border: active
-                  ? `1px solid ${D ? "rgba(255,255,255,0.3)" : "rgba(255,255,255,0.9)"}`
-                  : `1px solid ${D ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.35)"}`,
-                background: active
-                  ? (D ? "rgba(255,255,255,0.14)" : "rgba(255,255,255,0.75)")
-                  : (D ? "rgba(255,255,255,0.04)" : "rgba(255,255,255,0.22)"),
-                backdropFilter: active ? "blur(20px) saturate(200%)" : "blur(8px)",
-                WebkitBackdropFilter: active ? "blur(20px) saturate(200%)" : "blur(8px)",
-                color: active ? (D ? "#f5f0ea" : "#1a1612") : (D ? "rgba(220,200,180,0.55)" : "rgba(60,45,30,0.5)"),
-                boxShadow: active
-                  ? (D ? "0 4px 20px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.2)" : "0 4px 20px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.95)")
-                  : "none",
-                transform: active ? "scale(1.02)" : "scale(1)",
-              }}>
-                <span style={{ fontSize: "14px", lineHeight: 1 }}>{icon}</span>
-                <span style={{ whiteSpace: "nowrap" }}>{label}</span>
-                {active && <span style={{ width: "5px", height: "5px", borderRadius: "50%", background: `linear-gradient(135deg, ${theme.accent1}, ${theme.accent2})`, boxShadow: `0 0 8px ${theme.accent1}` }} />}
+              <button key={key} onClick={() => handleNavClick(key)}
+                className="sidebar-nav-item"
+                style={{
+                  display: "flex", alignItems: "center", gap: "12px",
+                  padding: "12px 16px", borderRadius: "16px",
+                  fontSize: "14px", fontWeight: active ? "700" : "500",
+                  fontFamily: "var(--font-body)", cursor: "pointer",
+                  textAlign: "left", width: "100%",
+                  transition: "all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)",
+                  border: active
+                    ? `1px solid ${D ? "rgba(255,255,255,0.2)" : "rgba(255,255,255,0.7)"}`
+                    : "1px solid transparent",
+                  background: active
+                    ? (D ? "rgba(255,255,255,0.1)" : "rgba(255,255,255,0.45)")
+                    : "transparent",
+                  backdropFilter: active ? "blur(24px) saturate(200%)" : "none",
+                  WebkitBackdropFilter: active ? "blur(24px) saturate(200%)" : "none",
+                  color: active ? textPrimary : textSecondary,
+                  boxShadow: active
+                    ? (D ? "0 4px 24px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1)" : "0 4px 24px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.8)")
+                    : "none",
+                }}>
+                <span style={{ fontSize: "18px", width: "24px", textAlign: "center" }}>{icon}</span>
+                <span>{label}</span>
+                {active && <span style={{ marginLeft: "auto", width: "6px", height: "6px", borderRadius: "50%", background: `linear-gradient(135deg, ${theme.accent1}, ${theme.accent2})`, boxShadow: `0 0 10px ${theme.accent1}` }} />}
               </button>
             );
           })}
+        </div>
 
-          {/* Spacer push right */}
-          <div style={{ flex: 1, minWidth: "12px" }} />
-
-          {/* Upgrade capsule */}
+        {/* Sidebar footer */}
+        <div style={{ borderTop: `1px solid ${D ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.3)"}`, paddingTop: "16px", marginTop: "12px" }}>
           {!isPro && (
-            <button onClick={() => setPage("upgrade")} style={{
-              display: "flex", alignItems: "center", gap: "6px",
-              padding: "8px 18px", borderRadius: "100px", flexShrink: 0,
-              fontSize: "13px", fontWeight: "800", cursor: "pointer",
+            <button onClick={() => handleNavClick("upgrade")} style={{
+              width: "100%", padding: "14px", borderRadius: "16px",
+              fontSize: "14px", fontWeight: "800", cursor: "pointer",
               background: `linear-gradient(135deg, ${theme.accent1}, ${theme.accent2})`,
               color: D ? "#0c0a08" : "#fff", border: "none",
-              boxShadow: `0 4px 20px ${theme.accent1}50`,
+              boxShadow: `0 4px 20px ${theme.accent1}40`,
               fontFamily: "var(--font-body)",
-              animation: "pulseGlow 3s ease-in-out infinite",
+              display: "flex", alignItems: "center", justifyContent: "center", gap: "8px",
               transition: "all 0.3s var(--ease-spring)",
             }}>
-              ✦ Go Pro
+              ✦ Upgrade to Pro
             </button>
           )}
+          <div style={{ display: "flex", alignItems: "center", gap: "8px", marginTop: "12px", padding: "0 4px" }}>
+            <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: theme.accent1, boxShadow: `0 0 8px ${theme.accent1}`, animation: "pulseGlowing 2s infinite" }} />
+            <span style={{ fontSize: "11px", color: textMuted, fontWeight: "500" }}>
+              {isGuest ? "Guest Mode" : isPro ? "Pro Plan ✦" : `${Math.max(0, 1 - (userData?.usageCount || 0))} AI generate left`}
+            </span>
+          </div>
         </div>
       </div>
 
       {/* ── PAGE CONTENT ── */}
-      <div className="animate-fade-in" style={{ flex: 1 }}>
+      <div className="animate-fade-in" style={{ paddingTop: "76px", minHeight: "100vh", position: "relative", zIndex: 1 }}>
         {page === "builder" && (
           <BuilderPage form={form} setForm={setForm} template={template} setTemplate={setTemplate}
             allTemplates={allTemplates} {...styleProps} isPro={isPro} page={page} setPage={setPage}
