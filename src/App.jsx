@@ -80,8 +80,8 @@ export default function SpiderResumeAI() {
   const [fileImportDone, setFileImportDone] = useState(false);
   const [fileImportError, setFileImportError] = useState("");
 
-  // Themes
-  const allThemes = [...LIGHT_THEMES_FREE, ...DARK_THEMES_FREE, ...(isPro ? [...LIGHT_THEMES_PRO, ...DARK_THEMES_PRO] : [])];
+  // Themes — always include pro themes so the object resolves; picker gates selection
+  const allThemes = [...LIGHT_THEMES_FREE, ...DARK_THEMES_FREE, ...LIGHT_THEMES_PRO, ...DARK_THEMES_PRO];
   const theme = allThemes.find(t => t.id === themeId) || allThemes[0];
   const D = isDark;
 
@@ -333,62 +333,183 @@ export default function SpiderResumeAI() {
         <div key={i} className="ambient-blob" style={{ position: pos, [v1]: v1v, [v2]: v2v, width: size, height: size, background: `radial-gradient(circle, ${color} 0%, transparent 70%)`, animationDelay: `${i * -7}s` }} />
       ))}
 
-      {/* ── PREMIUM HEADER ── */}
+      {/* ── PREMIUM LIQUID GLASS HEADER ── */}
       <div className="animate-fade-in-down" style={{ position: "sticky", top: 0, zIndex: 100 }}>
+
+        {/* Top bar: Logo + Theme + Dark toggle + User */}
         <div style={{
-          ...glassBase, padding: "10px 16px",
-          display: "flex", alignItems: "center", justifyContent: "space-between",
+          ...glassBase,
           borderRadius: 0, border: "none",
-          borderBottom: `1px solid ${D ? "rgba(201,169,110,0.08)" : "rgba(0,0,0,0.05)"}`,
-          gap: "10px",
-          transition: "all 0.4s ease",
+          borderBottom: `1px solid ${D ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.5)"}`,
+          padding: "10px 20px",
+          display: "flex", alignItems: "center", justifyContent: "space-between",
+          backdropFilter: "blur(40px) saturate(220%)", WebkitBackdropFilter: "blur(40px) saturate(220%)",
+          background: D ? "rgba(15,10,25,0.65)" : "rgba(255,255,255,0.55)",
         }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "8px", flexShrink: 0 }}>
+          {/* Logo */}
+          <div style={{ display: "flex", alignItems: "center", gap: "10px", flexShrink: 0 }}>
             <img src={LOGO_SRC} alt="Spider" onError={e => { e.target.style.display = "none"; }}
-              style={{ height: "38px", width: "auto", objectFit: "contain", mixBlendMode: D ? "screen" : "multiply", filter: D ? "drop-shadow(0 0 10px rgba(201,169,110,0.3))" : "drop-shadow(0 1px 4px rgba(80,0,0,0.15))", userSelect: "none", transition: "filter 0.4s ease" }} />
+              style={{ height: "36px", width: "auto", objectFit: "contain", mixBlendMode: D ? "screen" : "multiply", filter: D ? "drop-shadow(0 0 10px rgba(201,169,110,0.3))" : "drop-shadow(0 1px 4px rgba(80,0,0,0.12))" }} />
+            <span style={{ fontSize: "13px", fontWeight: "800", letterSpacing: "0.08em", fontFamily: "var(--font-display)", background: `linear-gradient(135deg, ${theme.accent1}, ${theme.accent2})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>SPIDER AI</span>
             {isPro && <span className="badge-pro animate-pulse-glow" style={{ color: D ? "#0c0a08" : "#fff" }}>PRO</span>}
           </div>
-          <div style={{ display: "flex", gap: "4px", alignItems: "center", flexWrap: "nowrap", overflowX: "auto", flexShrink: 1 }}>
-            {[
-              {key:"builder",icon:"✏️",label:"Build"}, {key:"chat",icon:"🤖",label:"AI Chat"},
-              {key:"templates",icon:"🎨",label:"Templates"}, {key:"jobs",icon:"🎯",label:"Jobs"},
-              {key:"cover",icon:"📝",label:"Cover"}, {key:"interview",icon:"🎤",label:"Interview"},
-              {key:"tracker",icon:"📊",label:"Tracker"}, {key:"linkedin",icon:"💼",label:"LinkedIn"},
-              {key:"preview",icon:"👁",label:"Preview"}, {key:"score",icon:"🔍",label:"Score"},
-              {key:"account",icon:"👤",label:""}
-            ].map(({key,icon,label}) => (
-              <button key={key} onClick={() => setPage(key)}
-                className={`nav-pill ${page === key ? "active" : ""}`}
+
+          {/* Right controls */}
+          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+            {/* Theme picker */}
+            <div style={{ position: "relative" }} data-theme-menu>
+              <button
+                onClick={() => setThemeMenuOpen(o => !o)}
                 style={{
-                  background: page === key
-                    ? (D ? "rgba(201,169,110,0.15)" : "rgba(201,169,110,0.12)")
-                    : (D ? "rgba(255,255,255,0.04)" : "rgba(255,255,255,0.12)"),
-                  color: page === key ? (D ? "#e8c88a" : theme.accent1) : textSecondary,
-                  border: page === key ? `1px solid ${D ? "rgba(201,169,110,0.2)" : "rgba(201,169,110,0.15)"}` : "1px solid transparent",
-                  fontFamily: "var(--font-body)",
+                  width: "32px", height: "32px", borderRadius: "50%",
+                  background: `linear-gradient(135deg, ${theme.accent1}, ${theme.accent2})`,
+                  border: `2px solid ${D ? "rgba(255,255,255,0.2)" : "rgba(255,255,255,0.8)"}`,
+                  cursor: "pointer", boxShadow: `0 4px 16px ${theme.accent1}40`,
+                  transition: "all 0.3s var(--ease-spring)",
+                }}
+                title="Change Theme"
+              />
+              {themeMenuOpen && (
+                <div className="animate-fade-in-scale" style={{
+                  position: "absolute", top: "calc(100% + 10px)", right: 0,
+                  width: "320px", padding: "16px",
+                  ...glassBase, borderRadius: "20px",
+                  border: `1px solid ${D ? "rgba(255,255,255,0.12)" : "rgba(255,255,255,0.7)"}`,
+                  boxShadow: D ? "0 24px 64px rgba(0,0,0,0.6)" : "0 24px 64px rgba(0,0,0,0.15)",
+                  zIndex: 200, maxHeight: "420px", overflowY: "auto",
                 }}>
-                {icon}{label ? " " + label : ""}
-              </button>
-            ))}
-            {!isPro && <button onClick={() => setPage("upgrade")} className="btn-premium" style={{ padding: "6px 10px", borderRadius: "12px", border: "none", fontSize: "11px", background: `linear-gradient(135deg, ${theme.accent1}, ${theme.accent2})`, color: D ? "#0c0a08" : "#fff", flexShrink: 0 }}>✦</button>}
-            <button onClick={() => setIsDark(d => !d)} className="nav-pill" style={{ background: D ? "rgba(255,255,255,0.04)" : "rgba(255,255,255,0.12)", color: textSecondary, fontSize: "14px", border: "1px solid transparent" }}>{D ? "☀️" : "🌙"}</button>
+                  {[
+                    { label: "☀️ Light", themes: LIGHT_THEMES_FREE },
+                    { label: "🌙 Dark", themes: DARK_THEMES_FREE },
+                    { label: "✨ Premium Light", themes: isPro ? LIGHT_THEMES_PRO : [] },
+                  ].map(({ label, themes: tList }) => tList.length > 0 && (
+                    <div key={label} style={{ marginBottom: "12px" }}>
+                      <p style={{ fontSize: "10px", fontWeight: "800", letterSpacing: "0.12em", textTransform: "uppercase", color: textMuted, marginBottom: "8px" }}>{label}</p>
+                      <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+                        {tList.map(t => (
+                          <button key={t.id} onClick={() => { setThemeId(t.id); setIsDark(DARK_THEMES_FREE.some(x => x.id === t.id) || DARK_THEMES_PRO.some(x => x.id === t.id)); setThemeMenuOpen(false); }}
+                            title={t.name}
+                            style={{
+                              width: "28px", height: "28px", borderRadius: "50%",
+                              background: `linear-gradient(135deg, ${t.accent1}, ${t.accent2})`,
+                              border: themeId === t.id ? `3px solid ${D ? "#fff" : "#222"}` : `2px solid ${D ? "rgba(255,255,255,0.15)" : "rgba(255,255,255,0.8)"}`,
+                              cursor: "pointer",
+                              boxShadow: themeId === t.id ? `0 0 0 2px ${t.accent1}` : "0 2px 8px rgba(0,0,0,0.1)",
+                              transform: themeId === t.id ? "scale(1.2)" : "scale(1)",
+                              transition: "all 0.2s var(--ease-spring)",
+                            }}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                  {!isPro && (
+                    <div style={{ paddingTop: "10px", borderTop: `1px solid ${D ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)"}`, marginTop: "4px" }}>
+                      <p style={{ fontSize: "11px", color: textMuted, marginBottom: "8px" }}>🔒 20 Premium themes — Pro plan</p>
+                      <button onClick={() => { setPage("upgrade"); setThemeMenuOpen(false); }} className="btn-premium" style={{ width: "100%", padding: "9px", fontSize: "12px", fontWeight: "700", background: `linear-gradient(135deg, ${theme.accent1}, ${theme.accent2})`, color: D ? "#0c0a08" : "#fff", borderRadius: "12px", border: "none" }}>Unlock All Themes ✦</button>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+
+            {/* Dark/Light toggle */}
+            <button onClick={() => setIsDark(d => !d)} style={{
+              width: "36px", height: "36px", borderRadius: "50%", cursor: "pointer",
+              display: "flex", alignItems: "center", justifyContent: "center", fontSize: "16px",
+              background: D ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.5)",
+              border: `1px solid ${D ? "rgba(255,255,255,0.12)" : "rgba(255,255,255,0.8)"}`,
+              backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)",
+              transition: "all 0.3s var(--ease-spring)",
+            }}>
+              {D ? "☀️" : "🌙"}
+            </button>
+
+            {/* Status display */}
+            <div style={{
+              padding: "6px 14px", borderRadius: "100px",
+              background: D ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.45)",
+              border: `1px solid ${D ? "rgba(255,255,255,0.1)" : "rgba(255,255,255,0.7)"}`,
+              backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)",
+              fontSize: "11px", color: textSecondary, fontWeight: "600", flexShrink: 0,
+              display: "flex", alignItems: "center", gap: "6px",
+            }}>
+              <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: theme.accent1, display: "inline-block", animation: "pulseGlowing 2s infinite", boxShadow: `0 0 6px ${theme.accent1}` }} />
+              {isGuest ? <span style={{ color: "#e8a06e" }}>Guest Mode</span> : isPro ? <span style={{ color: theme.accent1, fontWeight: "800" }}>Pro ✦</span> : `${1 - (userData?.usageCount || 0)} AI left`}
+            </div>
           </div>
         </div>
-        {/* Status bar */}
+
+        {/* Nav capsule bar */}
         <div style={{
-          ...glassBase, borderRadius: 0, border: "none",
-          borderTop: `1px solid ${D ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.03)"}`,
-          padding: "6px 16px", display: "flex", alignItems: "center", gap: "10px",
-          background: D ? "rgba(255,255,255,0.02)" : "rgba(255,255,255,0.1)",
-          overflow: "hidden",
+          backdropFilter: "blur(32px) saturate(200%)", WebkitBackdropFilter: "blur(32px) saturate(200%)",
+          background: D ? "rgba(12,8,20,0.50)" : "rgba(255,255,255,0.40)",
+          borderBottom: `1px solid ${D ? "rgba(255,255,255,0.05)" : "rgba(255,255,255,0.55)"}`,
+          padding: "8px 16px",
+          display: "flex", alignItems: "center", gap: "6px",
+          overflowX: "auto", scrollbarWidth: "none",
         }}>
-          <div className="animate-pulse-glow" style={{ display: "inline-flex", alignItems: "center", gap: "6px", padding: "3px 12px 3px 8px", borderRadius: "999px", background: D ? "rgba(201,169,110,0.08)" : "rgba(201,169,110,0.06)", border: `1px solid ${D ? "rgba(201,169,110,0.15)" : "rgba(201,169,110,0.1)"}`, whiteSpace: "nowrap", flexShrink: 0 }}>
-            <span style={{ fontSize: "11px" }}>✨</span>
-            <span style={{ fontSize: "10px", fontWeight: "700", letterSpacing: "0.02em", background: `linear-gradient(135deg, ${theme.accent1}, ${theme.accent2})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>AI Resume Builder</span>
-          </div>
-          <span style={{ fontSize: "11px", color: textMuted, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", fontWeight: "500" }}>
-            Powered by <span style={{ fontWeight: "700", color: textSecondary }}>Groq + Gemini AI</span> — {isGuest ? <span style={{color:"#e8a06e",fontWeight:"700"}}>Guest Mode — <span style={{cursor:"pointer",textDecoration:"underline"}} onClick={()=>setScreen("login")}>Login</span></span> : (isPro ? "Pro Plan ✦" : `${1 - (userData?.usageCount || 0)} free generate left today`)}
-          </span>
+          {[
+            { key: "builder",   icon: "✏️",  label: "Build" },
+            { key: "chat",      icon: "🤖",  label: "AI Chat" },
+            { key: "templates", icon: "🎨",  label: "Templates" },
+            { key: "jobs",      icon: "🎯",  label: "Jobs" },
+            { key: "cover",     icon: "📝",  label: "Cover Letter" },
+            { key: "interview", icon: "🎤",  label: "Interview" },
+            { key: "tracker",   icon: "📊",  label: "Tracker" },
+            { key: "linkedin",  icon: "💼",  label: "LinkedIn" },
+            { key: "preview",   icon: "👁",  label: "Preview" },
+            { key: "score",     icon: "🔍",  label: "ATS Score" },
+            { key: "account",   icon: "👤",  label: "Account" },
+          ].map(({ key, icon, label }) => {
+            const active = page === key;
+            return (
+              <button key={key} onClick={() => setPage(key)} style={{
+                display: "flex", alignItems: "center", gap: "6px",
+                padding: "8px 16px", borderRadius: "100px", flexShrink: 0,
+                fontSize: "13px", fontWeight: active ? "700" : "500",
+                fontFamily: "var(--font-body)", cursor: "pointer",
+                transition: "all 0.3s var(--ease-spring)",
+                border: active
+                  ? `1px solid ${D ? "rgba(255,255,255,0.3)" : "rgba(255,255,255,0.9)"}`
+                  : `1px solid ${D ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.35)"}`,
+                background: active
+                  ? (D ? "rgba(255,255,255,0.14)" : "rgba(255,255,255,0.75)")
+                  : (D ? "rgba(255,255,255,0.04)" : "rgba(255,255,255,0.22)"),
+                backdropFilter: active ? "blur(20px) saturate(200%)" : "blur(8px)",
+                WebkitBackdropFilter: active ? "blur(20px) saturate(200%)" : "blur(8px)",
+                color: active ? (D ? "#f5f0ea" : "#1a1612") : (D ? "rgba(220,200,180,0.55)" : "rgba(60,45,30,0.5)"),
+                boxShadow: active
+                  ? (D ? "0 4px 20px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.2)" : "0 4px 20px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.95)")
+                  : "none",
+                transform: active ? "scale(1.02)" : "scale(1)",
+              }}>
+                <span style={{ fontSize: "14px", lineHeight: 1 }}>{icon}</span>
+                <span style={{ whiteSpace: "nowrap" }}>{label}</span>
+                {active && <span style={{ width: "5px", height: "5px", borderRadius: "50%", background: `linear-gradient(135deg, ${theme.accent1}, ${theme.accent2})`, boxShadow: `0 0 8px ${theme.accent1}` }} />}
+              </button>
+            );
+          })}
+
+          {/* Spacer push right */}
+          <div style={{ flex: 1, minWidth: "12px" }} />
+
+          {/* Upgrade capsule */}
+          {!isPro && (
+            <button onClick={() => setPage("upgrade")} style={{
+              display: "flex", alignItems: "center", gap: "6px",
+              padding: "8px 18px", borderRadius: "100px", flexShrink: 0,
+              fontSize: "13px", fontWeight: "800", cursor: "pointer",
+              background: `linear-gradient(135deg, ${theme.accent1}, ${theme.accent2})`,
+              color: D ? "#0c0a08" : "#fff", border: "none",
+              boxShadow: `0 4px 20px ${theme.accent1}50`,
+              fontFamily: "var(--font-body)",
+              animation: "pulseGlow 3s ease-in-out infinite",
+              transition: "all 0.3s var(--ease-spring)",
+            }}>
+              ✦ Go Pro
+            </button>
+          )}
         </div>
       </div>
 

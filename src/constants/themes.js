@@ -49,7 +49,29 @@ export const DARK_THEMES_FREE = [
   { id: "neon",      name: "Neon",      bg: "linear-gradient(135deg, #050510 0%, #08080e 25%, #060610 50%, #08060e 75%, #06060e 100%)", accent1: "#e040e0", accent2: "#f060f0", blob1: "rgba(224,64,224,0.22)", blob2: "rgba(64,200,240,0.18)", blob3: "rgba(200,50,200,0.16)" },
 ];
 
-export const LIGHT_THEMES_PRO = [];
+export const LIGHT_THEMES_PRO = [
+  // ── 20 PREMIUM LIGHT THEMES ──
+  { id: "aurora_l",     name: "Aurora",       bg: "linear-gradient(135deg, #e8f4ff 0%, #dce8ff 30%, #ece4ff 60%, #f4e0ff 100%)", accent1: "#6a7eff", accent2: "#9a8fff", blob1: "rgba(106,126,255,0.25)", blob2: "rgba(154,143,255,0.2)",  blob3: "rgba(200,180,255,0.18)" },
+  { id: "lilac",        name: "Lilac",        bg: "linear-gradient(135deg, #f3eeff 0%, #ece4ff 30%, #e4d8ff 60%, #f0e8ff 100%)", accent1: "#9966cc", accent2: "#bb88ee", blob1: "rgba(155,100,210,0.25)", blob2: "rgba(185,140,240,0.2)",  blob3: "rgba(170,120,225,0.18)" },
+  { id: "cotton_candy", name: "Cotton Candy", bg: "linear-gradient(135deg, #ffeef8 0%, #fde0f0 30%, #f0e0ff 60%, #e8f0ff 100%)", accent1: "#e060a0", accent2: "#f090c8", blob1: "rgba(224,96,160,0.22)",  blob2: "rgba(180,130,245,0.18)", blob3: "rgba(145,185,255,0.16)" },
+  { id: "glass_rose",   name: "Glass Rose",   bg: "linear-gradient(135deg, #fff0f4 0%, #ffe0ea 30%, #ffd4e4 60%, #fff0f8 100%)", accent1: "#d0456a", accent2: "#ef6f90", blob1: "rgba(210,70,106,0.22)",  blob2: "rgba(240,110,145,0.18)", blob3: "rgba(255,175,195,0.16)" },
+  { id: "apricot",      name: "Apricot",      bg: "linear-gradient(135deg, #fff5ec 0%, #ffe8d6 30%, #ffdbc4 60%, #fff0e4 100%)", accent1: "#e06830", accent2: "#f09258", blob1: "rgba(224,104,48,0.22)",  blob2: "rgba(240,146,88,0.18)",  blob3: "rgba(255,185,145,0.16)" },
+  { id: "pearl",        name: "Pearl",        bg: "linear-gradient(135deg, #f8f6ff 0%, #f0eeff 30%, #ece8ff 60%, #f6f4ff 100%)", accent1: "#8870c8", accent2: "#aa96e2", blob1: "rgba(136,112,200,0.2)",  blob2: "rgba(170,150,226,0.16)", blob3: "rgba(155,135,215,0.14)" },
+  { id: "seafoam",      name: "Seafoam",      bg: "linear-gradient(135deg, #e8fff8 0%, #d8f8ec 30%, #caf0e4 60%, #e0f8f0 100%)", accent1: "#20a880", accent2: "#48c8a0", blob1: "rgba(32,168,128,0.22)",  blob2: "rgba(72,200,160,0.18)",  blob3: "rgba(50,185,145,0.16)" },
+  { id: "parchment",    name: "Parchment",    bg: "linear-gradient(135deg, #fdf8ec 0%, #f8f0d8 30%, #f4e8c8 60%, #faf4de 100%)", accent1: "#b89040", accent2: "#d8b460", blob1: "rgba(184,144,64,0.22)",  blob2: "rgba(216,180,96,0.18)",  blob3: "rgba(200,162,78,0.14)" },
+  { id: "blush_gold",   name: "Blush Gold",   bg: "linear-gradient(135deg, #fff4f0 0%, #ffeae0 30%, #fde0d4 60%, #fff4ec 100%)", accent1: "#c97050", accent2: "#e89070", blob1: "rgba(200,112,80,0.22)",  blob2: "rgba(230,144,112,0.18)", blob3: "rgba(215,128,95,0.16)" },
+  { id: "sky_glass",    name: "Sky Glass",    bg: "linear-gradient(135deg, #eef8ff 0%, #deeeff 30%, #d0e4ff 60%, #eaf4ff 100%)", accent1: "#3888d8", accent2: "#5aaaf8", blob1: "rgba(56,136,216,0.22)",  blob2: "rgba(90,170,248,0.18)",  blob3: "rgba(72,152,232,0.16)" },
+  { id: "champagne",    name: "Champagne",    bg: "linear-gradient(135deg, #fffbf0 0%, #fff4e0 30%, #faecd0 60%, #fffaee 100%)", accent1: "#c8a050", accent2: "#e8c070", blob1: "rgba(200,160,80,0.22)",  blob2: "rgba(232,192,112,0.18)", blob3: "rgba(216,176,96,0.16)" },
+  { id: "celeste",      name: "Celeste",      bg: "linear-gradient(135deg, #eafdff 0%, #d4f8ff 30%, #c0f2fc 60%, #dafaff 100%)", accent1: "#1898b8", accent2: "#38bcd8", blob1: "rgba(24,152,184,0.22)",  blob2: "rgba(56,188,216,0.18)",  blob3: "rgba(38,172,200,0.16)" },
+  { id: "nordic",       name: "Nordic",       bg: "linear-gradient(135deg, #f0f4f8 0%, #e4ecf6 30%, #d8e4f4 60%, #eaf0f8 100%)", accent1: "#4866a8", accent2: "#6a88c8", blob1: "rgba(72,102,168,0.2)",   blob2: "rgba(106,136,200,0.16)", blob3: "rgba(88,120,184,0.14)" },
+  { id: "papaya",       name: "Papaya",       bg: "linear-gradient(135deg, #fff8ec 0%, #ffedda 30%, #ffe2c8 60%, #fff5e6 100%)", accent1: "#e07820", accent2: "#f09840", blob1: "rgba(224,120,32,0.22)",  blob2: "rgba(240,152,64,0.18)",  blob3: "rgba(232,136,48,0.16)" },
+  { id: "mocha",        name: "Mocha",        bg: "linear-gradient(135deg, #f8f2ec 0%, #f0e4d8 30%, #e8d4c4 60%, #f4ece0 100%)", accent1: "#9a6840", accent2: "#bc8858", blob1: "rgba(154,104,64,0.22)",  blob2: "rgba(188,136,88,0.18)",  blob3: "rgba(172,120,76,0.16)" },
+  { id: "platinum",     name: "Platinum",     bg: "linear-gradient(135deg, #f6f8fc 0%, #eef0f8 30%, #e4e8f4 60%, #f2f4fa 100%)", accent1: "#6878a8", accent2: "#8898c8", blob1: "rgba(104,120,168,0.2)",  blob2: "rgba(136,152,200,0.16)", blob3: "rgba(120,136,184,0.14)" },
+  { id: "glacier",      name: "Glacier",      bg: "linear-gradient(135deg, #eef8fc 0%, #ddf0f8 30%, #cce8f4 60%, #daf2f8 100%)", accent1: "#2880b0", accent2: "#48a8d8", blob1: "rgba(40,128,176,0.22)",  blob2: "rgba(72,168,216,0.18)",  blob3: "rgba(56,148,196,0.16)" },
+  { id: "coral_bliss",  name: "Coral Bliss",  bg: "linear-gradient(135deg, #fff2ee 0%, #ffe4dc 30%, #ffd6ca 60%, #ffece6 100%)", accent1: "#e05840", accent2: "#f87858", blob1: "rgba(224,88,64,0.22)",   blob2: "rgba(248,120,88,0.18)",  blob3: "rgba(236,104,76,0.16)" },
+  { id: "meadow",       name: "Meadow",       bg: "linear-gradient(135deg, #f0fce8 0%, #e4f8d8 30%, #d8f4ca 60%, #eafae0 100%)", accent1: "#3c9840", accent2: "#58c058", blob1: "rgba(60,152,64,0.22)",   blob2: "rgba(88,192,88,0.18)",   blob3: "rgba(74,172,74,0.16)" },
+  { id: "iris",         name: "Iris",         bg: "linear-gradient(135deg, #f0eeff 0%, #e4d8ff 30%, #ddd0ff 60%, #eee8ff 100%)", accent1: "#7050c0", accent2: "#9070e0", blob1: "rgba(112,80,192,0.24)",  blob2: "rgba(144,112,224,0.18)", blob3: "rgba(128,96,208,0.16)" },
+];
 export const DARK_THEMES_PRO  = [];
 
 // Promo codes
