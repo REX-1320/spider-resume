@@ -80,6 +80,9 @@ export default function SpiderResumeAI() {
   const [fileImportDone, setFileImportDone] = useState(false);
   const [fileImportError, setFileImportError] = useState("");
 
+  // Sidebar state
+  const [menuOpen, setMenuOpen] = useState(false);
+
   // Themes — always include pro themes so the object resolves; picker gates selection
   const allThemes = [...LIGHT_THEMES_FREE, ...DARK_THEMES_FREE, ...LIGHT_THEMES_PRO, ...DARK_THEMES_PRO];
   const theme = allThemes.find(t => t.id === themeId) || allThemes[0];
@@ -317,10 +320,8 @@ export default function SpiderResumeAI() {
       authPassword={authPassword} setAuthPassword={setAuthPassword} authError={authError} setAuthError={setAuthError}
       authBusy={authBusy} loginGoogle={loginGoogle} loginEmail={loginEmail} setScreen={setScreen} />
   );
-
   // ─── MAIN APP ───
-  const [menuOpen, setMenuOpen] = useState(false);
-
+  
   const navItems = [
     { key: "builder",   icon: "✏️",  label: "Build" },
     { key: "chat",      icon: "🤖",  label: "AI Chat" },
