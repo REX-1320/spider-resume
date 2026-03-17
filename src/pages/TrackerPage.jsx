@@ -48,7 +48,7 @@ export default function TrackerPage({ glassCard, glassBase, glassBtn, glassInput
   STATUSES.forEach(s => { counts[s.id] = apps.filter(a => a.status === s.id).length; });
 
   const accent = `linear-gradient(135deg, ${theme.accent1}cc, ${theme.accent2}bb)`;
-  const inp = { ...glassInput, borderRadius: 12, padding: "9px 14px", fontSize: 13, color: textPrimary, width: "100%", boxSizing: "border-box", outline: "none", fontFamily: "inherit" };
+  const inp = {  borderRadius: 12, padding: "9px 14px", fontSize: 13, color: textPrimary, width: "100%", boxSizing: "border-box", outline: "none", fontFamily: "inherit" };
   const Label = ({ t }) => <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: textMuted, margin: "0 0 5px" }}>{t}</p>;
 
   return (
@@ -69,7 +69,7 @@ export default function TrackerPage({ glassCard, glassBase, glassBtn, glassInput
         {[{ id: "all", label: "Total", icon: "📋", color: theme.accent1, count: apps.length }, ...STATUSES.map(s => ({ ...s, count: counts[s.id] }))].map(s => {
           const isActive = filterStatus === s.id;
           return (
-            <button key={s.id} onClick={() => setFilterStatus(s.id)} className="card-hover-lift" style={{ ...glassBtn, padding: "16px 20px", borderRadius: "16px", border: isActive ? `1px solid ${s.color}` : `1px solid ${D ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)"}`, background: isActive ? `linear-gradient(135deg, ${s.color}15, ${s.color}05)` : (D ? "rgba(255,255,255,0.02)" : "rgba(255,255,255,0.4)"), cursor: "pointer", flexShrink: 0, textAlign: "left", minWidth: "120px", display: "flex", flexDirection: "column", gap: "8px", transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)", boxShadow: isActive ? `0 8px 24px ${s.color}20` : undefined }}>
+            <button key={s.id} onClick={() => setFilterStatus(s.id)} className="card-hover-lift glass-btn" style={{ padding: "16px 20px", borderRadius: "16px", border: isActive ? `1px solid ${s.color}` : `1px solid ${D ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)"}`, background: isActive ? `linear-gradient(135deg, ${s.color}15, ${s.color}05)` : (D ? "rgba(255,255,255,0.02)" : "rgba(255,255,255,0.4)"), cursor: "pointer", flexShrink: 0, textAlign: "left", minWidth: "120px", display: "flex", flexDirection: "column", gap: "8px", transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)", boxShadow: isActive ? `0 8px 24px ${s.color}20` : undefined }}>
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%" }}>
                 <span style={{ fontSize: "18px" }}>{s.icon}</span>
                 <span style={{ fontSize: "20px", fontWeight: "800", fontFamily: "var(--font-display)", color: s.color }}>{s.count}</span>
@@ -82,7 +82,7 @@ export default function TrackerPage({ glassCard, glassBase, glassBtn, glassInput
 
       {/* Add/Edit form */}
       {showForm && (
-        <div className="animate-fade-in-down" style={{ ...glassCard, padding: "32px", marginBottom: "32px", border: `1px solid ${theme.accent1}40`, boxShadow: `0 24px 48px ${theme.accent1}15`, position: "relative", overflow: "hidden" }}>
+        <div className="animate-fade-in-down glass-panel" style={{ padding: "32px", marginBottom: "32px", border: `1px solid ${theme.accent1}40`, boxShadow: `0 24px 48px ${theme.accent1}15`, position: "relative", overflow: "hidden" }}>
           <div style={{ position: "absolute", top: 0, right: 0, width: "300px", height: "300px", background: `radial-gradient(circle, ${theme.accent1}10, transparent 70%)`, pointerEvents: "none" }} />
           
           <h3 style={{ fontSize: "20px", fontWeight: "800", fontFamily: "var(--font-display)", color: textPrimary, margin: "0 0 24px", display: "flex", alignItems: "center", gap: "8px" }}>
@@ -142,7 +142,7 @@ export default function TrackerPage({ glassCard, glassBase, glassBtn, glassInput
 
       {/* Empty state */}
       {apps.length === 0 && !showForm && (
-        <div className="card-hover-lift animate-fade-in-up delay-2" style={{ ...glassCard, padding: "80px 24px", textAlign: "center", border: `1px dashed ${theme.accent1}40` }}>
+        <div className="card-hover-lift animate-fade-in-up delay-2 glass-panel" style={{ padding: "80px 24px", textAlign: "center", border: `1px dashed ${theme.accent1}40` }}>
           <div className="ambient-blob animate-float" style={{ position: "relative", width: "80px", height: "80px", margin: "0 auto 24px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "40px", background: `linear-gradient(135deg, ${theme.accent1}20, ${theme.accent2}20)`, borderRadius: "50%" }}>📊</div>
           <p style={{ fontSize: "24px", fontWeight: "800", fontFamily: "var(--font-display)", color: textPrimary, marginBottom: "12px", letterSpacing: "-0.5px" }}>No applications yet</p>
           <p style={{ fontSize: "15px", color: textSecondary, marginBottom: "32px", lineHeight: 1.6, maxWidth: "400px", margin: "0 auto 32px" }}>Start tracking every job you apply to.<br />Never forget a follow-up again.</p>
@@ -156,7 +156,7 @@ export default function TrackerPage({ glassCard, glassBase, glassBtn, glassInput
           {filtered.map(app => {
             const st = STATUSES.find(s => s.id === app.status) || STATUSES[0];
             return (
-              <div key={app.id} className="card-hover-lift" style={{ ...glassCard, padding: 0, position: "relative", overflow: "hidden", border: `1px solid ${D ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)"}` }}>
+              <div key={app.id} className="card-hover-lift glass-panel" style={{ padding: 0, position: "relative", overflow: "hidden", border: `1px solid ${D ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)"}` }}>
                 {/* Status Color Bar */}
                 <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: "4px", background: st.color }} />
                 
@@ -222,7 +222,7 @@ export default function TrackerPage({ glassCard, glassBase, glassBtn, glassInput
 
       {/* Empty Filter State */}
       {filtered.length === 0 && apps.length > 0 && (
-        <div className="animate-fade-in-up" style={{ ...glassCard, padding: "40px 24px", textAlign: "center", border: `1px dashed ${D ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)"}` }}>
+        <div className="animate-fade-in-up glass-panel" style={{ padding: "40px 24px", textAlign: "center", border: `1px dashed ${D ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)"}` }}>
           <p style={{ fontSize: "15px", color: textSecondary, margin: "0 0 16px" }}>No applications found with status <strong style={{ color: textPrimary }}>"{STATUSES.find(s => s.id === filterStatus)?.label}"</strong>.</p>
           <button onClick={() => setFilterStatus("all")} className="btn-glass" style={{ padding: "10px 20px", fontSize: "13px", fontWeight: "700", color: theme.accent1, borderRadius: "100px" }}>
             Show all applications

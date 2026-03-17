@@ -58,9 +58,9 @@ Return ONLY valid JSON (no markdown):
   };
 
   const accent = `linear-gradient(135deg, ${theme.accent1}cc, ${theme.accent2}bb)`;
-  const inp = { ...glassInput, borderRadius: 14, padding: "10px 16px", fontSize: 13, color: textPrimary, width: "100%", boxSizing: "border-box", outline: "none", fontFamily: "inherit" };
+  const inp = {  borderRadius: 14, padding: "10px 16px", fontSize: 13, color: textPrimary, width: "100%", boxSizing: "border-box", outline: "none", fontFamily: "inherit" };
   const CopyBtn = ({ k, text }) => (
-    <button onClick={() => copy(k, text)} style={{ ...glassBtn, padding: "5px 12px", fontSize: 11, borderRadius: 9, color: copied[k] ? (D ? "#7dcfa0" : "#2e7d52") : textMuted, border: copied[k] ? "1px solid rgba(76,175,125,0.4)" : undefined, cursor: "pointer" }}>
+    <button onClick={() => copy(k, text)} className="glass-btn" style={{ padding: "5px 12px", fontSize: 11, borderRadius: 9, color: copied[k] ? (D ? "#7dcfa0" : "#2e7d52") : textMuted, border: copied[k] ? "1px solid rgba(76,175,125,0.4)" : undefined, cursor: "pointer" }}>
       {copied[k] ? "✓ Copied" : "📋 Copy"}
     </button>
   );
@@ -88,7 +88,7 @@ Return ONLY valid JSON (no markdown):
         )}
       </div>
 
-      <div className="card-hover-lift animate-fade-in-up delay-1" style={{ ...glassCard, padding: "24px 28px", marginBottom: "32px", position: "relative", overflow: "hidden" }}>
+      <div className="card-hover-lift animate-fade-in-up delay-1 glass-panel" style={{ padding: "24px 28px", marginBottom: "32px", position: "relative", overflow: "hidden" }}>
         <div style={{ position: "absolute", top: "-50%", right: "-10%", width: "300px", height: "300px", background: `radial-gradient(circle, #0A66C210 0%, transparent 60%)`, pointerEvents: "none" }} />
         
         <label style={{ display: "block", fontSize: "12px", fontWeight: "800", letterSpacing: "0.16em", textTransform: "uppercase", color: textMuted, marginBottom: "12px" }}>Target Role for Optimization</label>
@@ -104,7 +104,7 @@ Return ONLY valid JSON (no markdown):
 
       {/* Empty state */}
       {!loading && !results && (
-        <div className="card-hover-lift animate-fade-in-up delay-2" style={{ ...glassCard, padding: "80px 24px", textAlign: "center", border: `1px dashed #0A66C240` }}>
+        <div className="card-hover-lift animate-fade-in-up delay-2 glass-panel" style={{ padding: "80px 24px", textAlign: "center", border: `1px dashed #0A66C240` }}>
           <div className="ambient-blob animate-float" style={{ position: "relative", width: "80px", height: "80px", margin: "0 auto 24px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "40px", background: `linear-gradient(135deg, #0A66C220, #00418220)`, borderRadius: "50%" }}>💼</div>
           <p style={{ fontSize: "24px", fontWeight: "800", fontFamily: "var(--font-display)", color: textPrimary, marginBottom: "12px", letterSpacing: "-0.5px" }}>Unlock recruiter visibility</p>
           <p style={{ fontSize: "15px", color: textSecondary, lineHeight: 1.6, marginBottom: "32px", maxWidth: "480px", margin: "0 auto 32px" }}>AI will automatically rewrite your headline, About section, experience descriptions, and give you a skills checklist—all optimized for recruiter searches and the LinkedIn algorithm.</p>
@@ -115,7 +115,7 @@ Return ONLY valid JSON (no markdown):
       {/* Loading Skeleton */}
       {loading && (
         <div className="animate-fade-in" style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-          <div style={{ ...glassCard, padding: "32px", opacity: 0.5, animation: `pulseGlowing 2s ease infinite`, border: `1px solid #0A66C230` }}>
+          <div className="glass-panel" style={{ padding: "32px", opacity: 0.5, animation: `pulseGlowing 2s ease infinite`, border: `1px solid #0A66C230` }}>
             <div style={{ textAlign: "center" }}>
                <div className="spinner" style={{ display: "inline-block", width: "40px", height: "40px", border: `3px solid #0A66C240`, borderTopColor: "#0A66C2", borderRadius: "50%", animation: "spin 1s linear infinite", marginBottom: "16px" }} />
                <p style={{ fontSize: "16px", fontWeight: "800", color: textPrimary, margin: "0 0 8px" }}>Analyzing your profile data...</p>
@@ -128,7 +128,7 @@ Return ONLY valid JSON (no markdown):
       {results && (
         <div className="animate-fade-in-up delay-2">
           {/* Score card */}
-          <div className="card-hover-lift" style={{ ...glassCard, padding: "32px", marginBottom: "32px", background: `linear-gradient(135deg, ${results.profileScore >= 80 ? "rgba(76,175,125,0.05)" : results.profileScore >= 60 ? theme.accent1 + "05" : "rgba(239,68,68,0.05)"}, transparent)`, border: `1px solid ${results.profileScore >= 80 ? "rgba(76,175,125,0.2)" : results.profileScore >= 60 ? theme.accent1 + "30" : "rgba(239,68,68,0.2)"}` }}>
+          <div className="card-hover-lift glass-panel" style={{ padding: "32px", marginBottom: "32px", background: `linear-gradient(135deg, ${results.profileScore >= 80 ? "rgba(76,175,125,0.05)" : results.profileScore >= 60 ? theme.accent1 + "05" : "rgba(239,68,68,0.05)"}, transparent)`, border: `1px solid ${results.profileScore >= 80 ? "rgba(76,175,125,0.2)" : results.profileScore >= 60 ? theme.accent1 + "30" : "rgba(239,68,68,0.2)"}` }}>
             <div style={{ display: "flex", alignItems: "center", gap: "40px", flexWrap: "wrap" }}>
               
               <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "8px" }}>
@@ -173,7 +173,7 @@ Return ONLY valid JSON (no markdown):
           <div className="animate-fade-in">
             {/* Headline section */}
             {activeSection === "headline" && (
-              <div className="card-hover-lift" style={{ ...glassCard, padding: "32px" }}>
+              <div className="card-hover-lift glass-panel" style={{ padding: "32px" }}>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "20px" }}>
                   <div>
                     <h3 style={{ fontSize: "18px", fontWeight: "800", color: textPrimary, margin: "0 0 4px", display: "flex", alignItems: "center", gap: "8px" }}>🏷️ Optimized Headline</h3>
@@ -207,7 +207,7 @@ Return ONLY valid JSON (no markdown):
 
             {/* About section */}
             {activeSection === "about" && (
-              <div className="card-hover-lift" style={{ ...glassCard, padding: "32px" }}>
+              <div className="card-hover-lift glass-panel" style={{ padding: "32px" }}>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "20px" }}>
                   <div>
                     <h3 style={{ fontSize: "18px", fontWeight: "800", color: textPrimary, margin: "0 0 4px", display: "flex", alignItems: "center", gap: "8px" }}>📖 About Section</h3>
@@ -229,7 +229,7 @@ Return ONLY valid JSON (no markdown):
             {activeSection === "experience" && (
               <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
                 {(results.experienceDescriptions || []).map((exp, i) => (
-                  <div key={i} className="card-hover-lift" style={{ ...glassCard, padding: "28px" }}>
+                  <div key={i} className="card-hover-lift glass-panel" style={{ padding: "28px" }}>
                     <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "16px", marginBottom: "20px" }}>
                       <div>
                         <h3 style={{ fontSize: "18px", fontWeight: "800", color: textPrimary, margin: "0 0 4px" }}>{exp.role}</h3>
@@ -248,7 +248,7 @@ Return ONLY valid JSON (no markdown):
 
             {/* Skills */}
             {activeSection === "skills" && (
-              <div className="card-hover-lift" style={{ ...glassCard, padding: "32px" }}>
+              <div className="card-hover-lift glass-panel" style={{ padding: "32px" }}>
                 <h3 style={{ fontSize: "18px", fontWeight: "800", color: textPrimary, margin: "0 0 20px", display: "flex", alignItems: "center", gap: "8px" }}>⚡ Top Skills to Add</h3>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: "10px", marginBottom: "32px" }}>
                   {(results.topSkills || []).map((s, i) => (
@@ -273,7 +273,7 @@ Return ONLY valid JSON (no markdown):
                 {(results.profileTips || []).map((tip, i) => {
                   const pColor = priorityColor[tip.priority] || theme.accent1;
                   return (
-                    <div key={i} className="card-hover-lift" style={{ ...glassCard, padding: "24px", display: "flex", gap: "16px", alignItems: "flex-start", borderLeft: `4px solid ${pColor}` }}>
+                    <div key={i} className="card-hover-lift glass-panel" style={{ padding: "24px", display: "flex", gap: "16px", alignItems: "flex-start", borderLeft: `4px solid ${pColor}` }}>
                       <div style={{ width: "32px", height: "32px", borderRadius: "10px", background: pColor + "15", border: `1px solid ${pColor}30`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "16px", flexShrink: 0 }}>
                         {tip.priority === "high" ? "🔥" : tip.priority === "medium" ? "⭐" : "💡"}
                       </div>

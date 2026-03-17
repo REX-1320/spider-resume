@@ -41,19 +41,19 @@ export const LabelCapsule = ({ label, isDark, textMuted }) => (
 export const GInput = ({ inputStyle, style, isDark, label, textMuted, ...props }) => (
   <div style={{ width: "100%", boxSizing: "border-box", marginBottom: "10px" }}>
     {label && <LabelCapsule label={label} isDark={isDark} textMuted={textMuted} />}
-    <input style={{ ...inputStyle, ...(isDark ? liquidGlassDark : liquidGlass), borderRadius: "12px", padding: "10px 14px", width: "100%", boxSizing: "border-box", ...style }} {...props} />
+    <input className="glass-input" style={{ ...inputStyle, width: "100%", boxSizing: "border-box", ...style }} {...props} />
   </div>
 );
 
 export const GTextarea = ({ inputStyle, style, isDark, label, textMuted, ...props }) => (
   <div style={{ width: "100%", boxSizing: "border-box", marginBottom: "10px" }}>
     {label && <LabelCapsule label={label} isDark={isDark} textMuted={textMuted} />}
-    <textarea style={{ ...inputStyle, ...(isDark ? liquidGlassDark : liquidGlass), borderRadius: "12px", padding: "10px 14px", resize: "none", width: "100%", boxSizing: "border-box", ...style }} {...props} />
+    <textarea className="glass-input" style={{ ...inputStyle, resize: "none", width: "100%", boxSizing: "border-box", ...style }} {...props} />
   </div>
 );
 
 export const GSection = ({ glassCard, textMuted, title, children, action }) => (
-  <div style={{ ...glassCard, padding: "18px", marginBottom: "14px", overflow: "hidden", boxSizing: "border-box" }}>
+  <div className="glass-panel" style={{ ...(glassCard || {}), marginBottom: "14px", overflow: "hidden", boxSizing: "border-box" }}>
     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
       {typeof title === "string" ? (
         <span style={{ fontSize: "10px", fontWeight: "700", letterSpacing: "0.12em", textTransform: "uppercase", color: textMuted }}>{title}</span>

@@ -90,7 +90,7 @@ const PreviewPage = ({
       </div>
 
       {appliedTemplateHtml && (
-        <div className="animate-fade-in-scale" style={{ ...glassCard, padding: "14px 20px", marginBottom: "24px", display: "flex", alignItems: "center", justifyContent: "space-between", background: D ? "rgba(125,207,160,0.08)" : "rgba(46,125,82,0.06)", border: `1px solid ${D ? "rgba(125,207,160,0.2)" : "rgba(46,125,82,0.2)"}` }}>
+        <div className="animate-fade-in-scale glass-panel" style={{ padding: "14px 20px", marginBottom: "24px", display: "flex", alignItems: "center", justifyContent: "space-between", background: D ? "rgba(125,207,160,0.08)" : "rgba(46,125,82,0.06)", border: `1px solid ${D ? "rgba(125,207,160,0.2)" : "rgba(46,125,82,0.2)"}` }}>
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
             <span>✅</span>
             <span style={{ fontSize: "13px", color: D ? "#7dcfa0" : "#2e7d52", fontWeight: "600" }}>Custom premium template applied</span>

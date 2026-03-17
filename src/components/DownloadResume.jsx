@@ -224,7 +224,7 @@ export default function DownloadResume({ form, glassCard, glassBase, glassBtn, t
         <button
           onClick={() => download("pdf")}
           disabled={downloading === "pdf"}
-          style={{ ...glassBtn, flex: 1, padding: "14px", fontSize: "14px", fontWeight: 700, background: downloading === "pdf" ? "transparent" : accent, color: downloading === "pdf" ? textMuted : (D ? "#1a1410" : "#2d2520"), borderRadius: "16px", border: "none", cursor: downloading === "pdf" ? "not-allowed" : "pointer" }}
+          className="glass-btn" style={{ flex: 1, padding: "14px", fontSize: "14px", fontWeight: 700, background: downloading === "pdf" ? "transparent" : accent, color: downloading === "pdf" ? textMuted : (D ? "#1a1410" : "#2d2520"), borderRadius: "16px", border: "none", cursor: downloading === "pdf" ? "not-allowed" : "pointer" }}
         >
           {downloading === "pdf" ? "⏳ Generating PDF..." : "⬇ Download PDF"}
         </button>
@@ -232,7 +232,7 @@ export default function DownloadResume({ form, glassCard, glassBase, glassBtn, t
         {/* Format picker button */}
         <button
           onClick={() => setOpen(o => !o)}
-          style={{ ...glassBtn, padding: "14px 16px", fontSize: 13, fontWeight: 700, borderRadius: "16px", color: textSecondary, cursor: "pointer", position: "relative", flexShrink: 0 }}
+          className="glass-btn" style={{ padding: "14px 16px", fontSize: 13, fontWeight: 700, borderRadius: "16px", color: textSecondary, cursor: "pointer", position: "relative", flexShrink: 0 }}
         >
           📂 Format {open ? "▲" : "▼"}
         </button>
@@ -240,14 +240,14 @@ export default function DownloadResume({ form, glassCard, glassBase, glassBtn, t
 
       {/* Format dropdown */}
       {open && (
-        <div style={{ ...glassCard, padding: "12px", marginTop: 8, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
+        <div className="glass-panel" style={{ padding: "12px", marginTop: 8, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
           <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: textMuted, margin: "0 0 4px", gridColumn: "1/-1" }}>Choose Download Format</p>
           {FORMATS.map(f => (
             <button
               key={f.id}
               onClick={() => download(f.id)}
               disabled={!!downloading}
-              style={{ ...glassBase, borderRadius: 14, padding: "12px 14px", cursor: downloading ? "not-allowed" : "pointer", border: `1px solid ${f.color}33`, background: downloading === f.id ? `${f.color}22` : (D ? "rgba(255,255,255,0.04)" : "rgba(255,255,255,0.4)"), display: "flex", alignItems: "center", gap: 10, transition: "all 0.15s", opacity: downloading && downloading !== f.id ? 0.5 : 1 }}
+              className="liquid-glass" style={{ borderRadius: 14, padding: "12px 14px", cursor: downloading ? "not-allowed" : "pointer", border: `1px solid ${f.color}33`, background: downloading === f.id ? `${f.color}22` : (D ? "rgba(255,255,255,0.04)" : "rgba(255,255,255,0.4)"), display: "flex", alignItems: "center", gap: 10, transition: "all 0.15s", opacity: downloading && downloading !== f.id ? 0.5 : 1 }}
             >
               <span style={{ fontSize: 22, flexShrink: 0 }}>{downloading === f.id ? "⏳" : f.icon}</span>
               <div style={{ textAlign: "left" }}>

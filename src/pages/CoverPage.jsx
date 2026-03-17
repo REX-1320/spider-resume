@@ -62,7 +62,7 @@ Instructions:
   };
 
   const accent = `linear-gradient(135deg, ${theme.accent1}cc, ${theme.accent2}bb)`;
-  const inputStyle = { ...glassInput, borderRadius: 14, padding: "11px 16px", fontSize: 13, color: textPrimary, width: "100%", boxSizing: "border-box", outline: "none", fontFamily: "inherit" };
+  const inputStyle = {  borderRadius: 14, padding: "11px 16px", fontSize: 13, color: textPrimary, width: "100%", boxSizing: "border-box", outline: "none", fontFamily: "inherit" };
   const Label = ({ t }) => <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.08em", padding: "3px 12px", borderRadius: 999, marginBottom: 6, display: "inline-block", background: D ? "rgba(255,255,255,0.1)" : "rgba(255,255,255,0.5)", border: D ? "1px solid rgba(255,255,255,0.15)" : "1px solid rgba(255,255,255,0.75)", color: textMuted }}>{t}</div>;
 
   return (
@@ -80,7 +80,7 @@ Instructions:
         </div>
       </div>
 
-      <div className="card-hover-lift animate-fade-in-up delay-1" style={{ ...glassCard, padding: "32px", marginBottom: "24px", position: "relative", overflow: "hidden" }}>
+      <div className="card-hover-lift animate-fade-in-up delay-1 glass-panel" style={{ padding: "32px", marginBottom: "24px", position: "relative", overflow: "hidden" }}>
         <div style={{ position: "absolute", top: "-50%", right: "-10%", width: "400px", height: "400px", background: `radial-gradient(circle, ${theme.accent1}10 0%, transparent 60%)`, pointerEvents: "none" }} />
         
         {/* Resume being used */}
@@ -181,7 +181,7 @@ Instructions:
 
       {/* Output Area */}
       {letter && (
-        <div className="card-hover-lift animate-fade-in-up delay-2" style={{ ...glassCard, padding: "32px", position: "relative" }}>
+        <div className="card-hover-lift animate-fade-in-up delay-2 glass-panel" style={{ padding: "32px", position: "relative" }}>
           <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "4px", background: `linear-gradient(90deg, ${theme.accent1}, ${theme.accent2})` }} />
           
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "24px", flexWrap: "wrap", gap: "16px" }}>

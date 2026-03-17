@@ -15,7 +15,7 @@ const ScorePage = ({
     </div>
 
     {!scoreData ? (
-      <div className="card-hover-lift" style={{ ...glassCard, padding: "56px 32px", textAlign: "center", border: `1px solid ${D ? "rgba(201,169,110,0.15)" : "rgba(201,169,110,0.2)"}` }}>
+      <div className="card-hover-lift glass-panel" style={{ padding: "56px 32px", textAlign: "center", border: `1px solid ${D ? "rgba(201,169,110,0.15)" : "rgba(201,169,110,0.2)"}` }}>
         <div className="animate-float" style={{ fontSize: "56px", marginBottom: "20px", filter: "drop-shadow(0 8px 16px rgba(201,169,110,0.2))" }}>🎯</div>
         <p style={{ fontSize: "18px", fontWeight: "800", color: textPrimary, marginBottom: "12px", fontFamily: "var(--font-display)" }}>Your Score Awaits</p>
         <p style={{ fontSize: "14px", color: textSecondary, marginBottom: "32px", maxWidth: "340px", margin: "0 auto 32px", lineHeight: 1.6 }}>Fill your details in the Builder, then tap below to run a deep AI analysis on your resume.</p>
@@ -25,7 +25,7 @@ const ScorePage = ({
       </div>
     ) : (
       <>
-        <div className="animate-fade-in-up delay-1 card-hover-lift" style={{ ...glassCard, padding: "32px 24px", marginBottom: "20px", textAlign: "center", position: "relative", overflow: "hidden" }}>
+        <div className="animate-fade-in-up delay-1 card-hover-lift glass-panel" style={{ padding: "32px 24px", marginBottom: "20px", textAlign: "center", position: "relative", overflow: "hidden" }}>
           {/* Animated background glow based on score */}
           <div className="animate-pulse" style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: "100%", height: "100%", background: `radial-gradient(circle, ${scoreData.overallScore >= 80 ? "#7dcfa0" : scoreData.overallScore >= 60 ? theme.accent1 : "#f08080"}15 0%, transparent 60%)`, pointerEvents: "none", zIndex: 0 }} />
           
@@ -61,7 +61,7 @@ const ScorePage = ({
                 ["Content Impact", scoreData.contentScore, "📝"], 
                 ["Format & Design", scoreData.formatScore, "✨"]
               ].map(([label, score, icon], i) => (
-                <div key={label} className="animate-fade-in-up" style={{ ...glassBase, borderRadius: "16px", padding: "16px 10px", background: D ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.02)", animationDelay: `${0.2 + i * 0.1}s` }}>
+                <div key={label} className="animate-fade-in-up liquid-glass" style={{ borderRadius: "16px", padding: "16px 10px", background: D ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.02)", animationDelay: `${0.2 + i * 0.1}s` }}>
                   <div style={{ fontSize: "20px", marginBottom: "8px" }}>{icon}</div>
                   <div style={{ fontSize: "24px", fontWeight: "900", fontFamily: "var(--font-display)", color: score >= 80 ? (D ? "#7dcfa0" : "#2e7d52") : score >= 60 ? theme.accent1 : (D ? "#f08080" : "#b03030"), marginBottom: "4px" }}>{score}</div>
                   <div style={{ fontSize: "10px", fontWeight: "800", letterSpacing: "0.08em", textTransform: "uppercase", color: textMuted }}>{label}</div>
@@ -71,7 +71,7 @@ const ScorePage = ({
           </div>
         </div>
 
-        <div className="animate-fade-in-up delay-4" style={{ ...glassCard, padding: "28px", marginBottom: "20px" }}>
+        <div className="animate-fade-in-up delay-4 glass-panel" style={{ padding: "28px", marginBottom: "20px" }}>
           <p style={{ fontSize: "11px", fontWeight: "800", letterSpacing: "0.16em", textTransform: "uppercase", color: textMuted, marginBottom: "20px" }}>🤖 Deep ATS Checks</p>
           <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
             {scoreData.atsChecks.map((check, i) => (
@@ -84,11 +84,11 @@ const ScorePage = ({
           </div>
         </div>
 
-        <div className="animate-fade-in-up delay-6" style={{ ...glassCard, padding: "28px", marginBottom: "24px", background: D ? `linear-gradient(135deg, rgba(255,255,255,0.02), rgba(201,169,110,0.05))` : `linear-gradient(135deg, rgba(255,255,255,0.4), rgba(201,169,110,0.1))` }}>
+        <div className="animate-fade-in-up delay-6 glass-panel" style={{ padding: "28px", marginBottom: "24px", background: D ? `linear-gradient(135deg, rgba(255,255,255,0.02), rgba(201,169,110,0.05))` : `linear-gradient(135deg, rgba(255,255,255,0.4), rgba(201,169,110,0.1))` }}>
           <p style={{ fontSize: "11px", fontWeight: "800", letterSpacing: "0.16em", textTransform: "uppercase", color: textMuted, marginBottom: "20px", display: "flex", alignItems: "center", gap: "8px" }}>🚀 Actionable Tips <span style={{ fontSize: "14px" }}>✨</span></p>
           <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
             {scoreData.tips.map((tip, i) => (
-              <div key={i} className="card-hover-lift" style={{ display: "flex", alignItems: "flex-start", gap: "14px", padding: "16px", borderRadius: "14px", ...glassBase, background: D ? "rgba(255,255,255,0.03)" : "rgba(255,255,255,0.4)" }}>
+              <div key={i} className="card-hover-lift" style={{ display: "flex", alignItems: "flex-start", gap: "14px", padding: "16px", borderRadius: "14px",  background: D ? "rgba(255,255,255,0.03)" : "rgba(255,255,255,0.4)" }}>
                 <div style={{ minWidth: "24px", height: "24px", borderRadius: "50%", background: `linear-gradient(135deg, ${theme.accent1}, ${theme.accent2})`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "11px", fontWeight: "800", color: D ? "#0c0a08" : "#fff", flexShrink: 0 }}>{i + 1}</div>
                 <span style={{ fontSize: "14px", color: textSecondary, lineHeight: "1.6", paddingTop: "2px" }}>{tip}</span>
               </div>

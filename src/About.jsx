@@ -27,7 +27,7 @@ export default function About({ onBack, theme, D, glassCard, glassBase, textPrim
       </div>
 
       {/* About */}
-      <div style={{ ...glassCard, padding: "28px", marginBottom: "16px" }}>
+      <div className="glass-panel" style={{ padding: "28px", marginBottom: "16px" }}>
         <p style={{ fontSize: "10px", fontWeight: "700", letterSpacing: "0.12em", textTransform: "uppercase", color: textMuted, marginBottom: "12px" }}>About</p>
         <p style={{ fontSize: "14px", color: textSecondary, lineHeight: 1.8, margin: 0 }}>
           Spider Resume is a modern web application that helps users quickly create professional, ATS-friendly resumes. Built with React, powered by Groq AI, and designed with a clean glassmorphism aesthetic — it combines speed, intelligence, and style to make resume creation effortless.
@@ -35,7 +35,7 @@ export default function About({ onBack, theme, D, glassCard, glassBase, textPrim
       </div>
 
       {/* Mission */}
-      <div style={{ ...glassCard, padding: "28px", marginBottom: "24px" }}>
+      <div className="glass-panel" style={{ padding: "28px", marginBottom: "24px" }}>
         <p style={{ fontSize: "10px", fontWeight: "700", letterSpacing: "0.12em", textTransform: "uppercase", color: textMuted, marginBottom: "12px" }}>Our Mission</p>
         <p style={{ fontSize: "14px", color: textSecondary, lineHeight: 1.8, margin: 0 }}>
           We believe everyone deserves a great resume regardless of their budget or technical skills. Spider Resume aims to democratise professional resume creation — giving students and job seekers the same quality output that was previously only possible with expensive career coaches or design tools.
@@ -46,7 +46,7 @@ export default function About({ onBack, theme, D, glassCard, glassBase, textPrim
       <p style={{ fontSize: "10px", fontWeight: "700", letterSpacing: "0.12em", textTransform: "uppercase", color: textMuted, marginBottom: "14px" }}>Features</p>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: "12px", marginBottom: "32px" }}>
         {features.map(({ icon, title, desc }) => (
-          <div key={title} style={{ ...glassCard, padding: "20px" }}>
+          <div key={title} className="glass-panel" style={{ padding: "20px" }}>
             <p style={{ fontSize: "22px", margin: "0 0 8px" }}>{icon}</p>
             <p style={{ fontSize: "13px", fontWeight: "700", color: textPrimary, margin: "0 0 6px" }}>{title}</p>
             <p style={{ fontSize: "12px", color: textSecondary, lineHeight: 1.6, margin: 0 }}>{desc}</p>
@@ -55,7 +55,7 @@ export default function About({ onBack, theme, D, glassCard, glassBase, textPrim
       </div>
 
       {/* Contact */}
-      <div style={{ ...glassCard, padding: "28px", textAlign: "center" }}>
+      <div className="glass-panel" style={{ padding: "28px", textAlign: "center" }}>
         <p style={{ fontSize: "10px", fontWeight: "700", letterSpacing: "0.12em", textTransform: "uppercase", color: textMuted, marginBottom: "12px" }}>Contact</p>
         <p style={{ fontSize: "14px", color: textSecondary, marginBottom: "10px" }}>Have a question or feedback? Reach out:</p>
         <a href="mailto:contact@spiderresume.com" style={{ fontSize: "15px", fontWeight: "700", color: theme.accent1, textDecoration: "none" }}>

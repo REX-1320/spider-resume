@@ -58,7 +58,7 @@ export default function Terms({ onBack, theme, D, glassCard, textPrimary, textSe
 
       <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
         {sections.map(({ title, body, bullets, contact }) => (
-          <div key={title} style={{ ...glassCard, padding: "22px 26px" }}>
+          <div key={title} className="glass-panel" style={{ padding: "22px 26px" }}>
             <p style={{ fontSize: "13px", fontWeight: "700", color: textPrimary, margin: "0 0 10px", letterSpacing: "0.01em" }}>{title}</p>
             {body && <p style={{ fontSize: "13px", color: textSecondary, lineHeight: 1.75, margin: 0 }}>{body}</p>}
             {bullets && (

@@ -77,7 +77,7 @@ return(
 
 <div style={{maxWidth:"700px",margin:"0 auto",padding:"28px 16px"}}>
 
-<div style={{...glassCard,padding:"24px"}}>
+<div className="glass-panel" style={{ padding:"24px"}}>
 
 <h3 style={{color:textPrimary,marginBottom:"10px"}}>💬 AI Resume Chat</h3>
 
@@ -90,15 +90,13 @@ rows={4}
 value={chatInput}
 onChange={(e)=>setChatInput(e.target.value)}
 placeholder="Example: I am a python developer with django and react experience"
-style={{
-...glassInput,
-width:"100%",
+className="glass-input" style={{ width:"100%",
 marginBottom:"12px"
 }}
 />
 
 <button
-style={{...glassBtn,padding:"12px",width:"100%"}}
+className="glass-btn" style={{ padding:"12px",width:"100%"}}
 onClick={async()=>{
 
 if(!chatInput) return
@@ -157,12 +155,12 @@ return(
 
 <div style={{maxWidth:"900px",margin:"0 auto",padding:"28px 16px"}}>
 
-<div style={{...glassCard,padding:"24px"}}>
+<div className="glass-panel" style={{ padding:"24px"}}>
 
 <h3 style={{color:textPrimary}}>🎨 AI Resume Templates</h3>
 
 <button
-style={{...glassBtn,padding:"12px",marginTop:"10px"}}
+className="glass-btn" style={{ padding:"12px",marginTop:"10px"}}
 onClick={async()=>{
 
 const res = await callAI(`
@@ -203,9 +201,7 @@ marginTop:"20px"
 
 <div
 key={i}
-style={{
-...glassBase,
-padding:"16px",
+className="liquid-glass" style={{ padding:"16px",
 borderRadius:"12px"
 }}
 >
@@ -222,9 +218,7 @@ borderRadius:"12px"
 {generatedTemplates.length>0 && (
 
 <button
-style={{
-...glassBtn,
-marginTop:"20px",
+className="glass-btn" style={{ marginTop:"20px",
 padding:"12px",
 width:"100%"
 }}
@@ -249,7 +243,7 @@ return(
 
 <div style={{maxWidth:"700px",margin:"0 auto",padding:"28px 16px"}}>
 
-<div style={{...glassCard,padding:"24px"}}>
+<div className="glass-panel" style={{ padding:"24px"}}>
 
 <h3 style={{color:textPrimary}}>🔎 Job Platforms</h3>
 
@@ -257,9 +251,7 @@ return(
 
 <div
 key={i}
-style={{
-...glassBase,
-padding:"16px",
+className="liquid-glass" style={{ padding:"16px",
 borderRadius:"12px",
 marginBottom:"12px"
 }}
@@ -304,12 +296,12 @@ return(
 
 <div style={{maxWidth:"700px",margin:"0 auto",padding:"28px 16px"}}>
 
-<div style={{...glassCard,padding:"24px"}}>
+<div className="glass-panel" style={{ padding:"24px"}}>
 
 <h3 style={{color:textPrimary}}>📄 Cover Letter Generator</h3>
 
 <button
-style={{...glassBtn,padding:"12px",marginTop:"10px"}}
+className="glass-btn" style={{ padding:"12px",marginTop:"10px"}}
 onClick={async()=>{
 
 const res = await callAI(`
@@ -331,9 +323,7 @@ Generate Cover Letter
 rows={12}
 value={coverLetter}
 readOnly
-style={{
-...glassInput,
-marginTop:"14px",
+className="glass-input" style={{ marginTop:"14px",
 width:"100%"
 }}
 />

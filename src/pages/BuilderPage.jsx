@@ -22,10 +22,10 @@ const BuilderPage = ({
       <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
         {/* FILE IMPORT */}
         <div className="animate-fade-in-up delay-1">
-          <GSection glassCard={{ ...glassCard, padding: "32px", border: `1px solid ${theme.accent1}30` }} textMuted={textMuted} title={<span style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "20px", fontWeight: "800", color: textPrimary }}><span>📎</span> Import Resume</span>}>
+          <GSection glassCard={{  padding: "32px", border: `1px solid ${theme.accent1}30` }} textMuted={textMuted} title={<span style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "20px", fontWeight: "800", color: textPrimary }}><span>📎</span> Import Resume</span>}>
             <p style={{ fontSize: "14px", color: textSecondary, marginBottom: "20px", lineHeight: 1.6 }}>Upload an existing resume (PDF or image). Our AI will extract your details instantly.</p>
             <label style={{ display: "block", cursor: "pointer" }} className="card-hover-lift">
-              <div style={{ ...glassCard, borderRadius: "24px", padding: "40px 24px", textAlign: "center", border: `2px dashed ${D ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.1)"}`, background: D ? "rgba(255,255,255,0.02)" : "rgba(0,0,0,0.01)", transition: "all 0.3s" }}>
+              <div className="glass-panel" style={{ borderRadius: "24px", padding: "40px 24px", textAlign: "center", border: `2px dashed ${D ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.1)"}`, background: D ? "rgba(255,255,255,0.02)" : "rgba(0,0,0,0.01)", transition: "all 0.3s" }}>
                 {fileImporting ? (
                   <div className="animate-pulse">
                     <p className="animate-float" style={{ fontSize: "36px", marginBottom: "16px" }}>🔍</p>
@@ -57,7 +57,7 @@ const BuilderPage = ({
         </div>
 
         <div className="animate-fade-in-up delay-2">
-          <GSection glassCard={{ ...glassCard, padding: "32px" }} textMuted={textMuted} title={<span style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "20px", fontWeight: "800", color: textPrimary }}><span>🎨</span> Choose Template</span>}>
+          <GSection glassCard={{  padding: "32px" }} textMuted={textMuted} title={<span style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "20px", fontWeight: "800", color: textPrimary }}><span>🎨</span> Choose Template</span>}>
             <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", marginTop: "16px" }}>
               {allTemplates.map(t => {
                 const locked = PRO_TEMPLATES.includes(t) && !isPro;
@@ -82,22 +82,22 @@ const BuilderPage = ({
         </div>
 
         <div className="animate-fade-in-up delay-3">
-          <GSection glassCard={{ ...glassCard, padding: "32px" }} textMuted={textMuted} title={<span style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "20px", fontWeight: "800", color: textPrimary }}><span>👤</span> Personal Info</span>}>
+          <GSection glassCard={{  padding: "32px" }} textMuted={textMuted} title={<span style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "20px", fontWeight: "800", color: textPrimary }}><span>👤</span> Personal Info</span>}>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px", marginTop: "16px" }}>
-              <GInput isDark={D} label="Full Name" textMuted={textMuted} inputStyle={{...glassInput, padding: "14px 16px", borderRadius: "12px"}} placeholder="E.g. Jane Doe" value={form.name} onChange={e => update("name", e.target.value)} />
-              <GInput isDark={D} label="Email Address" textMuted={textMuted} inputStyle={{...glassInput, padding: "14px 16px", borderRadius: "12px"}} placeholder="jane@example.com" value={form.email} onChange={e => update("email", e.target.value)} />
-              <GInput isDark={D} label="Phone Number" textMuted={textMuted} inputStyle={{...glassInput, padding: "14px 16px", borderRadius: "12px"}} placeholder="+1 (555) 000-0000" value={form.phone} onChange={e => update("phone", e.target.value)} />
-              <GInput isDark={D} label="Location" textMuted={textMuted} inputStyle={{...glassInput, padding: "14px 16px", borderRadius: "12px"}} placeholder="San Francisco, CA" value={form.location} onChange={e => update("location", e.target.value)} />
+              <GInput isDark={D} label="Full Name" textMuted={textMuted} inputStyle={{ padding: "14px 16px", borderRadius: "12px"}} placeholder="E.g. Jane Doe" value={form.name} onChange={e => update("name", e.target.value)} />
+              <GInput isDark={D} label="Email Address" textMuted={textMuted} inputStyle={{ padding: "14px 16px", borderRadius: "12px"}} placeholder="jane@example.com" value={form.email} onChange={e => update("email", e.target.value)} />
+              <GInput isDark={D} label="Phone Number" textMuted={textMuted} inputStyle={{ padding: "14px 16px", borderRadius: "12px"}} placeholder="+1 (555) 000-0000" value={form.phone} onChange={e => update("phone", e.target.value)} />
+              <GInput isDark={D} label="Location" textMuted={textMuted} inputStyle={{ padding: "14px 16px", borderRadius: "12px"}} placeholder="San Francisco, CA" value={form.location} onChange={e => update("location", e.target.value)} />
             </div>
             <div style={{ marginTop: "20px" }}>
-              <GInput isDark={D} label="LinkedIn Profile" textMuted={textMuted} inputStyle={{...glassInput, padding: "14px 16px", borderRadius: "12px"}} placeholder="linkedin.com/in/janedoe" value={form.linkedin} onChange={e => update("linkedin", e.target.value)} />
+              <GInput isDark={D} label="LinkedIn Profile" textMuted={textMuted} inputStyle={{ padding: "14px 16px", borderRadius: "12px"}} placeholder="linkedin.com/in/janedoe" value={form.linkedin} onChange={e => update("linkedin", e.target.value)} />
             </div>
           </GSection>
         </div>
 
         {/* PHOTO UPLOAD */}
         <div className="animate-fade-in-up delay-4">
-          <GSection glassCard={{ ...glassCard, padding: "32px" }} textMuted={textMuted} title={<span style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "20px", fontWeight: "800", color: textPrimary }}><span>📷</span> Profile Photo <span style={{ fontSize: "12px", fontWeight: "normal", color: textMuted }}>(Optional)</span></span>}
+          <GSection glassCard={{  padding: "32px" }} textMuted={textMuted} title={<span style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "20px", fontWeight: "800", color: textPrimary }}><span>📷</span> Profile Photo <span style={{ fontSize: "12px", fontWeight: "normal", color: textMuted }}>(Optional)</span></span>}
             action={form.photo ? <button onClick={() => update("photo", "")} className="btn-glass" style={{ fontSize: "13px", color: D ? "#f08080" : "#b03030", background: "rgba(240,128,128,0.1)", padding: "8px 16px", borderRadius: "100px", border: "1px solid rgba(240,128,128,0.2)", cursor: "pointer", fontWeight: "700", transition: "all 0.2s" }}>✕ Remove</button> : null}>
             <div style={{ display: "flex", alignItems: "center", gap: "24px", marginTop: "16px" }}>
               {/* Preview */}
@@ -133,17 +133,17 @@ const BuilderPage = ({
         </div>
 
         <div className="animate-fade-in-up delay-5">
-          <GSection glassCard={{ ...glassCard, padding: "32px" }} textMuted={textMuted} title={<span style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "20px", fontWeight: "800", color: textPrimary }}><span>🎓</span> Education</span>} action={<button onClick={() => setForm(p => ({ ...p, education: [...p.education, { degree: "", school: "", year: "" }] }))} className="btn-premium" style={{ fontSize: "13px", color: D ? "#0c0a08" : "#fff", background: `linear-gradient(135deg, ${theme.accent1}, ${theme.accent2})`, padding: "8px 16px", borderRadius: "100px", border: "none", cursor: "pointer", fontWeight: "800", boxShadow: `0 4px 16px ${theme.accent1}40` }}>+ Add Degree</button>}>
+          <GSection glassCard={{  padding: "32px" }} textMuted={textMuted} title={<span style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "20px", fontWeight: "800", color: textPrimary }}><span>🎓</span> Education</span>} action={<button onClick={() => setForm(p => ({ ...p, education: [...p.education, { degree: "", school: "", year: "" }] }))} className="btn-premium" style={{ fontSize: "13px", color: D ? "#0c0a08" : "#fff", background: `linear-gradient(135deg, ${theme.accent1}, ${theme.accent2})`, padding: "8px 16px", borderRadius: "100px", border: "none", cursor: "pointer", fontWeight: "800", boxShadow: `0 4px 16px ${theme.accent1}40` }}>+ Add Degree</button>}>
             <div style={{ display: "flex", flexDirection: "column", gap: "16px", marginTop: "16px" }}>
               {form.education.map((e, i) => (
                 <div key={i} className="animate-fade-in" style={{ padding: "24px", background: D ? "rgba(255,255,255,0.02)" : "rgba(0,0,0,0.02)", border: `1px solid ${D ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)"}`, borderRadius: "20px" }}>
                   <div style={{ display: "flex", justifyContent: "flex-end" }}>
                     <button onClick={() => { const edus = [...form.education]; edus.splice(i, 1); setForm(p => ({ ...p, education: edus })) }} style={{ background: "transparent", border: "none", color: D ? "#f08080" : "#b03030", cursor: "pointer", fontSize: "16px" }}>✕</button>
                   </div>
-                  <GInput isDark={D} label="Degree / Field of Study" textMuted={textMuted} inputStyle={{...glassInput, padding: "14px 16px", borderRadius: "12px"}} placeholder="E.g. B.S. in Computer Science" value={e.degree} onChange={ev => updateEdu(i, "degree", ev.target.value)} />
+                  <GInput isDark={D} label="Degree / Field of Study" textMuted={textMuted} inputStyle={{ padding: "14px 16px", borderRadius: "12px"}} placeholder="E.g. B.S. in Computer Science" value={e.degree} onChange={ev => updateEdu(i, "degree", ev.target.value)} />
                   <div style={{ display: "grid", gridTemplateColumns: "1fr 120px", gap: "16px", marginTop: "16px" }}>
-                    <GInput isDark={D} label="University / School" textMuted={textMuted} inputStyle={{...glassInput, padding: "14px 16px", borderRadius: "12px"}} placeholder="Stanford University" value={e.school} onChange={ev => updateEdu(i, "school", ev.target.value)} />
-                    <GInput isDark={D} label="Grad Year" textMuted={textMuted} inputStyle={{...glassInput, padding: "14px 16px", borderRadius: "12px"}} placeholder="2024" value={e.year} onChange={ev => updateEdu(i, "year", ev.target.value)} />
+                    <GInput isDark={D} label="University / School" textMuted={textMuted} inputStyle={{ padding: "14px 16px", borderRadius: "12px"}} placeholder="Stanford University" value={e.school} onChange={ev => updateEdu(i, "school", ev.target.value)} />
+                    <GInput isDark={D} label="Grad Year" textMuted={textMuted} inputStyle={{ padding: "14px 16px", borderRadius: "12px"}} placeholder="2024" value={e.year} onChange={ev => updateEdu(i, "year", ev.target.value)} />
                   </div>
                 </div>
               ))}
@@ -152,7 +152,7 @@ const BuilderPage = ({
         </div>
 
         <div className="animate-fade-in-up delay-6">
-          <GSection glassCard={{ ...glassCard, padding: "32px" }} textMuted={textMuted} title={<span style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "20px", fontWeight: "800", color: textPrimary }}><span>💼</span> Work Experience</span>} action={<button onClick={() => setForm(p => ({ ...p, experience: [...p.experience, { role: "", company: "", duration: "", desc: "" }] }))} className="btn-premium" style={{ fontSize: "13px", color: D ? "#0c0a08" : "#fff", background: `linear-gradient(135deg, ${theme.accent1}, ${theme.accent2})`, padding: "8px 16px", borderRadius: "100px", border: "none", cursor: "pointer", fontWeight: "800", boxShadow: `0 4px 16px ${theme.accent1}40` }}>+ Add Role</button>}>
+          <GSection glassCard={{  padding: "32px" }} textMuted={textMuted} title={<span style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "20px", fontWeight: "800", color: textPrimary }}><span>💼</span> Work Experience</span>} action={<button onClick={() => setForm(p => ({ ...p, experience: [...p.experience, { role: "", company: "", duration: "", desc: "" }] }))} className="btn-premium" style={{ fontSize: "13px", color: D ? "#0c0a08" : "#fff", background: `linear-gradient(135deg, ${theme.accent1}, ${theme.accent2})`, padding: "8px 16px", borderRadius: "100px", border: "none", cursor: "pointer", fontWeight: "800", boxShadow: `0 4px 16px ${theme.accent1}40` }}>+ Add Role</button>}>
             <div style={{ display: "flex", flexDirection: "column", gap: "20px", marginTop: "16px" }}>
               {form.experience.map((e, i) => (
                 <div key={i} className="animate-fade-in" style={{ padding: "24px", background: D ? "rgba(255,255,255,0.02)" : "rgba(0,0,0,0.02)", border: `1px solid ${D ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)"}`, borderRadius: "20px" }}>
@@ -160,13 +160,13 @@ const BuilderPage = ({
                     <button onClick={() => { const exps = [...form.experience]; exps.splice(i, 1); setForm(p => ({ ...p, experience: exps })) }} style={{ background: "transparent", border: "none", color: D ? "#f08080" : "#b03030", cursor: "pointer", fontSize: "16px" }}>✕</button>
                   </div>
                   <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px", marginBottom: "16px" }}>
-                    <GInput isDark={D} label="Job Title" textMuted={textMuted} inputStyle={{...glassInput, padding: "14px 16px", borderRadius: "12px"}} placeholder="Senior Software Engineer" value={e.role} onChange={ev => updateExp(i, "role", ev.target.value)} />
-                    <GInput isDark={D} label="Company Name" textMuted={textMuted} inputStyle={{...glassInput, padding: "14px 16px", borderRadius: "12px"}} placeholder="Google" value={e.company} onChange={ev => updateExp(i, "company", ev.target.value)} />
+                    <GInput isDark={D} label="Job Title" textMuted={textMuted} inputStyle={{ padding: "14px 16px", borderRadius: "12px"}} placeholder="Senior Software Engineer" value={e.role} onChange={ev => updateExp(i, "role", ev.target.value)} />
+                    <GInput isDark={D} label="Company Name" textMuted={textMuted} inputStyle={{ padding: "14px 16px", borderRadius: "12px"}} placeholder="Google" value={e.company} onChange={ev => updateExp(i, "company", ev.target.value)} />
                   </div>
                   <div style={{ marginBottom: "16px" }}>
-                    <GInput isDark={D} label="Duration" textMuted={textMuted} inputStyle={{...glassInput, padding: "14px 16px", borderRadius: "12px"}} placeholder="Jan 2022 – Present" value={e.duration} onChange={ev => updateExp(i, "duration", ev.target.value)} />
+                    <GInput isDark={D} label="Duration" textMuted={textMuted} inputStyle={{ padding: "14px 16px", borderRadius: "12px"}} placeholder="Jan 2022 – Present" value={e.duration} onChange={ev => updateExp(i, "duration", ev.target.value)} />
                   </div>
-                  <GTextarea isDark={D} label="Responsibilities / Achievements" textMuted={textMuted} inputStyle={{...glassInput, padding: "16px", borderRadius: "12px", minHeight: "100px"}} placeholder="Summarize your impact. AI will improve and formulate bullet points." value={e.desc} onChange={ev => updateExp(i, "desc", ev.target.value)} rows={4} />
+                  <GTextarea isDark={D} label="Responsibilities / Achievements" textMuted={textMuted} inputStyle={{ padding: "16px", borderRadius: "12px", minHeight: "100px"}} placeholder="Summarize your impact. AI will improve and formulate bullet points." value={e.desc} onChange={ev => updateExp(i, "desc", ev.target.value)} rows={4} />
                 </div>
               ))}
             </div>
@@ -174,9 +174,9 @@ const BuilderPage = ({
         </div>
 
         <div className="animate-fade-in-up delay-7">
-          <GSection glassCard={{ ...glassCard, padding: "32px" }} textMuted={textMuted} title={<span style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "20px", fontWeight: "800", color: textPrimary }}><span>⚡</span> Skills</span>}>
+          <GSection glassCard={{  padding: "32px" }} textMuted={textMuted} title={<span style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "20px", fontWeight: "800", color: textPrimary }}><span>⚡</span> Skills</span>}>
             <div style={{ marginTop: "16px" }}>
-              <GInput isDark={D} label="Core Skills & Technologies" textMuted={textMuted} inputStyle={{...glassInput, padding: "14px 16px", borderRadius: "12px"}} placeholder="E.g. Python, React, JavaScript, AWS" defaultValue={form.skills} onBlur={e => update("skills", e.target.value)} onChange={e => update("skills", e.target.value)} />
+              <GInput isDark={D} label="Core Skills & Technologies" textMuted={textMuted} inputStyle={{ padding: "14px 16px", borderRadius: "12px"}} placeholder="E.g. Python, React, JavaScript, AWS" defaultValue={form.skills} onBlur={e => update("skills", e.target.value)} onChange={e => update("skills", e.target.value)} />
               <p style={{ fontSize: "12px", color: textMuted, marginTop: "8px", fontWeight: "600" }}>Separate multiple skills with commas.</p>
             </div>
           </GSection>
@@ -189,13 +189,13 @@ const BuilderPage = ({
         
         <div className="animate-fade-in-up delay-8">
           {!canGenerate() && (
-            <div className="animate-pulse-glow" style={{ ...glassCard, padding: "24px", marginBottom: "24px", background: D ? "rgba(224,92,92,0.1)" : "rgba(224,92,92,0.05)", border: `1px solid rgba(224,92,92,0.2)`, textAlign: "center" }}>
+            <div className="animate-pulse-glow glass-panel" style={{ padding: "24px", marginBottom: "24px", background: D ? "rgba(224,92,92,0.1)" : "rgba(224,92,92,0.05)", border: `1px solid rgba(224,92,92,0.2)`, textAlign: "center" }}>
               <p style={{ fontSize: "16px", fontWeight: "800", color: D ? "#ff8a8a" : "#d32f2f", marginBottom: "8px" }}>🎯 Daily Limit Reached</p>
               <p style={{ fontSize: "13px", color: textSecondary, lineHeight: 1.5 }}>Upgrade to Pro for unlimited AI generation and premium features.</p>
             </div>
           )}
 
-          <div className="card-hover-lift" style={{ ...glassCard, padding: "24px", background: `linear-gradient(135deg, ${theme.accent1}10, transparent)`, border: `1px solid ${theme.accent1}30`, marginBottom: "24px" }}>
+          <div className="card-hover-lift glass-panel" style={{ padding: "24px", background: `linear-gradient(135deg, ${theme.accent1}10, transparent)`, border: `1px solid ${theme.accent1}30`, marginBottom: "24px" }}>
             <h3 style={{ fontSize: "18px", fontWeight: "800", color: textPrimary, margin: "0 0 16px", display: "flex", alignItems: "center", gap: "8px" }}>✨ AI Optimization</h3>
             <p style={{ fontSize: "14px", color: textSecondary, marginBottom: "20px", lineHeight: 1.6 }}>Let our AI rewrite your experience and summary into powerful, ATS-friendly statements.</p>
             
@@ -245,7 +245,7 @@ const BuilderPage = ({
           
           <AIExtras
             page={page} setPage={setPage} callAI={callAI} form={form} setForm={setForm}
-            glassCard={{ ...glassCard, padding: "24px" }} glassBase={glassCard} glassBtn={glassBtn} glassInput={glassInput}
+            glassCard={{  padding: "24px" }} glassBase={glassCard} glassBtn={glassBtn} glassInput={glassInput}
             textPrimary={textPrimary} textSecondary={textSecondary} textMuted={textMuted} theme={theme} D={D}
           />
 
@@ -254,7 +254,7 @@ const BuilderPage = ({
 
         {/* Live Mini-Preview */}
         <div className="desktop-preview animate-fade-in delay-6">
-          <div style={{ ...glassCard, padding: "24px", position: "relative", overflow: "hidden" }}>
+          <div className="glass-panel" style={{ padding: "24px", position: "relative", overflow: "hidden" }}>
             <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "4px", background: `linear-gradient(90deg, ${theme.accent1}, ${theme.accent2})` }} />
             <p style={{ fontSize: "12px", fontWeight: "800", letterSpacing: "0.15em", textTransform: "uppercase", color: textMuted, marginBottom: "20px", display: "flex", alignItems: "center", gap: "8px" }}>
               <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: theme.accent1, animation: "pulseGlowing 2s infinite" }} /> Live Preview

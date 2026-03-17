@@ -275,7 +275,7 @@ export default function DownloadResume({ form, glassCard, glassBase, glassBtn, t
 
       {/* Format dropdown */}
       {open && (
-        <div className="animate-fade-in-up" style={{ ...glassCard, padding: "24px", marginTop: "12px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", border: `1px solid ${theme.accent1}30`, boxShadow: `0 16px 40px rgba(0,0,0,0.2)` }}>
+        <div className="animate-fade-in-up glass-panel" style={{ padding: "24px", marginTop: "12px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", border: `1px solid ${theme.accent1}30`, boxShadow: `0 16px 40px rgba(0,0,0,0.2)` }}>
           <p style={{ fontSize: "12px", fontWeight: "800", letterSpacing: "0.15em", textTransform: "uppercase", color: textMuted, margin: "0 0 8px", gridColumn: "1/-1", display: "flex", alignItems: "center", gap: "8px" }}>
             <span style={{ flex: 1, height: "1px", background: D ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)" }} />
             Choose Format

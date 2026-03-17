@@ -112,7 +112,7 @@ Make summaries and descriptions professional and impactful. Fill empty strings w
       )}
 
       {/* Main Chat Area */}
-      <div className="card-hover-lift animate-fade-in-up delay-2" style={{ ...glassCard, flex: 1, padding: "24px", display: "flex", flexDirection: "column", gap: "20px", overflow: "hidden", position: "relative", marginBottom: "24px" }}>
+      <div className="card-hover-lift animate-fade-in-up delay-2 glass-panel" style={{ flex: 1, padding: "24px", display: "flex", flexDirection: "column", gap: "20px", overflow: "hidden", position: "relative", marginBottom: "24px" }}>
         
         {/* Background Decoration */}
         <div style={{ position: "absolute", top: "20%", right: "-10%", width: "400px", height: "400px", background: `radial-gradient(circle, ${theme.accent1}10 0%, transparent 60%)`, pointerEvents: "none" }} />

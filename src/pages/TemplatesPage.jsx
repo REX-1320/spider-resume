@@ -250,7 +250,7 @@ Return ONLY the complete modified HTML starting with <div. Keep all {{PLACEHOLDE
       </div>
 
       {/* Custom Generator */}
-      <div className="card-hover-lift animate-fade-in-up delay-1" style={{ ...glassCard, padding:"32px", marginBottom: "32px", position: "relative", overflow: "hidden" }}>
+      <div className="card-hover-lift animate-fade-in-up delay-1 glass-panel" style={{ padding:"32px", marginBottom: "32px", position: "relative", overflow: "hidden" }}>
         <div style={{ position: "absolute", top: "-50%", right: "-10%", width: "300px", height: "300px", background: `radial-gradient(circle, ${theme.accent1}20 0%, transparent 60%)`, pointerEvents: "none" }} />
         
         <p style={{ fontSize: "12px", fontWeight: "800", letterSpacing: "0.16em", textTransform: "uppercase", color: textMuted, marginBottom: "16px", display: "flex", alignItems: "center", gap: "6px" }}>
@@ -288,7 +288,7 @@ Return ONLY the complete modified HTML starting with <div. Keep all {{PLACEHOLDE
           {filtered.map((tpl, idx) => {
             const color = TYPE_COLOR[tpl.type] || theme.accent1;
             return (
-              <div key={tpl.firestoreId||idx} className="card-hover-lift" style={{ ...glassCard, overflow:"hidden", display:"flex", flexDirection:"column", border: `1px solid ${D ? "rgba(201,169,110,0.15)" : "rgba(201,169,110,0.3)"}` }}>
+              <div key={tpl.firestoreId||idx} className="card-hover-lift glass-panel" style={{ overflow:"hidden", display:"flex", flexDirection:"column", border: `1px solid ${D ? "rgba(201,169,110,0.15)" : "rgba(201,169,110,0.3)"}` }}>
                 {/* Mini preview */}
                 <div style={{ height: "220px", overflow:"hidden", cursor:"pointer", background:"#fff", position:"relative", borderBottom: `1px solid ${D ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)"}` }} onClick={()=>openPreview(tpl)}>
                   <div style={{ transform:"scale(0.35)", transformOrigin:"top left", width:"285%", pointerEvents:"none" }}>
@@ -321,7 +321,7 @@ Return ONLY the complete modified HTML starting with <div. Keep all {{PLACEHOLDE
       )}
 
       {!loading && filtered.length === 0 && (
-        <div className="card-hover-lift animate-fade-in-up" style={{ ...glassCard, padding:"80px 24px", textAlign:"center", border: `1px dashed ${theme.accent1}66` }}>
+        <div className="card-hover-lift animate-fade-in-up glass-panel" style={{ padding:"80px 24px", textAlign:"center", border: `1px dashed ${theme.accent1}66` }}>
           <p className="animate-float" style={{ fontSize: "48px", marginBottom: "16px" }}>📭</p>
           <p style={{ fontSize: "18px", fontWeight: "800", fontFamily: "var(--font-display)", color: textPrimary, marginBottom: "8px" }}>No templates found</p>
           <p style={{ fontSize: "14px", color: textSecondary }}>Use the AI generator above to create your perfect custom template.</p>

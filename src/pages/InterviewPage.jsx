@@ -75,7 +75,7 @@ Mix: 5 behavioral, 5 technical, 5 situational, 5 HR. Make questions specific to 
         )}
       </div>
 
-      <div className="card-hover-lift animate-fade-in-up delay-1" style={{ ...glassCard, padding: "24px 28px", marginBottom: "32px", position: "relative", overflow: "hidden" }}>
+      <div className="card-hover-lift animate-fade-in-up delay-1 glass-panel" style={{ padding: "24px 28px", marginBottom: "32px", position: "relative", overflow: "hidden" }}>
         <div style={{ position: "absolute", top: "-50%", right: "-10%", width: "300px", height: "300px", background: `radial-gradient(circle, ${theme.accent1}15 0%, transparent 60%)`, pointerEvents: "none" }} />
         
         <label style={{ display: "block", fontSize: "12px", fontWeight: "800", letterSpacing: "0.16em", textTransform: "uppercase", color: textMuted, marginBottom: "12px" }}>Target Role (Optional)</label>
@@ -91,7 +91,7 @@ Mix: 5 behavioral, 5 technical, 5 situational, 5 HR. Make questions specific to 
 
       {/* Empty state */}
       {!loading && questions.length === 0 && (
-        <div className="card-hover-lift animate-fade-in-up delay-2" style={{ ...glassCard, padding: "80px 24px", textAlign: "center", border: `1px dashed ${theme.accent1}40` }}>
+        <div className="card-hover-lift animate-fade-in-up delay-2 glass-panel" style={{ padding: "80px 24px", textAlign: "center", border: `1px dashed ${theme.accent1}40` }}>
           <div className="ambient-blob animate-float" style={{ position: "relative", width: "80px", height: "80px", margin: "0 auto 24px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "40px", background: `linear-gradient(135deg, ${theme.accent1}20, ${theme.accent2}20)`, borderRadius: "50%" }}>🎤</div>
           <p style={{ fontSize: "24px", fontWeight: "800", fontFamily: "var(--font-display)", color: textPrimary, marginBottom: "12px", letterSpacing: "-0.5px" }}>Ready to practice?</p>
           <p style={{ fontSize: "15px", color: textSecondary, lineHeight: 1.6, marginBottom: "32px", maxWidth: "480px", margin: "0 auto 32px" }}>AI will generate 20 highly specific questions tailored to your resume—covering behavioral, technical, situational, and HR rounds.</p>
@@ -114,7 +114,7 @@ Mix: 5 behavioral, 5 technical, 5 situational, 5 HR. Make questions specific to 
       {loading && (
         <div className="animate-fade-in" style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
           {Array.from({ length: 5 }).map((_, i) => (
-            <div key={i} style={{ ...glassCard, padding: "24px", opacity: 0.5, animation: `pulseGLow 2s ease ${i * 0.1}s infinite`, border: `1px solid ${theme.accent1}20` }}>
+            <div key={i} className="glass-panel" style={{ padding: "24px", opacity: 0.5, animation: `pulseGLow 2s ease ${i * 0.1}s infinite`, border: `1px solid ${theme.accent1}20` }}>
               <div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
                 <div style={{ width: "32px", height: "32px", borderRadius: "50%", background: D ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.06)", flexShrink: 0 }} />
                 <div style={{ flex: 1 }}>
@@ -136,7 +136,7 @@ Mix: 5 behavioral, 5 technical, 5 situational, 5 HR. Make questions specific to 
             const done = practiced.has(q.id);
             
             return (
-              <div key={q.id} className="card-hover-lift" style={{ ...glassCard, overflow: "hidden", opacity: done ? 0.6 : 1, transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)", padding: 0, border: isOpen ? `1px solid ${color}40` : `1px solid ${D ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)"}`, boxShadow: isOpen ? `0 12px 40px ${color}15` : undefined }}>
+              <div key={q.id} className="card-hover-lift glass-panel" style={{ overflow: "hidden", opacity: done ? 0.6 : 1, transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)", padding: 0, border: isOpen ? `1px solid ${color}40` : `1px solid ${D ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)"}`, boxShadow: isOpen ? `0 12px 40px ${color}15` : undefined }}>
                 {/* Left Accent Bar */}
                 <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: "4px", background: done ? (D ? "#7dcfa0" : "#2e7d52") : color }} />
                 
@@ -211,7 +211,7 @@ Mix: 5 behavioral, 5 technical, 5 situational, 5 HR. Make questions specific to 
 
       {/* Progress Completion State */}
       {questions.length > 0 && practicedCount === questions.length && (
-        <div className="animate-fade-in-scale" style={{ ...glassCard, padding: "32px", marginTop: "32px", textAlign: "center", background: "linear-gradient(135deg, rgba(76,175,125,0.1), rgba(76,175,125,0.05))", border: "1px solid rgba(76,175,125,0.3)" }}>
+        <div className="animate-fade-in-scale glass-panel" style={{ padding: "32px", marginTop: "32px", textAlign: "center", background: "linear-gradient(135deg, rgba(76,175,125,0.1), rgba(76,175,125,0.05))", border: "1px solid rgba(76,175,125,0.3)" }}>
           <div style={{ fontSize: "48px", marginBottom: "16px" }}>🎉</div>
           <p style={{ fontSize: "20px", fontWeight: "800", fontFamily: "var(--font-display)", color: D ? "#7dcfa0" : "#2e7d52", margin: "0 0 8px" }}>All 20 questions practiced!</p>
           <p style={{ fontSize: "14px", color: textSecondary, margin: "0 0 24px" }}>You are well prepared. Want to tackle a different role?</p>

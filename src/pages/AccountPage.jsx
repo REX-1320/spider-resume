@@ -37,7 +37,7 @@ const AccountPage = ({
         <p style={{ fontSize: "14px", color: textSecondary }}>Manage your profile and subscription.</p>
       </div>
 
-      <div className="card-hover-lift animate-fade-in-up delay-1" style={{ ...glassCard, padding: "28px", marginBottom: "20px" }}>
+      <div className="card-hover-lift animate-fade-in-up delay-1 glass-panel" style={{ padding: "28px", marginBottom: "20px" }}>
         <p style={{ fontSize: "11px", fontWeight: "800", letterSpacing: "0.16em", textTransform: "uppercase", color: textMuted, marginBottom: "20px" }}>👤 Profile</p>
         <div style={{ display: "flex", alignItems: "center", gap: "16px", marginBottom: "24px" }}>
           <div className="animate-pulse-glow" style={{ width: "64px", height: "64px", borderRadius: "50%", background: `linear-gradient(135deg, ${theme.accent1}, ${theme.accent2})`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "28px", fontWeight: "800", color: D ? "#0c0a08" : "#fff", boxShadow: `0 8px 24px ${theme.accent1}44` }}>
@@ -53,7 +53,7 @@ const AccountPage = ({
         </button>
       </div>
 
-      <div className="card-hover-lift animate-fade-in-up delay-2" style={{ ...glassCard, padding: "28px", marginBottom: "20px", position: "relative", overflow: "hidden" }}>
+      <div className="card-hover-lift animate-fade-in-up delay-2 glass-panel" style={{ padding: "28px", marginBottom: "20px", position: "relative", overflow: "hidden" }}>
         {isPro && <div className="animate-pulse" style={{ position: "absolute", top: 0, right: 0, bottom: 0, width: "150px", background: `linear-gradient(90deg, transparent, rgba(201,169,110,0.1))`, pointerEvents: "none" }} />}
         
         <p style={{ fontSize: "11px", fontWeight: "800", letterSpacing: "0.16em", textTransform: "uppercase", color: textMuted, marginBottom: "20px" }}>📊 Subscription</p>
@@ -74,7 +74,7 @@ const AccountPage = ({
         </div>
 
         {!isPro && (
-          <div style={{ ...glassBase, borderRadius: "16px", padding: "16px 20px", marginBottom: "20px", background: D ? "rgba(255,255,255,0.02)" : "rgba(0,0,0,0.02)" }}>
+          <div className="liquid-glass" style={{ borderRadius: "16px", padding: "16px 20px", marginBottom: "20px", background: D ? "rgba(255,255,255,0.02)" : "rgba(0,0,0,0.02)" }}>
             <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "10px" }}>
               <span style={{ fontSize: "13px", color: textSecondary, fontWeight: "500" }}>Daily AI Usage</span>
               <span style={{ fontSize: "13px", fontWeight: "700", color: textPrimary, fontVariantNumeric: "tabular-nums" }}>{userData?.usageCount || 0} / 1</span>
@@ -98,7 +98,7 @@ const AccountPage = ({
 
       {/* PROMO CODE */}
       {!isPro && (
-        <div className="card-hover-lift animate-fade-in-up delay-3" style={{ ...glassCard, padding: "24px 28px", marginBottom: "20px" }}>
+        <div className="card-hover-lift animate-fade-in-up delay-3 glass-panel" style={{ padding: "24px 28px", marginBottom: "20px" }}>
           <p style={{ fontSize: "11px", fontWeight: "800", letterSpacing: "0.16em", textTransform: "uppercase", color: textMuted, marginBottom: "16px" }}>🎟️ Have a Promo Code?</p>
           <div style={{ display: "flex", gap: "10px", marginBottom: "12px" }}>
             <div style={{ flex: 1, ...(D ? liquidGlassDark : liquidGlass), borderRadius: "16px", padding: "12px 20px", display: "flex", alignItems: "center" }}>
@@ -124,7 +124,7 @@ const AccountPage = ({
         </div>
       )}
 
-      <div className="card-hover-lift animate-fade-in-up delay-4" style={{ ...glassCard, padding: "28px" }}>
+      <div className="card-hover-lift animate-fade-in-up delay-4 glass-panel" style={{ padding: "28px" }}>
         <p style={{ fontSize: "11px", fontWeight: "800", letterSpacing: "0.16em", textTransform: "uppercase", color: textMuted, marginBottom: "20px" }}>ℹ️ Quick Guide</p>
         <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
           {[
@@ -134,7 +134,7 @@ const AccountPage = ({
             ["👁","Preview","View final design & download PDF"],
             ["✦","Spider Pro","Unlimited AI, premium templates & no ads"]
           ].map(([icon, title, desc]) => (
-            <div key={title} style={{ display: "flex", alignItems: "flex-start", gap: "16px", padding: "12px", borderRadius: "14px", ...glassBase, background: "transparent" }}>
+            <div key={title} style={{ display: "flex", alignItems: "flex-start", gap: "16px", padding: "12px", borderRadius: "14px",  background: "transparent" }}>
               <div style={{ width: "32px", height: "32px", borderRadius: "10px", background: D ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.03)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "16px", flexShrink: 0 }}>
                 {icon === "✦" ? <span style={{ color: theme.accent1 }}>✦</span> : icon}
               </div>

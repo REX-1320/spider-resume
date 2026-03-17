@@ -146,9 +146,9 @@ export default function SpiderResumeAI() {
       ? "0 16px 48px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.15), inset 0 -1px 2px rgba(0, 0, 0, 0.2), inset 0 4px 16px rgba(255, 255, 255, 0.04)"
       : "0 16px 40px rgba(0, 0, 0, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.8), inset 0 -1px 2px rgba(0, 0, 0, 0.03), inset 0 4px 20px rgba(255, 255, 255, 0.15)"
   };
-  const glassCard = { ...glassBase, borderRadius: "24px" };
+  const glassCard = {  borderRadius: "24px" };
   const glassInput = { 
-    ...glassBase, 
+     
     borderRadius: "14px", padding: "11px 16px", fontSize: "14px", 
     color: textPrimary, width: "100%", outline: "none", 
     background: D ? "rgba(0,0,0,0.1)" : "rgba(0,0,0,0.02)",
@@ -159,7 +159,7 @@ export default function SpiderResumeAI() {
     borderBottomColor: D ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.3)"
   };
   const glassBtn = { 
-    ...glassBase, 
+     
     borderRadius: "100px", cursor: "pointer", fontWeight: "600", fontSize: "14px", 
     transition: "all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)", 
     background: D ? "rgba(255, 255, 255, 0.02)" : "rgba(255, 255, 255, 0.03)",

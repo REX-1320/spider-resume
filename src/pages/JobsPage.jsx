@@ -101,7 +101,7 @@ Include all ${ALL_PLATFORMS.length} platforms with a score 0-100.`);
           const rank = aiMatches ? idx + 1 : null;
           
           return (
-            <div key={p.name} className="card-hover-lift" style={{ ...glassCard, overflow: "hidden", position: "relative", padding: 0, transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)", border: `1px solid ${isOpen ? (D ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.1)") : (D ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)")}`, boxShadow: isOpen ? "0 12px 40px rgba(0,0,0,0.15)" : undefined }}>
+            <div key={p.name} className="card-hover-lift glass-panel" style={{ overflow: "hidden", position: "relative", padding: 0, transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)", border: `1px solid ${isOpen ? (D ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.1)") : (D ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)")}`, boxShadow: isOpen ? "0 12px 40px rgba(0,0,0,0.15)" : undefined }}>
               {/* Left accent */}
               <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: "4px", background: p.color }} />
 
@@ -216,7 +216,7 @@ Include all ${ALL_PLATFORMS.length} platforms with a score 0-100.`);
       )}
 
       {/* Strategic Tip */}
-      <div className="card-hover-lift animate-fade-in-up delay-3" style={{ ...glassCard, padding: "24px", marginTop: "32px", border: `1px solid ${theme.accent1}40`, background: `linear-gradient(135deg, ${theme.accent1}05, ${theme.accent2}05)` }}>
+      <div className="card-hover-lift animate-fade-in-up delay-3 glass-panel" style={{ padding: "24px", marginTop: "32px", border: `1px solid ${theme.accent1}40`, background: `linear-gradient(135deg, ${theme.accent1}05, ${theme.accent2}05)` }}>
         <div style={{ display: "flex", gap: "16px", alignItems: "flex-start" }}>
           <div style={{ width: "40px", height: "40px", borderRadius: "12px", background: `${theme.accent1}20`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "20px", flexShrink: 0 }}>
             ⚡
