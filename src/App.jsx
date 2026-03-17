@@ -131,41 +131,52 @@ export default function SpiderResumeAI() {
   const textPrimary = D ? "rgba(240,230,215,0.95)" : "rgba(10,8,20,0.88)";
   const textSecondary = D ? "rgba(200,180,155,0.65)" : "rgba(40,30,50,0.55)";
   const textMuted = D ? "rgba(180,160,135,0.45)" : "rgba(80,60,90,0.4)";
-  // True liquid glass — pure transparency with a distinct glossy surface reflection
+
+  // ── PREMIUM LIQUID ACRYLIC GLASS — Thick milky surface with directional light ──
   const glassBase = {
     position: "relative",
-    background: D ? "rgba(255, 255, 255, 0.01)" : "rgba(255, 255, 255, 0.02)",
-    backdropFilter: D ? "blur(32px) saturate(180%) brightness(1.2)" : "blur(32px) saturate(180%) brightness(1.1)",
-    WebkitBackdropFilter: D ? "blur(32px) saturate(180%) brightness(1.2)" : "blur(32px) saturate(180%) brightness(1.1)",
+    background: D
+      ? "linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.02))"
+      : "linear-gradient(135deg, rgba(255,255,255,0.30), rgba(255,255,255,0.10))",
+    backdropFilter: D ? "blur(32px) saturate(200%) brightness(1.2)" : "blur(28px) saturate(180%)",
+    WebkitBackdropFilter: D ? "blur(32px) saturate(200%) brightness(1.2)" : "blur(28px) saturate(180%)",
     border: "1px solid transparent",
-    borderTopColor: D ? "rgba(255, 255, 255, 0.15)" : "rgba(255, 255, 255, 0.5)",
-    borderLeftColor: D ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.4)",
-    borderRightColor: D ? "rgba(255, 255, 255, 0.02)" : "rgba(255, 255, 255, 0.05)",
-    borderBottomColor: D ? "rgba(255, 255, 255, 0.05)" : "rgba(255, 255, 255, 0.1)",
-    boxShadow: D 
-      ? "0 16px 48px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.15), inset 0 -1px 2px rgba(0, 0, 0, 0.2), inset 0 4px 16px rgba(255, 255, 255, 0.04)"
-      : "0 16px 40px rgba(0, 0, 0, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.8), inset 0 -1px 2px rgba(0, 0, 0, 0.03), inset 0 4px 20px rgba(255, 255, 255, 0.15)"
-  };
-  const glassCard = {  borderRadius: "24px" };
-  const glassInput = { 
-     
-    borderRadius: "14px", padding: "11px 16px", fontSize: "14px", 
-    color: textPrimary, width: "100%", outline: "none", 
-    background: D ? "rgba(0,0,0,0.1)" : "rgba(0,0,0,0.02)",
-    boxShadow: D ? "inset 0 4px 24px rgba(0,0,0,0.4), 0 1px 1px rgba(255,255,255,0.05)" : "inset 0 4px 24px rgba(0,0,0,0.1), 0 1px 1px rgba(255,255,255,0.4)",
-    borderTopColor: D ? "rgba(0,0,0,0.4)" : "rgba(0,0,0,0.1)",
-    borderLeftColor: D ? "rgba(0,0,0,0.2)" : "rgba(0,0,0,0.05)",
-    borderRightColor: D ? "rgba(255,255,255,0.05)" : "rgba(255,255,255,0.2)",
-    borderBottomColor: D ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.3)"
-  };
-  const glassBtn = { 
-     
-    borderRadius: "100px", cursor: "pointer", fontWeight: "600", fontSize: "14px", 
-    transition: "all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)", 
-    background: D ? "rgba(255, 255, 255, 0.02)" : "rgba(255, 255, 255, 0.03)",
+    borderTopColor: D ? "rgba(255,255,255,0.4)" : "rgba(255,255,255,0.85)",
+    borderLeftColor: D ? "rgba(255,255,255,0.3)" : "rgba(255,255,255,0.7)",
+    borderRightColor: D ? "rgba(255,255,255,0.02)" : "rgba(255,255,255,0.05)",
+    borderBottomColor: D ? "rgba(255,255,255,0.05)" : "rgba(255,255,255,0.1)",
     boxShadow: D
-      ? "0 8px 24px rgba(0,0,0,0.2), inset 0 1px 1px rgba(255,255,255,0.15), inset 0 2px 12px rgba(255,255,255,0.05)"
-      : "0 8px 24px rgba(0,0,0,0.08), inset 0 1px 1px rgba(255,255,255,0.6), inset 0 2px 12px rgba(255,255,255,0.1)"
+      ? "0 16px 50px rgba(0,0,0,0.4), inset 2px 2px 6px rgba(255,255,255,0.3), inset -6px -6px 14px rgba(0,0,0,0.4), inset 0 0 18px rgba(255,255,255,0.1)"
+      : "0 12px 40px rgba(0,0,0,0.18), inset 2px 2px 6px rgba(255,255,255,0.75), inset -6px -6px 14px rgba(0,0,0,0.25), inset 0 0 18px rgba(255,255,255,0.12)"
+  };
+  const glassCard = { borderRadius: "24px" };
+
+  // INPUTS — concave (pressed into glass)
+  const glassInput = {
+    borderRadius: "16px", padding: "13px 18px", fontSize: "14px",
+    color: textPrimary, width: "100%", outline: "none",
+    background: D
+      ? "linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02))"
+      : "linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.04))",
+    boxShadow: D
+      ? "inset 5px 5px 12px rgba(0,0,0,0.45), inset -2px -2px 6px rgba(255,255,255,0.3), inset 0 0 10px rgba(0,0,0,0.2)"
+      : "inset 5px 5px 12px rgba(0,0,0,0.35), inset -2px -2px 6px rgba(255,255,255,0.6), inset 0 0 10px rgba(0,0,0,0.18)",
+    borderTopColor: D ? "rgba(0,0,0,0.3)" : "rgba(0,0,0,0.08)",
+    borderLeftColor: D ? "rgba(0,0,0,0.15)" : "rgba(0,0,0,0.05)",
+    borderRightColor: D ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.15)",
+    borderBottomColor: D ? "rgba(255,255,255,0.12)" : "rgba(255,255,255,0.25)"
+  };
+
+  // BUTTONS — convex (raised pill)
+  const glassBtn = {
+    borderRadius: "999px", cursor: "pointer", fontWeight: "600", fontSize: "14px",
+    transition: "all 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
+    background: D
+      ? "linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0.05))"
+      : "linear-gradient(135deg, rgba(255,255,255,0.38), rgba(255,255,255,0.14))",
+    boxShadow: D
+      ? "0 8px 28px rgba(0,0,0,0.3), inset -3px -3px 8px rgba(255,255,255,0.4), inset 4px 4px 10px rgba(0,0,0,0.3), inset 0 0 12px rgba(255,255,255,0.06)"
+      : "0 8px 28px rgba(0,0,0,0.22), inset -3px -3px 8px rgba(255,255,255,0.9), inset 4px 4px 10px rgba(0,0,0,0.22), inset 0 0 12px rgba(255,255,255,0.1)"
   };
 
   // ── Business Logic ──
@@ -394,11 +405,18 @@ export default function SpiderResumeAI() {
       <div className="animate-fade-in-down" style={{
         position: "fixed", top: "12px", left: "12px", right: "12px", zIndex: 200,
         display: "flex", alignItems: "center", justifyContent: "space-between",
-        padding: "10px 16px", borderRadius: "20px",
-        background: D ? "rgba(255,255,255,0.04)" : "rgba(255,255,255,0.12)",
+        padding: "10px 16px", borderRadius: "22px",
+        background: D
+          ? "linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.01))"
+          : "linear-gradient(135deg, rgba(255,255,255,0.30), rgba(255,255,255,0.12))",
         backdropFilter: "blur(40px) saturate(200%)", WebkitBackdropFilter: "blur(40px) saturate(200%)",
-        border: `1px solid ${D ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.35)"}`,
-        boxShadow: D ? "0 8px 40px rgba(0,0,0,0.3)" : "0 8px 40px rgba(0,0,0,0.06)",
+        borderTop: `1.5px solid ${D ? "rgba(255,255,255,0.2)" : "rgba(255,255,255,0.85)"}`,
+        borderLeft: `1px solid ${D ? "rgba(255,255,255,0.15)" : "rgba(255,255,255,0.7)"}`,
+        borderBottom: `1px solid ${D ? "rgba(255,255,255,0.05)" : "rgba(255,255,255,0.1)"}`,
+        borderRight: `1px solid ${D ? "rgba(255,255,255,0.03)" : "rgba(255,255,255,0.05)"}`,
+        boxShadow: D
+          ? "0 12px 40px rgba(0,0,0,0.35), inset 2px 2px 6px rgba(255,255,255,0.15), inset -4px -4px 10px rgba(0,0,0,0.3)"
+          : "0 12px 40px rgba(0,0,0,0.12), inset 2px 2px 6px rgba(255,255,255,0.7), inset -4px -4px 10px rgba(0,0,0,0.15)",
       }}>
         {/* Left: Menu button + Logo */}
         <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
@@ -464,10 +482,14 @@ export default function SpiderResumeAI() {
         transition: "transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)",
         display: "flex", flexDirection: "column",
         padding: "24px 16px",
-        background: D ? "rgba(15,10,25,0.7)" : "rgba(255,255,255,0.2)",
+        background: D
+          ? "linear-gradient(135deg, rgba(15,10,25,0.75), rgba(8,5,15,0.6))"
+          : "linear-gradient(135deg, rgba(255,255,255,0.35), rgba(255,255,255,0.15))",
         backdropFilter: "blur(60px) saturate(200%)", WebkitBackdropFilter: "blur(60px) saturate(200%)",
-        borderRight: `1px solid ${D ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.4)"}`,
-        boxShadow: D ? "8px 0 60px rgba(0,0,0,0.5)" : "8px 0 60px rgba(0,0,0,0.08)",
+        borderRight: `1px solid ${D ? "rgba(255,255,255,0.1)" : "rgba(255,255,255,0.7)"}`,
+        boxShadow: D
+          ? "8px 0 60px rgba(0,0,0,0.5), inset 2px 0 8px rgba(255,255,255,0.08)"
+          : "8px 0 60px rgba(0,0,0,0.1), inset 2px 0 8px rgba(255,255,255,0.5)",
       }}>
         {/* Sidebar header */}
         <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "32px", paddingLeft: "8px" }}>
