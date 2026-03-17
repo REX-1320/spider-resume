@@ -133,39 +133,39 @@ export default function SpiderResumeAI() {
   const textMuted = D ? "rgba(180,160,135,0.45)" : "rgba(80,60,90,0.4)";
   // True liquid glass — pure transparency with a distinct glossy surface reflection
   const glassBase = {
-    background: D 
-      ? "linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%)" 
-      : "linear-gradient(135deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0.08) 100%)",
-    backdropFilter: "blur(40px) saturate(180%) brightness(1.1)",
-    WebkitBackdropFilter: "blur(40px) saturate(180%) brightness(1.1)",
+    position: "relative",
+    background: D ? "rgba(255, 255, 255, 0.01)" : "rgba(255, 255, 255, 0.02)",
+    backdropFilter: D ? "blur(32px) saturate(180%) brightness(1.2)" : "blur(32px) saturate(180%) brightness(1.1)",
+    WebkitBackdropFilter: D ? "blur(32px) saturate(180%) brightness(1.2)" : "blur(32px) saturate(180%) brightness(1.1)",
     border: "1px solid transparent",
-    borderTopColor: D ? "rgba(255,255,255,0.25)" : "rgba(255,255,255,0.6)",
-    borderLeftColor: D ? "rgba(255,255,255,0.15)" : "rgba(255,255,255,0.4)",
-    borderRightColor: D ? "rgba(0,0,0,0.3)" : "rgba(0,0,0,0.1)",
-    borderBottomColor: D ? "rgba(0,0,0,0.5)" : "rgba(0,0,0,0.2)",
+    borderTopColor: D ? "rgba(255, 255, 255, 0.15)" : "rgba(255, 255, 255, 0.5)",
+    borderLeftColor: D ? "rgba(255, 255, 255, 0.1)" : "rgba(255, 255, 255, 0.4)",
+    borderRightColor: D ? "rgba(255, 255, 255, 0.02)" : "rgba(255, 255, 255, 0.05)",
+    borderBottomColor: D ? "rgba(255, 255, 255, 0.05)" : "rgba(255, 255, 255, 0.1)",
     boxShadow: D 
-      ? "0 16px 48px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.15)" 
-      : "0 16px 48px rgba(0,0,0,0.1), inset 0 1px 1px rgba(255,255,255,0.5)"
+      ? "0 16px 48px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.15), inset 0 -1px 2px rgba(0, 0, 0, 0.2), inset 0 4px 16px rgba(255, 255, 255, 0.04)"
+      : "0 16px 40px rgba(0, 0, 0, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.8), inset 0 -1px 2px rgba(0, 0, 0, 0.03), inset 0 4px 20px rgba(255, 255, 255, 0.15)"
   };
   const glassCard = { ...glassBase, borderRadius: "24px" };
   const glassInput = { 
     ...glassBase, 
     borderRadius: "14px", padding: "11px 16px", fontSize: "14px", 
     color: textPrimary, width: "100%", outline: "none", 
-    background: D ? "rgba(0,0,0,0.25)" : "rgba(0,0,0,0.06)",
-    boxShadow: D ? "inset 0 4px 16px rgba(0,0,0,0.5)" : "inset 0 4px 16px rgba(0,0,0,0.12)",
-    borderTopColor: D ? "rgba(0,0,0,0.6)" : "rgba(0,0,0,0.3)",
-    borderLeftColor: D ? "rgba(0,0,0,0.4)" : "rgba(0,0,0,0.15)",
-    borderRightColor: D ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.3)",
-    borderBottomColor: D ? "rgba(255,255,255,0.1)" : "rgba(255,255,255,0.5)"
+    background: D ? "rgba(0,0,0,0.1)" : "rgba(0,0,0,0.02)",
+    boxShadow: D ? "inset 0 4px 24px rgba(0,0,0,0.4), 0 1px 1px rgba(255,255,255,0.05)" : "inset 0 4px 24px rgba(0,0,0,0.1), 0 1px 1px rgba(255,255,255,0.4)",
+    borderTopColor: D ? "rgba(0,0,0,0.4)" : "rgba(0,0,0,0.1)",
+    borderLeftColor: D ? "rgba(0,0,0,0.2)" : "rgba(0,0,0,0.05)",
+    borderRightColor: D ? "rgba(255,255,255,0.05)" : "rgba(255,255,255,0.2)",
+    borderBottomColor: D ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.3)"
   };
   const glassBtn = { 
     ...glassBase, 
     borderRadius: "100px", cursor: "pointer", fontWeight: "600", fontSize: "14px", 
-    transition: "all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)", 
-    background: D 
-      ? "linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.04) 100%)" 
-      : "linear-gradient(135deg, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0.15) 100%)"
+    transition: "all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)", 
+    background: D ? "rgba(255, 255, 255, 0.02)" : "rgba(255, 255, 255, 0.03)",
+    boxShadow: D
+      ? "0 8px 24px rgba(0,0,0,0.2), inset 0 1px 1px rgba(255,255,255,0.15), inset 0 2px 12px rgba(255,255,255,0.05)"
+      : "0 8px 24px rgba(0,0,0,0.08), inset 0 1px 1px rgba(255,255,255,0.6), inset 0 2px 12px rgba(255,255,255,0.1)"
   };
 
   // ── Business Logic ──

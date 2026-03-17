@@ -1,17 +1,27 @@
 export const liquidGlass = {
-  background: "rgba(255,255,255,0.18)",
-  backdropFilter: "blur(20px) saturate(200%) brightness(1.05)",
-  WebkitBackdropFilter: "blur(20px) saturate(200%) brightness(1.05)",
-  border: "1px solid rgba(255,255,255,0.55)",
-  boxShadow: "0 2px 12px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.8), inset 0 -1px 0 rgba(0,0,0,0.03)",
+  position: "relative",
+  background: "rgba(255, 255, 255, 0.02)",
+  backdropFilter: "blur(32px) saturate(180%) brightness(1.1)",
+  WebkitBackdropFilter: "blur(32px) saturate(180%) brightness(1.1)",
+  border: "1px solid transparent",
+  borderTopColor: "rgba(255, 255, 255, 0.5)",
+  borderLeftColor: "rgba(255, 255, 255, 0.4)",
+  borderRightColor: "rgba(255, 255, 255, 0.05)",
+  borderBottomColor: "rgba(255, 255, 255, 0.1)",
+  boxShadow: "0 16px 40px rgba(0, 0, 0, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.8), inset 0 -1px 2px rgba(0, 0, 0, 0.03), inset 0 4px 20px rgba(255, 255, 255, 0.15)",
 };
 
 export const liquidGlassDark = {
-  background: "rgba(255,255,255,0.08)",
-  backdropFilter: "blur(20px) saturate(180%)",
-  WebkitBackdropFilter: "blur(20px) saturate(180%)",
-  border: "1px solid rgba(255,255,255,0.14)",
-  boxShadow: "0 2px 12px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1)",
+  position: "relative",
+  background: "rgba(255, 255, 255, 0.01)",
+  backdropFilter: "blur(32px) saturate(180%) brightness(1.2)",
+  WebkitBackdropFilter: "blur(32px) saturate(180%) brightness(1.2)",
+  border: "1px solid transparent",
+  borderTopColor: "rgba(255, 255, 255, 0.15)",
+  borderLeftColor: "rgba(255, 255, 255, 0.1)",
+  borderRightColor: "rgba(255, 255, 255, 0.02)",
+  borderBottomColor: "rgba(255, 255, 255, 0.05)",
+  boxShadow: "0 16px 48px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.15), inset 0 -1px 2px rgba(0, 0, 0, 0.2), inset 0 4px 16px rgba(255, 255, 255, 0.04)",
 };
 
 export const LabelCapsule = ({ label, isDark, textMuted }) => (
