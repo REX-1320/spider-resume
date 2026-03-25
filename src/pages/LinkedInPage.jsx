@@ -21,7 +21,7 @@ export default function LinkedInPage({ callAI, form, glassCard, glassBase, glass
     setResults(null);
     try {
       const role = targetRole || form.experience?.[0]?.role || "professional";
-      const raw = await callAI(`You are a LinkedIn profile optimization expert. Rewrite and optimize this person's LinkedIn profile for maximum recruiter visibility and engagement.
+      const response = await callAI(`You are a LinkedIn profile optimization expert. Rewrite and optimize this person's LinkedIn profile for maximum recruiter visibility and engagement.
 
 Person: ${form.name || "Professional"}
 Target Role: ${role}
@@ -42,6 +42,8 @@ Return ONLY valid JSON (no markdown):
   "profileScore": 72,
   "scoreBreakdown": {"headline": 80, "about": 65, "experience": 75, "skills": 70, "photo": 50}
 }`);
+      const raw = typeof response === 'string' ? response : response.content;
+      console.log(`AI Model Used: ${response.provider} - ${response.model}`);
 
       const cleaned = raw.replace(/```json|```/g, "").trim();
       setResults(JSON.parse(cleaned));

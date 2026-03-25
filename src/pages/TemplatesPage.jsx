@@ -130,13 +130,15 @@ export default function TemplatesPage({ callAI, form, setPage, setAppliedTemplat
     const STYLES = ["Minimalist","Corporate","Creative","Tech","Luxury","Elegant","Startup","Bold","Academic","Neon","Pastel","Retro"];
     const style = STYLES[new Date().getHours() % STYLES.length];
     try {
-      const raw = await callAI(`Create a unique ${style} style resume template as complete self-contained HTML with inline CSS only.
+      const response = await callAI(`Create a unique ${style} style resume template as complete self-contained HTML with inline CSS only.
 Use these placeholders exactly: {{NAME}} {{ROLE}} {{EMAIL}} {{PHONE}} {{LOCATION}} {{SUMMARY}} {{SKILLS}} {{EXP_ITEMS}} {{EDU_ITEMS}}
 The template must look like a real professional resume in ${style} style.
 Return ONLY:
 TEMPLATE_META:{"name":"${style} ${new Date().getHours()}","style":"${style}","tags":["${style.toLowerCase()}","auto"]}
 TEMPLATE_HTML:
 <div ...complete HTML...>`);
+      const raw = typeof response === 'string' ? response : response.content;
+      console.log(`AI Model Used: ${response.provider} - ${response.model}`);
       if (raw.includes("TEMPLATE_META:") && raw.includes("TEMPLATE_HTML:")) {
         const meta = JSON.parse(raw.split("TEMPLATE_META:")[1].split("TEMPLATE_HTML:")[0].trim());
         const html = raw.split("TEMPLATE_HTML:")[1].trim();
@@ -189,13 +191,15 @@ TEMPLATE_HTML:
     if (!isPro) { setPage("upgrade"); return; }
     setCustomLoading(true);
     try {
-      const raw = await callAI(`Create a custom resume template based on: "${customPrompt}"
+      const response = await callAI(`Create a custom resume template based on: "${customPrompt}"
 ${form.name ? `For: ${form.name}, ${form.experience?.[0]?.role||""}` : ""}
 Requirements: Complete HTML with inline CSS. Use placeholders: {{NAME}} {{ROLE}} {{EMAIL}} {{PHONE}} {{LOCATION}} {{SUMMARY}} {{SKILLS}} {{EXP_ITEMS}} {{EDU_ITEMS}}
 Return ONLY:
 TEMPLATE_META:{"name":"[name]","style":"[style]","tags":["custom"]}
 TEMPLATE_HTML:
 <div ...>`);
+      const raw = typeof response === 'string' ? response : response.content;
+      console.log(`AI Model Used: ${response.provider} - ${response.model}`);
       if (raw.includes("TEMPLATE_META:") && raw.includes("TEMPLATE_HTML:")) {
         const meta = JSON.parse(raw.split("TEMPLATE_META:")[1].split("TEMPLATE_HTML:")[0].trim());
         const html = raw.split("TEMPLATE_HTML:")[1].trim();
@@ -215,9 +219,11 @@ TEMPLATE_HTML:
     setModifyLoading(true);
     try {
       const currentHtml = selected.htmlTemplate || renderTpl(selected);
-      const raw = await callAI(`Modify this resume template HTML: "${modifyPrompt}"
+      const response = await callAI(`Modify this resume template HTML: "${modifyPrompt}"
 Current HTML (first 3000 chars): ${currentHtml.substring(0,3000)}
 Return ONLY the complete modified HTML starting with <div. Keep all {{PLACEHOLDER}} variables. Apply changes faithfully.`);
+      const raw = typeof response === 'string' ? response : response.content;
+      console.log(`AI Model Used: ${response.provider} - ${response.model}`);
       if (raw.trim().startsWith("<")) {
         await fsAdd({ name: `${selected.name} (Modified)`, style: selected.style, tags: ["custom","modified"], htmlTemplate: raw.trim(), type: "custom", basedOn: selected.firestoreId });
         const newPreview = renderTpl({ htmlTemplate: raw.trim() });

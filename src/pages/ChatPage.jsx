@@ -23,7 +23,7 @@ export default function ChatPage({ callAI, setForm, setPage, glassCard, glassBas
     setLoading(true);
     try {
       const history = newMsgs.map(m => `${m.role === "user" ? "User" : "Assistant"}: ${m.text}`).join("\n");
-      const raw = await callAI(`You are Spider AI, a friendly resume-building assistant. Extract resume info from this conversation and either ask ONE follow-up question OR output the resume JSON.
+      const response = await callAI(`You are Spider AI, a friendly resume-building assistant. Extract resume info from this conversation and either ask ONE follow-up question OR output the resume JSON.
 
 CONVERSATION:
 ${history}
@@ -37,6 +37,8 @@ Then output valid JSON (no markdown):
 {"name":"","email":"","phone":"","location":"","linkedin":"","summary":"write a strong 2-sentence professional summary","skills":"comma,separated,skills","education":[{"degree":"","school":"","year":""}],"experience":[{"role":"","company":"","duration":"","desc":"write 2-3 sentence impactful description of their work"}]}
 
 Make summaries and descriptions professional and impactful. Fill empty strings with empty string, not null.`);
+      const raw = typeof response === 'string' ? response : response.content;
+      console.log(`AI Model Used: ${response.provider} - ${response.model}`);
 
       if (raw.includes("RESUME_JSON:")) {
         const jsonStr = raw.split("RESUME_JSON:")[1].trim().replace(/```json|```/g, "").trim();

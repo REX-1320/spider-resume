@@ -101,7 +101,7 @@ onClick={async()=>{
 
 if(!chatInput) return
 
-const res = await callAI(`
+const response = await callAI(`
 Convert this description into resume JSON.
 
 Return JSON:
@@ -114,6 +114,8 @@ Return JSON:
 Description:
 ${chatInput}
 `)
+const res = typeof response === 'string' ? response : response.content
+console.log(`AI Model Used: ${response.provider} - ${response.model}`)
 
 try{
 
@@ -163,7 +165,7 @@ return(
 className="glass-btn" style={{ padding:"12px",marginTop:"10px"}}
 onClick={async()=>{
 
-const res = await callAI(`
+const response = await callAI(`
 Generate 20 resume template styles.
 
 Return JSON array:
@@ -172,6 +174,8 @@ Return JSON array:
 {name:"Minimal White",type:"minimal"}
 ]
 `)
+const res = typeof response === 'string' ? response : response.content
+console.log(`AI Model Used: ${response.provider} - ${response.model}`)
 
 try{
 
@@ -304,11 +308,13 @@ return(
 className="glass-btn" style={{ padding:"12px",marginTop:"10px"}}
 onClick={async()=>{
 
-const res = await callAI(`
+const response = await callAI(`
 Write a professional cover letter based on this resume:
 
 ${JSON.stringify(form)}
 `)
+const res = typeof response === 'string' ? response : response.content
+console.log(`AI Model Used: ${response.provider} - ${response.model}`)
 
 setCoverLetter(res)
 

@@ -13,10 +13,11 @@ export function createAIService({ groqKey, groqKey2, geminiKey }) {
   // ── Groq: fast text AI — alternates between 2 keys ───────────────────
   const callGroq = async (prompt, forceKey = null) => {
     const key = forceKey || getGroqKey();
+    const modelName = "llama-3.3-70b-versatile";
     const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
       headers: { "Content-Type": "application/json", "Authorization": "Bearer " + key },
-      body: JSON.stringify({ model: "llama-3.3-70b-versatile", max_tokens: 2048, messages: [{ role: "user", content: prompt }] }),
+      body: JSON.stringify({ model: modelName, max_tokens: 2048, messages: [{ role: "user", content: prompt }] }),
     });
     const data = await res.json();
     if ((res.status === 429 || data.error?.code === 429) && groqKey2 && key !== groqKey2) {
@@ -28,13 +29,15 @@ export function createAIService({ groqKey, groqKey2, geminiKey }) {
       if (geminiKey) return callGemini(prompt);
     }
     if (data.error) throw new Error(data.error.message);
-    return data.choices[0].message.content.replace(/```json|```/g, "").trim();
+    const content = data.choices[0].message.content.replace(/```json|```/g, "").trim();
+    return { content, model: modelName, provider: "Groq" };
   };
 
   // ── Gemini: text fallback ─────────────────────────────────────────────
   const callGemini = async (prompt) => {
+    const modelName = "gemini-2.0-flash";
     const res = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${geminiKey}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${geminiKey}`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -46,7 +49,8 @@ export function createAIService({ groqKey, groqKey2, geminiKey }) {
     );
     const data = await res.json();
     if (data.error) throw new Error(data.error.message);
-    return data.candidates[0].content.parts[0].text.replace(/```json|```/g, "").trim();
+    const content = data.candidates[0].content.parts[0].text.replace(/```json|```/g, "").trim();
+    return { content, model: modelName, provider: "Gemini" };
   };
 
   // ── callAI: Groq(alternating 2 keys) → Gemini fallback ───────────────
@@ -67,13 +71,15 @@ export function createAIService({ groqKey, groqKey2, geminiKey }) {
   const callVisionAI = async (base64, mimeType, prompt) => {
     // Try Groq first using llama-4-scout (supports vision) — alternates keys
     const visionGroqKey = getGroqKey();
+    const groqVisionModel = "meta-llama/llama-4-scout-17b-16e-instruct";
+    const geminiVisionModel = "gemini-2.0-flash";
     if (visionGroqKey) {
       try {
         const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
           method: "POST",
           headers: { "Content-Type": "application/json", "Authorization": "Bearer " + visionGroqKey },
           body: JSON.stringify({
-            model: "meta-llama/llama-4-scout-17b-16e-instruct",
+            model: groqVisionModel,
             max_tokens: 1500,
             messages: [{
               role: "user",
@@ -86,7 +92,8 @@ export function createAIService({ groqKey, groqKey2, geminiKey }) {
         });
         const data = await res.json();
         if (!data.error) {
-          return data.choices?.[0]?.message?.content?.replace(/```json|```/g, "").trim() || "";
+          const content = data.choices?.[0]?.message?.content?.replace(/```json|```/g, "").trim() || "";
+          return { content, model: groqVisionModel, provider: "Groq Vision" };
         }
         console.warn("Groq vision failed, trying Gemini:", data.error.message);
       } catch (e) {
@@ -96,7 +103,7 @@ export function createAIService({ groqKey, groqKey2, geminiKey }) {
     // Fallback to Gemini
     if (!geminiKey) throw new Error("No vision API available. Add VITE_GROQ_KEY or VITE_GEMINI_KEY.");
     const res = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${geminiKey}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/${geminiVisionModel}:generateContent?key=${geminiKey}`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -112,7 +119,8 @@ export function createAIService({ groqKey, groqKey2, geminiKey }) {
     const data = await res.json();
     if (data.error?.status === "RESOURCE_EXHAUSTED" || res.status === 429) throw new Error("Rate limit hit — wait 30 seconds and try again.");
     if (data.error) throw new Error(data.error.message);
-    return data.candidates?.[0]?.content?.parts?.[0]?.text?.replace(/```json|```/g, "").trim() || "";
+    const content = data.candidates?.[0]?.content?.parts?.[0]?.text?.replace(/```json|```/g, "").trim() || "";
+    return { content, model: geminiVisionModel, provider: "Gemini Vision" };
   };
 
   return { callAI, callVisionAI };
