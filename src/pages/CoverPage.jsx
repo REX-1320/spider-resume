@@ -24,7 +24,7 @@ export default function CoverPage({ callAI, form, glassCard, glassBase, glassBtn
     setLoading(true);
     setCopied(false);
     try {
-      const result = await callAI(`Write a ${tone} cover letter for ${form.name || "the applicant"} applying for "${jobTitle || "the advertised position"}" at "${company || "your company"}".
+      const response = await callAI(`Write a ${tone} cover letter for ${form.name || "the applicant"} applying for "${jobTitle || "the advertised position"}" at "${company || "your company"}".
 
 Resume data:
 - Name: ${form.name || "N/A"}
@@ -46,6 +46,8 @@ Instructions:
 - End with name: ${form.name || "Applicant"}
 - This is version #${version + 1} — make it fresh and different from any previous version
 - Return ONLY the cover letter text, no extra commentary or title`);
+      const result = typeof response === 'string' ? response : response.content;
+      console.log(`AI Model Used: ${response.provider} - ${response.model}`);
 
       setLetter(result.trim());
       setVersion(v => v + 1);

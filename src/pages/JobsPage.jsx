@@ -24,7 +24,7 @@ export default function JobsPage({ callAI, form, glassCard, glassBase, glassBtn,
   const getAIMatches = async () => {
     setLoading(true);
     try {
-      const raw = await callAI(`Based on this resume profile, rank the following job platforms from most to least suitable. Return ONLY a valid JSON array of platform names in order of recommendation, with a one-line reason for each.
+      const response = await callAI(`Based on this resume profile, rank the following job platforms from most to least suitable. Return ONLY a valid JSON array of platform names in order of recommendation, with a one-line reason for each.
 
 Resume: Name: ${form.name || "N/A"}, Role: ${form.experience?.[0]?.role || "N/A"}, Skills: ${form.skills || "N/A"}, Education: ${form.education?.[0]?.degree || "N/A"}, Location: ${form.location || "India"}
 
@@ -33,6 +33,8 @@ Platforms to rank: ${ALL_PLATFORMS.map(p => p.name).join(", ")}
 Return ONLY this JSON (no markdown):
 [{"name":"LinkedIn","reason":"One sentence why this suits them","score":95},...]
 Include all ${ALL_PLATFORMS.length} platforms with a score 0-100.`);
+      const raw = typeof response === 'string' ? response : response.content;
+      console.log(`AI Model Used: ${response.provider} - ${response.model}`);
 
       const cleaned = raw.replace(/```json|```/g, "").trim();
       const parsed = JSON.parse(cleaned);

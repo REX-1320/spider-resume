@@ -1,6 +1,7 @@
 export async function aiClient(prompt) {
 
   const apiKey = import.meta.env.VITE_GROQ_KEY;
+  const modelName = "llama-3.3-70b-versatile";
 
   const res = await fetch(
     "https://api.groq.com/openai/v1/chat/completions",
@@ -11,7 +12,7 @@ export async function aiClient(prompt) {
         Authorization: "Bearer " + apiKey
       },
       body: JSON.stringify({
-        model: "llama-3.3-70b-versatile",
+        model: modelName,
         messages: [{ role: "user", content: prompt }]
       })
     }
@@ -19,5 +20,9 @@ export async function aiClient(prompt) {
 
   const data = await res.json();
 
-  return data.choices[0].message.content;
+  return {
+    content: data.choices[0].message.content,
+    model: modelName,
+    provider: "Groq"
+  };
 }

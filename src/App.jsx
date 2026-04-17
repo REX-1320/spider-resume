@@ -210,7 +210,9 @@ export default function SpiderResumeAI() {
     if (!canGenerate()) { setPage("upgrade"); return; }
     setLoading(true);
     try {
-      const raw = await callAI("Generate a professional resume summary and improve job descriptions. Return ONLY JSON: {\"summary\":\"...\",\"experience\":[\"desc1\",\"desc2\"]}. No markdown.\nPerson: " + JSON.stringify(form));
+      const response = await callAI("Generate a professional resume summary and improve job descriptions. Return ONLY JSON: {\"summary\":\"...\",\"experience\":[\"desc1\",\"desc2\"]}. No markdown.\nPerson: " + JSON.stringify(form));
+      const raw = typeof response === 'string' ? response : response.content;
+      console.log(`AI Model Used: ${response.provider} - ${response.model}`);
       const parsed = JSON.parse(raw);
       setForm(p => ({ ...p, summary: parsed.summary || p.summary, experience: p.experience.map((exp, i) => ({ ...exp, desc: parsed.experience?.[i] || exp.desc })) }));
       await incrementUsage();
@@ -223,7 +225,9 @@ export default function SpiderResumeAI() {
     if (!canGenerate()) { setPage("upgrade"); return; }
     setScoreLoading(true); setScoreData(null);
     try {
-      const raw = await callAI("Analyze this resume. Return ONLY valid JSON: {\"overallScore\":85,\"atsScore\":80,\"contentScore\":85,\"formatScore\":90,\"atsChecks\":[{\"label\":\"Contact info present\",\"pass\":true},{\"label\":\"Work experience included\",\"pass\":true},{\"label\":\"Education section filled\",\"pass\":true},{\"label\":\"Skills keywords present\",\"pass\":true},{\"label\":\"Professional summary written\",\"pass\":true},{\"label\":\"No special characters\",\"pass\":true},{\"label\":\"Dates formatted consistently\",\"pass\":true},{\"label\":\"LinkedIn included\",\"pass\":false}],\"tips\":[\"tip1\",\"tip2\",\"tip3\",\"tip4\"],\"strengths\":[\"s1\",\"s2\"],\"verdict\":\"verdict here\"}. Use real values. Resume: " + JSON.stringify(form));
+      const response = await callAI("Analyze this resume. Return ONLY valid JSON: {\"overallScore\":85,\"atsScore\":80,\"contentScore\":85,\"formatScore\":90,\"atsChecks\":[{\"label\":\"Contact info present\",\"pass\":true},{\"label\":\"Work experience included\",\"pass\":true},{\"label\":\"Education section filled\",\"pass\":true},{\"label\":\"Skills keywords present\",\"pass\":true},{\"label\":\"Professional summary written\",\"pass\":true},{\"label\":\"No special characters\",\"pass\":true},{\"label\":\"Dates formatted consistently\",\"pass\":true},{\"label\":\"LinkedIn included\",\"pass\":false}],\"tips\":[\"tip1\",\"tip2\",\"tip3\",\"tip4\"],\"strengths\":[\"s1\",\"s2\"],\"verdict\":\"verdict here\"}. Use real values. Resume: " + JSON.stringify(form));
+      const raw = typeof response === 'string' ? response : response.content;
+      console.log(`AI Model Used: ${response.provider} - ${response.model}`);
       const parsed = JSON.parse(raw);
       setScoreData(parsed); setPage("score");
     } catch (e) { alert("Failed: " + e.message); }
@@ -296,7 +300,9 @@ export default function SpiderResumeAI() {
       });
       const extractPrompt = `You are a professional resume parser. Look at this resume ${isPDF ? "document" : "image"} carefully and extract ALL information you can see.\n\nReturn ONLY a raw JSON object. No markdown. No code blocks. No explanation. Just JSON starting with { and ending with }.\n\n{\n  "name": "full name",\n  "email": "email or empty string",\n  "phone": "phone or empty string",\n  "location": "city country or empty string",\n  "linkedin": "linkedin URL or empty string",\n  "summary": "write a strong 2-3 sentence professional summary from their experience",\n  "skills": "skill1, skill2, skill3 (comma separated, include ALL skills tools languages)",\n  "education": [{"degree": "degree and field", "school": "school name", "year": "year"}],\n  "experience": [{"role": "job title", "company": "company name", "duration": "dates", "desc": "2-3 sentence description"}]\n}\n\nExtract EVERY detail visible. Include ALL jobs in experience array. Include ALL degrees in education. Generate summary if not present.`;
       const mimeType = isPDF ? "application/pdf" : "image/jpeg";
-      const rawText = await callVisionAI(base64, mimeType, extractPrompt);
+      const response = await callVisionAI(base64, mimeType, extractPrompt);
+      const rawText = typeof response === 'string' ? response : response.content;
+      console.log(`AI Vision Model Used: ${response.provider} - ${response.model}`);
       if (!rawText || rawText.trim().length < 20) throw new Error("AI returned empty response — check your Gemini API key in Vercel settings.");
       let jsonText = rawText.trim().replace(/^```json\s*/i, "").replace(/^```\s*/i, "").replace(/```\s*$/i, "").trim();
       const jsonStart = jsonText.indexOf("{"); const jsonEnd = jsonText.lastIndexOf("}");

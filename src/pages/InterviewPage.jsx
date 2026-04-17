@@ -23,7 +23,7 @@ export default function InterviewPage({ callAI, form, glassCard, glassBase, glas
     setPracticed(new Set());
     try {
       const role = targetRole || form.experience?.[0]?.role || "the applied position";
-      const raw = await callAI(`Generate exactly 20 interview questions for ${form.name || "a candidate"} applying for "${role}".
+      const response = await callAI(`Generate exactly 20 interview questions for ${form.name || "a candidate"} applying for "${role}".
 
 Their background: ${form.summary || ""} Skills: ${form.skills || ""}. Experience: ${form.experience?.map(e => `${e.role} at ${e.company}`).join(", ") || "N/A"}. Education: ${form.education?.[0]?.degree || "N/A"}.
 
@@ -31,6 +31,8 @@ Return ONLY valid JSON array of 20 objects (no markdown):
 [{"id":1,"category":"behavioral|technical|situational|hr","question":"Full interview question?","why":"Why interviewers ask this (1 sentence)","tip":"How to answer it well (2-3 sentences)","sampleAnswer":"A brief sample answer framework (2-4 sentences) tailored to their background"}]
 
 Mix: 5 behavioral, 5 technical, 5 situational, 5 HR. Make questions specific to their actual role and skills, not generic.`);
+      const raw = typeof response === 'string' ? response : response.content;
+      console.log(`AI Model Used: ${response.provider} - ${response.model}`);
 
       const cleaned = raw.replace(/```json|```/g, "").trim();
       const parsed = JSON.parse(cleaned);
